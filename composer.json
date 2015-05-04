@@ -1,0 +1,25 @@
+{
+    "name": "wyrihaximus/react-child-process-pool",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cees-Jan Kiewiet",
+            "email": "ceesjank@gmail.com"
+        }
+    ],
+    "require": {
+        "wyrihaximus/ticking-promise": "^1.5",
+        "wyrihaximus/react-child-process-messenger": "dev-master",
+        "evenement/evenement": "^2.0"
+    },
+  "autoload": {
+    "psr-4": {
+      "WyriHaximus\\React\\ChildProcess\\Pool\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "WyriHaximus\\React\\Tests\\ChildProcess\\Pool\\": "tests/"
+    }
+  }
+}
