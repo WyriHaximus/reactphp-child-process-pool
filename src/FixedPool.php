@@ -137,7 +137,7 @@ class FixedPool extends EventEmitter
             $this->callQueue->dequeue()->resolve();
         }
 
-        if ($this->callQueue->count() > 1) {
+        if ($this->callQueue->count() > 0) {
             $this->timer = $this->loop->addTimer(static::INTERVAL, function () {
                 $this->checkQueue();
             });
