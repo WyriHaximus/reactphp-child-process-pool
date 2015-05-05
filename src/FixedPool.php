@@ -74,7 +74,6 @@ class FixedPool extends EventEmitter
             $this->pool->attach($messenger);
             $this->readyPool->enqueue($messenger);
         }, function ($error) {
-            var_export($error);die();
             $this->emit('error', [$error, $this]);
         });
     }
@@ -124,7 +123,6 @@ class FixedPool extends EventEmitter
             $this->checkQueue();
             return \React\Promise\resolve($data);
         }, function ($error) use ($messenger) {
-            var_export($error);die();
             $this->readyPool->enqueue($messenger);
             $this->checkQueue();
             return \React\Promise\reject($error);
