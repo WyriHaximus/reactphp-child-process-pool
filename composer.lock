@@ -234,12 +234,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/ReactChildProcessMessenger.git",
-                "reference": "a4775db72c6283e04f82cfd9994dfc25bf664239"
+                "reference": "f48d903602bd6e60981324edb18321785c7d2838"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/ReactChildProcessMessenger/zipball/a4775db72c6283e04f82cfd9994dfc25bf664239",
-                "reference": "a4775db72c6283e04f82cfd9994dfc25bf664239",
+                "url": "https://api.github.com/repos/WyriHaximus/ReactChildProcessMessenger/zipball/f48d903602bd6e60981324edb18321785c7d2838",
+                "reference": "f48d903602bd6e60981324edb18321785c7d2838",
                 "shasum": ""
             },
             "require": {
@@ -272,7 +272,7 @@
                 }
             ],
             "description": "Messenger decorator for react/child-process",
-            "time": "2015-05-02 22:25:59"
+            "time": "2015-05-05 07:26:16"
         },
         {
             "name": "wyrihaximus/ticking-promise",
