@@ -1,0 +1,59 @@
+language: php
+sudo: false
+cache: composer
+
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7
+  - hhvm
+  - hhvm-nightly
+
+matrix:
+  include:
+    - php: 5.4
+      env: dependencies=lowest
+    - php: 5.5
+      env: dependencies=lowest
+    - php: 5.6
+      env: dependencies=lowest
+    - php: 7
+      env: dependencies=lowest
+    - php: hhvm
+      env: dependencies=lowest
+    - php: hhvm-nightly
+      env: dependencies=lowest
+    - php: 5.4
+      env: dependencies=highest
+    - php: 5.5
+      env: dependencies=highest
+    - php: 5.6
+      env: dependencies=highest
+    - php: 7
+      env: dependencies=highest
+    - php: hhvm
+      env: dependencies=highest
+    - php: hhvm-nightly
+      env: dependencies=highest
+  allow_failures:
+    - php: hhvm-nightly
+
+before_script:
+  - composer self-update -q
+  - if [ -z "$dependencies" ]; then composer install -q; fi;
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n -q; fi;
+  - if [ "$dependencies" = "highest" ]; then composer update -n -q; fi;
+
+script: make travis
+
+after_script:
+  - make coveralls
+
+notifications:
+  webhooks:
+    urls: 
+      - http://wyrihaximus.net/wyri_projects/wyri_projects/webhook/travisci.json
+    on_success: always
+    on_failure: always
+    on_start: true
