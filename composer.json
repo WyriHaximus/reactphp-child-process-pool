@@ -14,6 +14,13 @@
     "wyrihaximus/react-child-process-messenger": "dev-master",
     "evenement/evenement": "^2.0"
   },
+  "require-dev": {
+    "satooshi/php-coveralls": "^0.6",
+    "phpunit/phpunit": "~4.0",
+    "phake/phake": "~1.0.6",
+    "vectorface/dunit": "~2.0",
+    "squizlabs/php_codesniffer": "~1.5"
+  },
   "autoload": {
     "psr-4": {
       "WyriHaximus\\React\\ChildProcess\\Pool\\": "src/"
