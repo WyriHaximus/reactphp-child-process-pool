@@ -6,6 +6,7 @@ use Evenement\EventEmitter;
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use React\Promise\Deferred;
+use React\Promise\PromiseInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Call;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
 
