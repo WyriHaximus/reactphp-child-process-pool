@@ -26,7 +26,9 @@ echo '1', PHP_EOL;
 sleep(1);
 
 $loop = Factory::create();
-$pool = new FixedPool(new Process('exec php ' . dirname(dirname(__DIR__)) . '/examples/ping-pong/pong.php'), $loop, POOL_PROCESS_COUNT);
+$pool = new FixedPool(new Process('exec php ' . dirname(dirname(__DIR__)) . '/examples/ping-pong/pong.php'), $loop, [
+    'size' => POOL_PROCESS_COUNT,
+]);
 
 for ($i = 0; $i < I; $i++) {
     echo $i, PHP_EOL;
@@ -44,6 +46,7 @@ $pool->rpc(new Call('ping', new Payload([
     'i' => ++$i,
 ])))->then(function () use ($pool) {
     $pool->terminate();
+    echo 'Done!!!', PHP_EOL;
 });
 
 $loop->run();

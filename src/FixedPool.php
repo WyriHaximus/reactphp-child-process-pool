@@ -9,7 +9,7 @@ use React\Promise\Deferred;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Call;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
 
-class FixedPool extends EventEmitter
+class FixedPool extends EventEmitter implements PoolInterface
 {
     const INTERVAL = 0.01;
 
@@ -24,9 +24,11 @@ class FixedPool extends EventEmitter
     protected $loop;
 
     /**
-     * @var int
+     * @var array
      */
-    protected $size;
+    protected $options = [
+        'size' => 25,
+    ];
 
     /**
      * @var \SplQueue
@@ -48,20 +50,20 @@ class FixedPool extends EventEmitter
     /**
      * @param Process $process
      * @param LoopInterface $loop
-     * @param int $size
+     * @param array $options
      */
-    public function __construct(Process $process, LoopInterface $loop, $size = 25)
+    public function __construct(Process $process, LoopInterface $loop, array $options = [])
     {
         $this->sourceProcess = $process;
         $this->loop = $loop;
-        $this->size = $size;
+        $this->options = array_merge($this->options, $options);
 
         $this->readyPool = new \SplQueue();
         $this->pool = new \SplObjectStorage();
 
         $this->callQueue = new \SplQueue();
 
-        for ($i = 0; $i < $size; $i++) {
+        for ($i = 0; $i < $this->options['size']; $i++) {
             $this->spawnProcess();
         }
     }
