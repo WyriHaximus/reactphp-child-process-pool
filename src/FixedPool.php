@@ -5,6 +5,7 @@ namespace WyriHaximus\React\ChildProcess\Pool;
 use Evenement\EventEmitter;
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
+use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Call;
@@ -46,6 +47,9 @@ class FixedPool extends EventEmitter implements PoolInterface
      */
     protected $callQueue;
 
+    /**
+     * @var null|TimerInterface
+     */
     protected $timer;
 
     /**
