@@ -24,6 +24,14 @@ interface PoolInterface extends EventEmitterInterface
     public function rpc(Call $message);
 
     /**
+     * @param string $message
+     * @param int $timeout
+     * @param null $signal
+     * @return mixed
+     */
+    public function terminate($message, $timeout = 5, $signal = null);
+
+    /**
      * @return array
      */
     public function info();
