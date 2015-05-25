@@ -6,7 +6,8 @@ use Evenement\EventEmitterInterface;
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use React\Promise\PromiseInterface;
-use WyriHaximus\React\ChildProcess\Messenger\Messages\Call;
+use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
+use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 
 interface PoolInterface extends EventEmitterInterface
 {
@@ -18,10 +19,18 @@ interface PoolInterface extends EventEmitterInterface
     public function __construct(Process $process, LoopInterface $loop, array $options = []);
 
     /**
-     * @param Call $message
+     * @param Rpc $message
      * @return PromiseInterface
      */
-    public function rpc(Call $message);
+    public function rpc(Rpc $message);
+
+    /**
+     * * Messages all processes in the pool
+     *
+     * @param Message $message
+     * @return void
+     */
+    public function message(Message $message);
 
     /**
      * @param string $message

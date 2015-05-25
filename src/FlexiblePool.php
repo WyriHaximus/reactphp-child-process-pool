@@ -8,7 +8,9 @@ use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
-use WyriHaximus\React\ChildProcess\Messenger\Messages\Call;
+use WyriHaximus\React\ChildProcess\Messenger\Factory;
+use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
+use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
 
 class FlexiblePool extends EventEmitter implements PoolInterface
@@ -79,10 +81,9 @@ class FlexiblePool extends EventEmitter implements PoolInterface
     protected function spawnProcess()
     {
         $this->startingProcesses++;
-        echo 'Spawning process', PHP_EOL;
+        $processOptions = isset($this->options['processOptions']) ? $this->options['processOptions'] : [];
         $process = clone $this->sourceProcess;
-        $messenger = new Messenger($process);
-        $messenger->start($this->loop)->then(function (Messenger $messenger) {
+        Factory::parent($process, $this->loop, $processOptions)->then(function (Messenger $messenger) {
             $this->startingProcesses--;
             $this->pool->attach($messenger);
             $this->readyPool->enqueue($messenger);
@@ -103,10 +104,10 @@ class FlexiblePool extends EventEmitter implements PoolInterface
     }
 
     /**
-     * @param Call $message
+     * @param Rpc $message
      * @return PromiseInterface
      */
-    public function rpc(Call $message)
+    public function rpc(Rpc $message)
     {
         if ($this->callQueue->count() == 0 && $this->readyPool->count() > 0) {
             return $this->sendRpc($message);
@@ -120,10 +121,10 @@ class FlexiblePool extends EventEmitter implements PoolInterface
     }
 
     /**
-     * @param Call $message
+     * @param Rpc $message
      * @return PromiseInterface
      */
-    protected function queueRpc(Call $message)
+    protected function queueRpc(Rpc $message)
     {
         $deferred = new Deferred();
         $this->callQueue->enqueue($deferred);
@@ -140,10 +141,10 @@ class FlexiblePool extends EventEmitter implements PoolInterface
     }
 
     /**
-     * @param Call $message
+     * @param Rpc $message
      * @return PromiseInterface
      */
-    protected function sendRpc(Call $message)
+    protected function sendRpc(Rpc $message)
     {
         $messenger = $this->readyPool->dequeue();
         return $messenger->rpc($message)->then(function ($data) use ($messenger) {
@@ -170,9 +171,16 @@ class FlexiblePool extends EventEmitter implements PoolInterface
         }
     }
 
+    public function message(Message $message)
+    {
+        foreach ($this->pool as $messenger) {
+            $messenger->message($message);
+        }
+    }
+
     public function terminate($message, $timeout = 5, $signal = null)
     {
-        //$this->message($message);
+        $this->message($message);
 
         while ($this->readyPool->count() > 0) {
             $this->readyPool->dequeue();
