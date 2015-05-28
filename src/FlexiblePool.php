@@ -31,8 +31,8 @@ class FlexiblePool extends EventEmitter implements PoolInterface
      * @var array
      */
     protected $options = [
-        'min_size' => 5,
-        'max_size' => 50,
+        'min_size' => 0,
+        'max_size' => 5,
     ];
 
     /**
