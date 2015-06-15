@@ -10,6 +10,7 @@
     }
   ],
   "require": {
+    "php": ">=5.5.0",
     "wyrihaximus/ticking-promise": "^1.5",
     "wyrihaximus/react-child-process-messenger": "dev-master",
     "evenement/evenement": "^2.0"
