@@ -4,11 +4,11 @@ require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
 use React\ChildProcess\Process;
 use React\EventLoop\Factory;
-use WyriHaximus\React\ChildProcess\Messenger\Messages\Call;
-use WyriHaximus\React\ChildProcess\Messenger\Messages\Payload;
+use WyriHaximus\React\ChildProcess\Pool\FixedPool;
+use WyriHaximus\React\ChildProcess\Pool\FlexiblePool;
 
-const POOL_PROCESS_COUNT = 2;
-const I = 100;
+const POOL_PROCESS_COUNT = 10;
+const I = 512;
 
 echo 'Warning this example can be rather harsh on your hardware, stop now or continue with cation!!!!', PHP_EOL;
 //echo 'Starting a pool with ' . POOL_PROCESS_COUNT . ' child processes looping from 0 till ' . I . ' and calculating $i * $i * $i * $i in the child process.';
@@ -24,13 +24,13 @@ sleep(1);
 echo '1', PHP_EOL;
 sleep(1);
 
-//$poolClass = 'WyriHaximus\React\ChildProcess\Pool\FixedPool';
-$poolClass = 'WyriHaximus\React\ChildProcess\Pool\FlexiblePool';
+$poolClass = FixedPool::class;
+$poolClass = FlexiblePool::class;
 
 $loop = Factory::create();
 $pool = new $poolClass(new Process('exec php ' . dirname(dirname(__DIR__)) . '/examples/ping-pong/pong.php'), $loop, [
     'min_size' => 1,
-    'max_size' => 166,
+    'max_size' => 100,
 ]);
 
 $pool->on('message', function ($message) {
@@ -50,7 +50,7 @@ for ($i = 0; $i < I; $i++) {
     });
 }
 
-$timer = $loop->addPeriodicTimer(1, function () use ($pool) {
+$timer = $loop->addPeriodicTimer(0.1, function () use ($pool) {
     echo 'Pool status: ', PHP_EOL;
     foreach ($pool->info() as $key => $value) {
         echo "\t", $key, ': ', $value, PHP_EOL;
