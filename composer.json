@@ -16,7 +16,6 @@
     "evenement/evenement": "^2.0"
   },
   "require-dev": {
-    "satooshi/php-coveralls": "^0.6",
     "phpunit/phpunit": "~4.0",
     "phake/phake": "~1.0.6",
     "vectorface/dunit": "~2.0",
