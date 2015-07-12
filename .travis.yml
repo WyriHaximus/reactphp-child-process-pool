@@ -45,8 +45,7 @@ before_script:
 ## Run the actual test
 script: make travis
 
-after_script:
-  - make coveralls
+after_script: make travis-coverage
 
 notifications:
   webhooks:
