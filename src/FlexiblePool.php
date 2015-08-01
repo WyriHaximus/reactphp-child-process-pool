@@ -113,7 +113,13 @@ class FlexiblePool extends EventEmitter implements PoolInterface
             return $this->sendRpc($message);
         }
 
-        if ($this->callQueue->count() > 0 && $this->readyPool->count() == 0 && ($this->startingProcesses + $this->pool->count()) < $this->options['max_size']) {
+        if (
+            $this->callQueue->count() > 0 &&
+            $this->readyPool->count() == 0 &&
+            (
+                $this->startingProcesses + $this->pool->count()
+            ) < $this->options['max_size']
+        ) {
             $this->spawnProcess();
         }
 
