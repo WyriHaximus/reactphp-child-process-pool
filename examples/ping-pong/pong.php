@@ -22,9 +22,9 @@ $recipient->on('message', function (Payload $payload, Messenger $messenger) {
         $messenger->getLoop()->stop();
     });
 });
-$recipient->registerRpc('ping', function (Payload $payload, Deferred $deferred) use ($loop) {
+$recipient->registerRpc('ping', function (Payload $payload) use ($loop) {
     sleep(mt_rand(1, 5));
-    $deferred->resolve([
+    return \React\Promise\resolve([
         'result' => $payload['i'] * $payload['i'] * $payload['i'] * $payload['i'],
     ]);
 });
