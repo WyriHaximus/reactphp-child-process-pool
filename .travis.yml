@@ -37,6 +37,7 @@ matrix:
 ## Update composer and run the appropriate composer command
 before_script:
   - composer self-update -q
+  - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
   - if [ -z "$dependencies" ]; then composer install; fi;
   - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n; fi;
   - if [ "$dependencies" = "highest" ]; then composer update -n; fi;
@@ -49,7 +50,7 @@ after_script: make travis-coverage
 
 notifications:
   webhooks:
-    urls: 
+    urls:
       - http://wyrihaximus.net/wyri_projects/wyri_projects/webhook/travisci.json
     on_success: always
     on_failure: always
