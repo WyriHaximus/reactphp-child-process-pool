@@ -1,5 +1,12 @@
 # react-child-process-pool
 
+[![Build Status](https://travis-ci.org/WyriHaximus/react-child-process-pool.png)](https://travis-ci.org/WyriHaximus/react-child-process-pool)
+[![Latest Stable Version](https://poser.pugx.org/WyriHaximus/react-child-process-pool/v/stable.png)](https://packagist.org/packages/WyriHaximus/react-child-process-pool)
+[![Total Downloads](https://poser.pugx.org/wyrihaximus/react-child-process-pool/downloads.png)](https://packagist.org/packages/wyrihaximus/react-child-process-pool)
+[![Code Coverage](https://scrutinizer-ci.com/g/WyriHaximus/react-child-process-pool/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/WyriHaximus/react-child-process-pool/?branch=master)
+[![License](https://poser.pugx.org/wyrihaximus/react-child-process-pool/license.png)](https://packagist.org/packages/wyrihaximus/react-child-process-pool)
+[![PHP 7 ready](http://php7ready.timesplinter.ch/WyriHaximus/react-child-process-pool/badge.svg)](https://travis-ci.org/WyriHaximus/react-child-process-pool)
+
 ## License ##
 
 Copyright 2015 [Cees-Jan Kiewiet](http://wyrihaximus.net/)
