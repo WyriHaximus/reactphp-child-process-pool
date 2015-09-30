@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d89dd14cb0623aa1fabcae60df699ef1",
+    "hash": "e5ac09e3dd64da39146a0d1a0929e5bd",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -121,16 +121,16 @@
         },
         {
             "name": "indigophp/hash-compat",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/indigophp/hash-compat.git",
-                "reference": "c77b71b729c449593f5b0442944a5af6b9fa1ebb"
+                "reference": "43a19f42093a0cd2d11874dff9d891027fc42214"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/indigophp/hash-compat/zipball/c77b71b729c449593f5b0442944a5af6b9fa1ebb",
-                "reference": "c77b71b729c449593f5b0442944a5af6b9fa1ebb",
+                "url": "https://api.github.com/repos/indigophp/hash-compat/zipball/43a19f42093a0cd2d11874dff9d891027fc42214",
+                "reference": "43a19f42093a0cd2d11874dff9d891027fc42214",
                 "shasum": ""
             },
             "require": {
@@ -142,7 +142,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -168,7 +168,7 @@
                 "hash_equals",
                 "hash_pbkdf2"
             ],
-            "time": "2015-02-22 01:15:38"
+            "time": "2015-08-22 07:03:35"
         },
         {
             "name": "react/child-process",
@@ -348,16 +348,16 @@
         },
         {
             "name": "wyrihaximus/react-child-process-messenger",
-            "version": "2.0.0",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/reactphp-child-process-messenger.git",
-                "reference": "ac7601d723b0c1a4d9fc78a0c7d3d5d1043d656e"
+                "reference": "63e4ade58d1bb3b1b18bfc2a3124257a60e45d60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/reactphp-child-process-messenger/zipball/ac7601d723b0c1a4d9fc78a0c7d3d5d1043d656e",
-                "reference": "ac7601d723b0c1a4d9fc78a0c7d3d5d1043d656e",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-child-process-messenger/zipball/63e4ade58d1bb3b1b18bfc2a3124257a60e45d60",
+                "reference": "63e4ade58d1bb3b1b18bfc2a3124257a60e45d60",
                 "shasum": ""
             },
             "require": {
@@ -391,7 +391,7 @@
                 }
             ],
             "description": "Messenger decorator for react/child-process",
-            "time": "2015-08-12 20:51:25"
+            "time": "2015-09-11 09:48:12"
         },
         {
             "name": "wyrihaximus/ticking-promise",
@@ -684,16 +684,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.4.3",
+            "version": "1.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "7a9b0969488c3c54fd62b4d504b3ec758fd005d9"
+                "reference": "3144ae21711fb6cac0b1ab4cbe63b75ce3d4e8da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/7a9b0969488c3c54fd62b4d504b3ec758fd005d9",
-                "reference": "7a9b0969488c3c54fd62b4d504b3ec758fd005d9",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/3144ae21711fb6cac0b1ab4cbe63b75ce3d4e8da",
+                "reference": "3144ae21711fb6cac0b1ab4cbe63b75ce3d4e8da",
                 "shasum": ""
             },
             "require": {
@@ -729,7 +729,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2015-06-19 03:43:16"
+            "time": "2015-09-15 10:49:45"
         },
         {
             "name": "phpunit/phpunit",
@@ -1140,16 +1140,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.7.3",
+            "version": "v2.7.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Yaml.git",
-                "reference": "71340e996171474a53f3d29111d046be4ad8a0ff"
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "31cb2ad0155c95b88ee55fe12bc7ff92232c1770"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/71340e996171474a53f3d29111d046be4ad8a0ff",
-                "reference": "71340e996171474a53f3d29111d046be4ad8a0ff",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/31cb2ad0155c95b88ee55fe12bc7ff92232c1770",
+                "reference": "31cb2ad0155c95b88ee55fe12bc7ff92232c1770",
                 "shasum": ""
             },
             "require": {
@@ -1185,7 +1185,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2015-07-28 14:07:07"
+            "time": "2015-09-14 14:14:09"
         },
         {
             "name": "vectorface/dunit",
