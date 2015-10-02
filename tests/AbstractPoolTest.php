@@ -4,6 +4,8 @@ namespace WyriHaximus\React\Tests\ChildProcess\Pool;
 
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
+use React\EventLoop\StreamSelectLoop;
+use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory;
 use WyriHaximus\React\ChildProcess\Pool\PoolInterface;
 
 abstract class AbstractPoolTest extends \PHPUnit_Framework_TestCase
@@ -35,7 +37,9 @@ abstract class AbstractPoolTest extends \PHPUnit_Framework_TestCase
 
     protected function getProcess()
     {
-        return \Phake::mock(Process::class);
+        $process = \Phake::mock(Process::class);
+        \Phake::when($process)->isRunning()->thenReturn(true);
+        return $process;
     }
 
     public function setUp()
@@ -55,5 +59,21 @@ abstract class AbstractPoolTest extends \PHPUnit_Framework_TestCase
     public function testInterface()
     {
         $this->assertInstanceOf(PoolInterface::class, $this->pool);
+    }
+
+    public function testMessage()
+    {
+        $this->pool->message(Factory::message([
+            'foo' => 'bar',
+        ]));
+        $this->loop->run();
+    }
+
+    public function testRpc()
+    {
+        $this->pool->rpc(Factory::rpc('test', [
+            'foo' => 'bar',
+        ]));
+        $this->loop->run();
     }
 }
