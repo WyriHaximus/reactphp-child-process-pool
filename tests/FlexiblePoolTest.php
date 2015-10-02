@@ -12,6 +12,8 @@ class FlexiblePoolTest extends AbstractPoolTest
      */
     public function getPool()
     {
-        return new FlexiblePool($this->process, $this->loop);
+        return new FlexiblePool($this->process, $this->loop, [
+            'min_size' => 1,
+        ]);
     }
 }
