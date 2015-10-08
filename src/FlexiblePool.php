@@ -88,6 +88,7 @@ class FlexiblePool extends EventEmitter implements PoolInterface
             $this->pool->attach($messenger);
             $this->readyPool->enqueue($messenger);
         }, function ($error) {
+            $this->startingProcesses--;
             $this->emit('error', [$error, $this]);
         });
     }
