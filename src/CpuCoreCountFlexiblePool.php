@@ -104,7 +104,7 @@ class CpuCoreCountFlexiblePool extends FlexiblePool implements PoolInterface
         if ($this->callQueue->count() == 0 && $this->pool->count() > $this->options['min_size']) {
             unset($this->coreMessengerMapping[spl_object_hash($messenger)]);
             $this->pool->detach($messenger);
-            $messenger->terminate();
+            $messenger->softTerminate();
             return;
         }
 
