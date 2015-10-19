@@ -2,10 +2,6 @@
 
 namespace WyriHaximus\React\ChildProcess\Pool;
 
-interface PoolUtilizerInterface
+interface PoolUtilizerInterface extends PoolInfoInterface
 {
-    /**
-     * @return array
-     */
-    public function info();
 }

@@ -9,7 +9,7 @@ use React\Promise\PromiseInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 
-interface PoolInterface extends EventEmitterInterface
+interface PoolInterface extends PoolInfoInterface, EventEmitterInterface
 {
     /**
      * @param Process $process
@@ -39,9 +39,4 @@ interface PoolInterface extends EventEmitterInterface
      * @return mixed
      */
     public function terminate($message, $timeout = 5, $signal = null);
-
-    /**
-     * @return array
-     */
-    public function info();
 }
