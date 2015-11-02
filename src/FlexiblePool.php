@@ -167,14 +167,14 @@ class FlexiblePool extends EventEmitter implements PoolInterface
 
     protected function checkQueue()
     {
-        if ($this->callQueue->count() > 0 && $this->readyPool->count() > 0) {
-            $this->callQueue->dequeue()->resolve();
-        }
-
         if ($this->callQueue->count() > 0) {
             $this->timer = $this->loop->addTimer(static::INTERVAL, function () {
                 $this->checkQueue();
             });
+        }
+
+        if ($this->callQueue->count() > 0 && $this->readyPool->count() > 0) {
+            $this->callQueue->dequeue()->resolve();
         }
     }
 
