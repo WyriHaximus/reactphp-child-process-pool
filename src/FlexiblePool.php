@@ -116,7 +116,6 @@ class FlexiblePool extends EventEmitter implements PoolInterface
         }
 
         if (
-            $this->callQueue->count() > 0 &&
             $this->readyPool->count() == 0 &&
             (
                 $this->startingProcesses + $this->pool->count()

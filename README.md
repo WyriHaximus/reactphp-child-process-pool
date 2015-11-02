@@ -7,6 +7,18 @@
 [![License](https://poser.pugx.org/wyrihaximus/react-child-process-pool/license.png)](https://packagist.org/packages/wyrihaximus/react-child-process-pool)
 [![PHP 7 ready](http://php7ready.timesplinter.ch/WyriHaximus/reactphp-child-process-pool/badge.svg)](https://travis-ci.org/WyriHaximus/reactphp-child-process-pool)
 
+## Installation ##
+
+To install via [Composer](http://getcomposer.org/), use the command below, it will automatically detect the latest version and bind it with `~`.
+
+```
+composer require reactphp-child-process-pool
+```
+
+## Usage ##
+
+This package pools [`wyrihaximus/reactphp-child-process-messenger`](https://github.com/WyriHaximus/reactphp-child-process-messenger), please see that package for details how to use it.
+
 ## License ##
 
 Copyright 2015 [Cees-Jan Kiewiet](http://wyrihaximus.net/)
