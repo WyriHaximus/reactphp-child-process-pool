@@ -8,6 +8,7 @@ use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
+use React\Stream\Util;
 use WyriHaximus\React\ChildProcess\Messenger\Factory;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Call;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
@@ -82,6 +83,7 @@ class FixedPool extends EventEmitter implements PoolInterface
         $processOptions = isset($this->options['processOptions']) ? $this->options['processOptions'] : [];
         $process = clone $this->sourceProcess;
         Factory::parent($process, $this->loop, $processOptions)->then(function (Messenger $messenger) {
+            Util::forwardEvents($messenger, $this, ['error']);
             $this->pool->attach($messenger);
             $this->readyPool->enqueue($messenger);
         }, function ($error) {

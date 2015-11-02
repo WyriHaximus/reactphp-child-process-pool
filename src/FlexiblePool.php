@@ -84,6 +84,7 @@ class FlexiblePool extends EventEmitter implements PoolInterface
         $processOptions = isset($this->options['processOptions']) ? $this->options['processOptions'] : [];
         $process = clone $this->sourceProcess;
         Factory::parent($process, $this->loop, $processOptions)->then(function (Messenger $messenger) {
+            Util::forwardEvents($messenger, $this, ['error']);
             $this->startingProcesses--;
             $this->pool->attach($messenger);
             $this->readyPool->enqueue($messenger);
