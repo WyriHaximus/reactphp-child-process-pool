@@ -37,6 +37,10 @@ $pool->on('message', function ($message) {
     var_export($message);
 });
 
+$pool->on('error', function ($e) {
+    echo 'Error: ', var_export($e, true), PHP_EOL;
+});
+
 for ($i = 0; $i < I; $i++) {
     echo $i, PHP_EOL;
     $j = $i;
