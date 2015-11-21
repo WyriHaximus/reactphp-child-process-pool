@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "90c69ca36f528cc9ae7467601d835fab",
-    "content-hash": "a15ca1b278a78f3d72894cb6f68a8fc7",
+    "hash": "0b9ed405fabf80ae58d92ac21855fb67",
+    "content-hash": "a66f06afb9de2a68422d83d1b7cf0ee4",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -349,28 +349,28 @@
         },
         {
             "name": "wyrihaximus/react-child-process-messenger",
-            "version": "2.1.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/reactphp-child-process-messenger.git",
-                "reference": "2b8ba7c2383b03c4b45c6a0822ed4ba96fdae225"
+                "reference": "154e26526cd139859a247c51382d24b56578dbeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/reactphp-child-process-messenger/zipball/2b8ba7c2383b03c4b45c6a0822ed4ba96fdae225",
-                "reference": "2b8ba7c2383b03c4b45c6a0822ed4ba96fdae225",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-child-process-messenger/zipball/154e26526cd139859a247c51382d24b56578dbeb",
+                "reference": "154e26526cd139859a247c51382d24b56578dbeb",
                 "shasum": ""
             },
             "require": {
                 "doctrine/inflector": "^1.0",
                 "indigophp/hash-compat": "^1.0",
-                "php": ">=5.5.0",
+                "php": "^5.4|^7.0",
                 "react/child-process": "^0.4",
                 "wyrihaximus/ticking-promise": "^1.4"
             },
             "require-dev": {
                 "phake/phake": "^1.0.6",
-                "phpunit/phpunit": "~4.0.0",
+                "phpunit/phpunit": "^4.0|^5.0",
                 "squizlabs/php_codesniffer": "^1.5",
                 "vectorface/dunit": "^2.0"
             },
@@ -392,7 +392,7 @@
                 }
             ],
             "description": "Messenger decorator for react/child-process",
-            "time": "2015-10-07 19:31:21"
+            "time": "2015-11-21 18:55:43"
         },
         {
             "name": "wyrihaximus/ticking-promise",
@@ -1246,7 +1246,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5.0"
+        "php": "^5.4|^7.0"
     },
     "platform-dev": []
 }
