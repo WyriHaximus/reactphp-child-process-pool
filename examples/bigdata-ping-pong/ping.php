@@ -39,6 +39,9 @@ $pool = new $poolClass(new Process('exec php ' . dirname(dirname(__DIR__)) . '/e
     'max_size' => 32,
 ]);
 
+$pool->on('error', function ($e) {
+    echo 'Error: ', var_export($e, true), PHP_EOL;
+});
 
 $timer = $loop->addPeriodicTimer(0.1, function () use ($pool) {
     echo 'Pool status: ', PHP_EOL;
