@@ -15,6 +15,13 @@ To install via [Composer](http://getcomposer.org/), use the command below, it wi
 composer require reactphp-child-process-pool
 ```
 
+## Pools ##
+
+* `Fixed` - Spawns a given fixed amount of workers
+* `Flexible` - Spawns workers as a needed basis, given a minimum and maximum it will spawn within those values
+* `CpuCoreCountFixed` - Spawns the same amount of workers as you have CPU cores and affinitiates them all to a different code
+* `CpuCoreCountFlexible` - Same as `Flexible` and `CpuCoreCountFixed` where the maximum amount of workers is the CPU core count
+
 ## Usage ##
 
 This package pools [`wyrihaximus/reactphp-child-process-messenger`](https://github.com/WyriHaximus/reactphp-child-process-messenger), please see that package for details how to use it.
