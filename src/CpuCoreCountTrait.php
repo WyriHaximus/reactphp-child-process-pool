@@ -60,6 +60,7 @@ trait CpuCoreCountTrait
             $this->startingProcesses--;
             $this->pool->attach($messenger);
             $this->readyPool->enqueue($messenger);
+            $this->emit('messenger', [$messenger, $this]);
             $this->coreMessengerMapping[spl_object_hash($messenger)] = $address;
             $messenger->on('exit', function () use ($messenger, $address) {
                 $this->pool->detach($messenger);

@@ -86,6 +86,7 @@ class FixedPool extends EventEmitter implements PoolInterface
             Util::forwardEvents($messenger, $this, ['error']);
             $this->pool->attach($messenger);
             $this->readyPool->enqueue($messenger);
+            $this->emit('messenger', [$messenger, $this]);
         }, function ($error) {
             $this->emit('error', [$error, $this]);
         });
