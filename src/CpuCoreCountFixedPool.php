@@ -79,6 +79,7 @@ class CpuCoreCountFixedPool extends FixedPool implements PoolInterface
 
         $this->callQueue = new \SplQueue();
         $this->detectCoreCount()->then(function ($coreCount) {
+            $this->options['size'] = $coreCount;
             return $this->resolveCoreAddresses($coreCount);
         })->then(function ($addresses) {
             foreach ($addresses as $address) {
