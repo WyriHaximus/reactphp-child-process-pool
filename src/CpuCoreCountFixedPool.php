@@ -32,7 +32,7 @@ class CpuCoreCountFixedPool extends FixedPool implements PoolInterface
      * @var array
      */
     protected $options = [
-        'size' => 25,
+        'size' => 2,
         'strategies' => [
             'core' => [
                 'affinity' => null,
