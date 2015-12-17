@@ -3,7 +3,7 @@ shallow_clone: true
 platform:
   - x86
   - x64
-clone_folder: c:\projects\reactphpchildprocesspool
+clone_folder: c:\projects\composer
 
 cache:
     - c:\tools\php -> appveyor.yml
@@ -24,9 +24,9 @@ install:
     - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
     - appveyor DownloadFile https://getcomposer.org/composer.phar
-    - cd c:\projects\reactphpchildprocesspool
+    - cd c:\projects\composer
     - composer install --prefer-source --no-progress
 
 test_script:
-    - cd c:\projects\reactphpchildprocesspool
-    - vendor/bin/phpunit -c c:\projects\reactphpchildprocesspool\phpunit.xml.dist
+    - cd c:\projects\composer
+    - vendor/bin/phpunit -c c:\projects\composer\phpunit.xml.dist
