@@ -32,4 +32,4 @@ install:
 
 test_script:
     - cd c:\projects\reactphp-child-process-pool
-    - vendor/bin/phpunit -c c:\projects\reactphp-child-process-pool\phpunit.xml.dist
+    - vendor/bin/phpunit -c phpunit.xml.dist
