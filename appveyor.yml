@@ -29,6 +29,7 @@ install:
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\reactphp-child-process-pool
     - composer install --no-progress
+    - composer show -i
 
 test_script:
     - cd c:\projects\reactphp-child-process-pool
