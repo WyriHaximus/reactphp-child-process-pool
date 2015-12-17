@@ -22,9 +22,9 @@ install:
     - IF %PHP%==1 echo extension_dir=ext >> php.ini
     - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
     - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
+    - cd c:\projects\reactphp-child-process-pool
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
     - appveyor DownloadFile https://getcomposer.org/composer.phar
-    - cd c:\projects\reactphp-child-process-pool
     - composer install --prefer-source --no-progress
 
 test_script:
