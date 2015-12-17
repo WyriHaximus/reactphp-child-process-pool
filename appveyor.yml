@@ -27,7 +27,7 @@ install:
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\reactphp-child-process-pool
-    - composer install --prefer-source --no-progress
+    - composer install --no-progress
 
 test_script:
     - cd c:\projects\reactphp-child-process-pool
