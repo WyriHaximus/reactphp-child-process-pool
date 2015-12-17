@@ -6,6 +6,7 @@ clone_folder: c:\projects\reactphp-child-process-pool
 
 cache:
     - c:\tools\php -> appveyor.yml
+    - c:\projects\reactphp-child-process-pool\vendor -> composer.lock
 
 init:
     - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%
