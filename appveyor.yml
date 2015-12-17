@@ -31,5 +31,7 @@ install:
     - composer install --prefer-source --no-progress
 
 test_script:
+    - dir
     - cd c:\projects\reactphp-child-process-pool
+    - dir
     - vendor/bin/phpunit -c phpunit.xml.dist
