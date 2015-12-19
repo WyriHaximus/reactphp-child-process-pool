@@ -13,7 +13,7 @@ environment:
 cache:
     - c:\tools\php -> appveyor.yml
     - c:\projects\reactphp-child-process-pool\vendor -> composer.lock
-    - '%LOCALAPPDATA%\Composer\cache -> composer.lock'
+    - '%LOCALAPPDATA%\Composer\files -> composer.lock'
 
 init:
     - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%
@@ -35,9 +35,9 @@ install:
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\reactphp-child-process-pool
-    - IF %dependencies%==lowest composer update --prefer-lowest -n -vvv
-    - IF %dependencies%==current composer install -vvv
-    - IF %dependencies%==highest composer update -n -vvv
+    - IF %dependencies%==lowest composer update --prefer-lowest -n
+    - IF %dependencies%==current composer install
+    - IF %dependencies%==highest composer update -n
     - composer show -i
 
 test_script:
