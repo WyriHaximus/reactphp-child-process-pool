@@ -17,6 +17,7 @@ composer require reactphp-child-process-pool
 
 ## Pools ##
 
+* `DummyPool` - Meant for testing, doesn't do anything but complies to it's contract
 * `Fixed` - Spawns a given fixed amount of workers
 * `Flexible` - Spawns workers as a needed basis, given a minimum and maximum it will spawn within those values
 * `CpuCoreCountFixed` - Spawns the same amount of workers as you have CPU cores and affinitiates them all to a different code
