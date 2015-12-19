@@ -207,6 +207,8 @@ class FlexiblePool extends EventEmitter implements PoolInterface
     {
         return [
             'size'          => $this->pool->count(),
+            'min_size'      => $this->options['min_size'],
+            'max_size'      => $this->options['max_size'],
             'queued_calls'  => $this->callQueue->count(),
             'idle_workers'  => $this->readyPool->count(),
         ];
