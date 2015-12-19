@@ -53,4 +53,5 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 
-### Gabi was here
+### Contributors beyond the commit log
+* Gabi Davila - Helping test if my github token will be secure for pull reuquests on AppVeyor
