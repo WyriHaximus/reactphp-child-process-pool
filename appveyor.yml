@@ -41,9 +41,9 @@ install:
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\reactphp-child-process-pool
     - composer config github-oauth.github.com %GH_TOKEN%
-    - IF %dependencies%==lowest composer update --prefer-lowest -n
-    - IF %dependencies%==current composer install
-    - IF %dependencies%==highest composer update -n
+    - IF %dependencies%==lowest composer update --prefer-lowest --no-progress -n
+    - IF %dependencies%==current composer install --no-progress
+    - IF %dependencies%==highest composer update --no-progress -n
     - composer show -i
 
 ## Run the actual test
