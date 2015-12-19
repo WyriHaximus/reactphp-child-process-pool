@@ -35,7 +35,9 @@ install:
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\reactphp-child-process-pool
     - SET 
-    - composer install --no-progress
+    - IF %dependencies%==lowest composer update --prefer-lowest -n
+    - IF %dependencies%==current composer install
+    - IF %dependencies%==highest composer update -n
     - composer show -i
 
 test_script:
