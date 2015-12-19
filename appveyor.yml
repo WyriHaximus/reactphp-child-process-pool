@@ -39,6 +39,7 @@ install:
     - IF %dependencies%==current composer install
     - IF %dependencies%==highest composer update -n
     - composer show -i
+    - SET
 
 test_script:
     - cd c:\projects\reactphp-child-process-pool
