@@ -40,11 +40,11 @@ install:
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\reactphp-child-process-pool
+    - composer config github-oauth.github.com %GH_TOKEN%
     - IF %dependencies%==lowest composer update --prefer-lowest -n
     - IF %dependencies%==current composer install
     - IF %dependencies%==highest composer update -n
     - composer show -i
-    - SET
 
 ## Run the actual test
 test_script:
