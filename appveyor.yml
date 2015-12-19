@@ -6,9 +6,9 @@ clone_folder: c:\projects\reactphp-child-process-pool
 
 environment:
   matrix:
-    - dependencies: lowest
-    - dependencies: current
-    - dependencies: highest
+  - dependencies: lowest
+  - dependencies: current
+  - dependencies: highest
 
 cache:
     - c:\tools\php -> appveyor.yml
