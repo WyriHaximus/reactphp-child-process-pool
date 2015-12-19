@@ -4,6 +4,12 @@ platform:
   - x64
 clone_folder: c:\projects\reactphp-child-process-pool
 
+environment:
+  matrix:
+    - dependencies: lowest
+    - dependencies: current
+    - dependencies: highest
+
 cache:
     - c:\tools\php -> appveyor.yml
     - c:\projects\reactphp-child-process-pool\vendor -> composer.lock
@@ -28,6 +34,7 @@ install:
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
     - appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\reactphp-child-process-pool
+    - SET 
     - composer install --no-progress
     - composer show -i
 
