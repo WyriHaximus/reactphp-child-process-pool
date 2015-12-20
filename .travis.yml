@@ -51,6 +51,7 @@ before_script:
 ## Run the actual test
 script: make travis
 
+## Gather coverage and set it to coverage servers
 after_script: make travis-coverage
 
 notifications:
