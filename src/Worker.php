@@ -49,4 +49,12 @@ class Worker implements WorkerInterface
     {
         return $this->busy;
     }
+
+    /*
+     * @return PromiseInterface
+     */
+    public function terminate()
+    {
+        return $this->messenger->softTerminate();
+    }
 }
