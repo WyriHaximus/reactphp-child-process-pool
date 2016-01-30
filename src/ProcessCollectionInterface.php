@@ -2,12 +2,10 @@
 
 namespace WyriHaximus\React\ChildProcess\Pool;
 
-use React\ChildProcess\Process;
-
 interface ProcessCollectionInterface extends \Iterator
 {
     /**
-     * @return Process
+     * @return callable
      */
     public function current();
 
