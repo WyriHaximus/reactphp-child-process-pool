@@ -10,8 +10,9 @@
   "require": {
     "php": "^5.4|^7.0",
     "wyrihaximus/ticking-promise": "^1.5",
-    "wyrihaximus/react-child-process-messenger": "^2.3",
-    "evenement/evenement": "^2.0"
+    "wyrihaximus/react-child-process-messenger": "^2.6.1|^2.7",
+    "evenement/evenement": "^2.0",
+    "wyrihaximus/cpu-core-detector": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "^4.0|^5.0",
