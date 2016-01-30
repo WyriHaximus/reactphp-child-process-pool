@@ -12,11 +12,11 @@ use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 interface PoolInterface extends PoolInfoInterface, EventEmitterInterface
 {
     /**
-     * @param Process $process
+     * @param ProcessCollectionInterface $processCollection
      * @param LoopInterface $loop
      * @param array $options
      */
-    public function __construct(Process $process, LoopInterface $loop, array $options = []);
+    public function __construct(ProcessCollectionInterface $processCollection, LoopInterface $loop, array $options = []);
 
     /**
      * @param Rpc $message
@@ -33,10 +33,10 @@ interface PoolInterface extends PoolInfoInterface, EventEmitterInterface
     public function message(Message $message);
 
     /**
-     * @param string $message
+     * @param Message $message
      * @param int $timeout
      * @param null $signal
      * @return mixed
      */
-    public function terminate($message, $timeout = 5, $signal = null);
+    public function terminate(Message $message, $timeout = 5, $signal = null);
 }
