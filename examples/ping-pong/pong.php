@@ -22,8 +22,17 @@ $recipient->on('message', function (Payload $payload, Messenger $messenger) {
         $messenger->getLoop()->stop();
     });
 });
-$recipient->registerRpc('ping', function (Payload $payload) use ($loop) {
-    sleep(mt_rand(1, 5));
+$recipient->registerRpc('ping', function (Payload $payload, Messenger $messenger) use ($loop) {
+    $stopAt = time() + mt_rand(1, 2);
+
+    do {
+        // Don nothing
+    } while ($stopAt >= time());
+
+    /*$messenger->getLoop()->addTimer(1, function () use ($messenger) {
+        $messenger->getLoop()->stop();
+    });*/
+
     return \React\Promise\resolve([
         'result' => $payload['i'] * $payload['i'] * $payload['i'] * $payload['i'],
     ]);
