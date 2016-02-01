@@ -55,6 +55,7 @@ class Worker implements WorkerInterface
      */
     public function terminate()
     {
+        $this->emit('terminating', [$this]);
         return $this->messenger->softTerminate();
     }
 }
