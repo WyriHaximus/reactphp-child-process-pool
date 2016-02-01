@@ -38,7 +38,6 @@ class fixed implements ManagerInterface
                 $processCollection->rewind();
             }
         }
-
     }
 
     protected function workerAvailable(WorkerInterface $worker)
