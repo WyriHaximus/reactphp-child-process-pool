@@ -103,6 +103,12 @@ class Fixed implements PoolInterface
 
     public function info()
     {
-        return [];
+        $workers = $this->manager->info();
+        return [
+            'size'          => $workers['total'],
+            'queued_calls'  => $this->queue->count(),
+            'idle_workers'  => $workers['idle'],
+            'busy_workers'  => $workers['busy'],
+        ];
     }
 }
