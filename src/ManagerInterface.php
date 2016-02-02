@@ -32,4 +32,14 @@ interface ManagerInterface extends EventEmitterInterface
      * @return void
      */
     public function ping();
+
+    /**
+     * Return an array with the following keys:
+     * - total: total amount running workers
+     * - busy: the amount of workers that is busy
+     * - idle: the amount of workers that is waiting for a task
+     *
+     * @return array
+     */
+    public function info();
 }
