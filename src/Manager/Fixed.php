@@ -64,4 +64,20 @@ class Fixed implements ManagerInterface
 
         return \React\Promise\all($promises);
     }
+
+    public function info()
+    {
+        $count = count($this->workers);
+        $busy = 0;
+        foreach ($this->workers as $worker) {
+            if ($worker->isBusy()) {
+                $busy++;
+            }
+        }
+        return [
+            'total' => $count,
+            'busy' => $busy,
+            'idle' => $count - $busy,
+        ];
+    }
 }
