@@ -16,7 +16,11 @@ interface PoolInterface extends PoolInfoInterface, EventEmitterInterface
      * @param LoopInterface $loop
      * @param array $options
      */
-    public function __construct(ProcessCollectionInterface $processCollection, LoopInterface $loop, array $options = []);
+    public function __construct(
+        ProcessCollectionInterface $processCollection,
+        LoopInterface $loop,
+        array $options = []
+    );
 
     /**
      * @param Rpc $message
