@@ -37,5 +37,4 @@ class Single implements ProcessCollectionInterface
     {
         return true;
     }
-
 }
