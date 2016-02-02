@@ -19,14 +19,15 @@ interface ManagerInterface extends EventEmitterInterface
     );
 
     /**
-     * Terminate the manager and all workers managed by it
+     * Terminate the manager and all workers managed by it.
      *
      * @return PromiseInterface
      */
     public function terminate();
 
     /**
-     * Ping the manager to broadcast its non busy workers or spawn new ones as needed and allowed by configuration
+     * Ping the manager to broadcast its non busy workers or
+     * spawn new ones as needed and allowed by configuration.
      *
      * @return void
      */
