@@ -10,7 +10,7 @@ use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
 use WyriHaximus\React\ChildProcess\Pool\Worker;
 use WyriHaximus\React\ChildProcess\Pool\WorkerInterface;
 
-class fixed implements ManagerInterface
+class Fixed implements ManagerInterface
 {
     use EventEmitterTrait;
 
