@@ -25,7 +25,7 @@ composer require wyrihaximus/react-child-process-pool:^1.0.0-alpha11
 
 ## Usage ##
 
-This package pools [`wyrihaximus/reactphp-child-process-messenger`](https://github.com/WyriHaximus/reactphp-child-process-messenger), please see that package for details how to use it.
+This package pools [`wyrihaximus/react-child-process-messenger`](https://github.com/WyriHaximus/reactphp-child-process-messenger), please see that package for details how to use it.
 
 ## License ##
 
