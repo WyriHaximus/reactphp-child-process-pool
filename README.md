@@ -12,7 +12,7 @@
 To install via [Composer](http://getcomposer.org/), use the command below, it will automatically detect the latest version and bind it with `~`.
 
 ```
-composer require wyrihaximus/react-child-process-pool:*@dev
+composer require wyrihaximus/react-child-process-pool:^1.0.0-alpha11
 ```
 
 ## Pools ##
