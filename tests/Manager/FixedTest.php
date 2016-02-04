@@ -174,6 +174,12 @@ class FixedTest extends \PHPUnit_Framework_TestCase
 
         $this->manager->terminate();
 
+        $this->assertSame([
+            'total' => 1,
+            'busy' => 1,
+            'idle' => 0,
+        ], $this->manager->info());
+
         $this->assertTrue($emittedTerminate);
         Phake::verify($messenger)->softTerminate();
     }
