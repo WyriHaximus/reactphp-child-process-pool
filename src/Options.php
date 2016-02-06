@@ -6,5 +6,6 @@ namespace WyriHaximus\React\ChildProcess\Pool;
 class Options
 {
     const MANAGER = 'manager';
+    const QUEUE   = 'queue';
 }
 // @codeCoverageIgnoreEnd
