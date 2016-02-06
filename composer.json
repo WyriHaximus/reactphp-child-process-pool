@@ -23,7 +23,8 @@
   "autoload": {
     "psr-4": {
       "WyriHaximus\\React\\ChildProcess\\Pool\\": "src/"
-    }
+    },
+    "files": ["src/functions_include.php"]
   },
   "autoload-dev": {
     "psr-4": {
