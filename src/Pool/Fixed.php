@@ -77,12 +77,13 @@ class Fixed implements PoolInterface
 
     protected function getQueue(array $options)
     {
-        return \WyriHaximus\React\ChildProcess\Pool\getClassNameFromOptionOrDefault(
+        $queue = \WyriHaximus\React\ChildProcess\Pool\getClassNameFromOptionOrDefault(
             $options,
             Options::QUEUE,
             'WyriHaximus\React\ChildProcess\Pool\QueueInterface',
             'WyriHaximus\React\ChildProcess\Pool\Queue\Memory'
         );
+        return new $queue();
     }
 
     protected function getManager(array $options, $processCollection)
@@ -90,8 +91,8 @@ class Fixed implements PoolInterface
         $manager = \WyriHaximus\React\ChildProcess\Pool\getClassNameFromOptionOrDefault(
             $options,
             Options::QUEUE,
-            'WyriHaximus\React\ChildProcess\Pool\QueueInterface',
-            'WyriHaximus\React\ChildProcess\Pool\Queue\Memory'
+            'WyriHaximus\React\ChildProcess\Pool\ManagerInterface',
+            'WyriHaximus\React\ChildProcess\Pool\Manager\Fixed'
         );
         return new $manager($processCollection, $this->loop, $this->options);
     }
