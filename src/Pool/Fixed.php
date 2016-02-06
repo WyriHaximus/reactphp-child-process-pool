@@ -10,12 +10,11 @@ use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\ClassName;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\Process;
-use WyriHaximus\React\ChildProcess\Pool\Manager\Fixed as FixedManager;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
+use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\PoolInterface;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollection\Single;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
-use WyriHaximus\React\ChildProcess\Pool\Queue\Memory;
 use WyriHaximus\React\ChildProcess\Pool\QueueInterface;
 use WyriHaximus\React\ChildProcess\Pool\WorkerInterface;
 
@@ -62,10 +61,10 @@ class Fixed implements PoolInterface
 
     public function __construct(ProcessCollectionInterface $processCollection, LoopInterface $loop, array $options = [])
     {
-        $this->loop = $loop;
+        $this->loop    = $loop;
         $this->options = array_merge($this->options, $options);
-        $this->queue = new Memory();
-        $this->manager = new FixedManager($processCollection, $loop, $this->options);
+        $this->queue   = $this->getQueue($options);
+        $this->manager = $this->getManager($options, $processCollection);
         $this->manager->on('ready', function (WorkerInterface $worker) {
             if ($this->queue->count() === 0) {
                 return;
@@ -74,6 +73,27 @@ class Fixed implements PoolInterface
             $hash = spl_object_hash($message);
             $this->deferreds[$hash]->resolve($worker->rpc($message));
         });
+    }
+
+    protected function getQueue(array $options)
+    {
+        return \WyriHaximus\React\ChildProcess\Pool\getClassNameFromOptionOrDefault(
+            $options,
+            Options::QUEUE,
+            'WyriHaximus\React\ChildProcess\Pool\QueueInterface',
+            'WyriHaximus\React\ChildProcess\Pool\Queue\Memory'
+        );
+    }
+
+    protected function getManager(array $options, $processCollection)
+    {
+        $manager = \WyriHaximus\React\ChildProcess\Pool\getClassNameFromOptionOrDefault(
+            $options,
+            Options::QUEUE,
+            'WyriHaximus\React\ChildProcess\Pool\QueueInterface',
+            'WyriHaximus\React\ChildProcess\Pool\Queue\Memory'
+        );
+        return new $manager($processCollection, $this->loop, $this->options);
     }
 
     public function rpc(Rpc $message)
