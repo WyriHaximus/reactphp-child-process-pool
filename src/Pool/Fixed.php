@@ -46,7 +46,7 @@ class Fixed implements PoolInterface
      * @var array
      */
     protected $options = [
-        'size' => 25,
+        Options::SIZE => 25,
     ];
 
     public static function create(ChildProcess $process, LoopInterface $loop, array $options = [])
