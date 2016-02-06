@@ -12,6 +12,7 @@ use WyriHaximus\React\ChildProcess\Pool\Launcher\ClassName;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\Process;
 use WyriHaximus\React\ChildProcess\Pool\Manager\Flexible as FlexibleManager;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
+use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\PoolInterface;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollection\Single;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
@@ -47,8 +48,8 @@ class Flexible implements PoolInterface
      * @var array
      */
     protected $options = [
-        'min_size' => 0,
-        'max_size' => 5,
+        Options::MIN_SIZE => 0,
+        Options::MAX_SIZE => 5,
     ];
 
     public static function create(ChildProcess $process, LoopInterface $loop, array $options = [])
