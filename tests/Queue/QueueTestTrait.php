@@ -12,6 +12,11 @@ trait QueueTestTrait
      */
     abstract protected function getQueue();
 
+    public function testInterface()
+    {
+        $this->assertInstanceOf('WyriHaximus\React\ChildProcess\Pool\QueueInterface', $this->getQueue());
+    }
+
     public function queueProvider()
     {
         $queue = $this->getQueue();
@@ -23,7 +28,7 @@ trait QueueTestTrait
     /**
      * @dataProvider queueProvider
      */
-    public function testInterface(QueueInterface $queue)
+    public function testOperations(QueueInterface $queue)
     {
         $rpc0 = Factory::rpc('a', ['b']);
         $rpc1 = Factory::rpc('c', ['d']);
