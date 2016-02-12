@@ -90,7 +90,7 @@ class Fixed implements PoolInterface
     {
         $manager = \WyriHaximus\React\ChildProcess\Pool\getClassNameFromOptionOrDefault(
             $options,
-            Options::QUEUE,
+            Options::MANAGER,
             'WyriHaximus\React\ChildProcess\Pool\ManagerInterface',
             'WyriHaximus\React\ChildProcess\Pool\Manager\Fixed'
         );
