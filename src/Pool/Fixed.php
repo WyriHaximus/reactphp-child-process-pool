@@ -83,6 +83,11 @@ class Fixed implements PoolInterface
             'WyriHaximus\React\ChildProcess\Pool\QueueInterface',
             'WyriHaximus\React\ChildProcess\Pool\Queue\Memory'
         );
+
+        if ($queue instanceof QueueInterface) {
+            return $queue;
+        }
+
         return new $queue();
     }
 
@@ -94,6 +99,11 @@ class Fixed implements PoolInterface
             'WyriHaximus\React\ChildProcess\Pool\ManagerInterface',
             'WyriHaximus\React\ChildProcess\Pool\Manager\Fixed'
         );
+
+        if ($manager instanceof ManagerInterface) {
+            return $manager;
+        }
+
         return new $manager($processCollection, $this->loop, $this->options);
     }
 
@@ -102,7 +112,7 @@ class Fixed implements PoolInterface
         $hash = spl_object_hash($message);
         $this->deferreds[$hash] = new Deferred();
         $this->queue->enqueue($message);
-        $this->manager->ping();
+        var_export($this->manager->ping());
         return $this->deferreds[$hash]->promise();
     }
 
