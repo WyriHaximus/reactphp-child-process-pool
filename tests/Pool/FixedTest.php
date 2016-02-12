@@ -16,6 +16,7 @@ class FixedTest extends \PHPUnit_Framework_TestCase
         $promiseHasResolved = false;
         $poolPromise->then(function ($pool) use (&$promiseHasResolved) {
             $this->assertInstanceOf('WyriHaximus\React\ChildProcess\Pool\Pool\Fixed', $pool);
+            $this->assertInstanceOf('WyriHaximus\React\ChildProcess\Pool\PoolInterface', $pool);
             $promiseHasResolved = true;
         });
         $this->assertTrue($promiseHasResolved);
