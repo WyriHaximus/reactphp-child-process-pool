@@ -112,7 +112,6 @@ class Fixed implements PoolInterface
         $hash = spl_object_hash($message);
         $this->deferreds[$hash] = new Deferred();
         $this->queue->enqueue($message);
-        var_export($this->manager->ping());
         return $this->deferreds[$hash]->promise();
     }
 
