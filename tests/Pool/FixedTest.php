@@ -4,6 +4,7 @@ namespace WyriHaximus\React\Tests\ChildProcess\Pool\Pool;
 
 use Phake;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory;
+use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\Pool\Fixed;
 
@@ -59,5 +60,41 @@ class FixedTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('React\Promise\PromiseInterface', $poolInstance->rpc(Factory::rpc('foo', ['bar'])));
 
         Phake::verify($manager)->ping();
+    }
+
+    public function testInfo()
+    {
+        $manager = Phake::mock('WyriHaximus\React\ChildProcess\Pool\ManagerInterface');
+        Phake::when($manager)->info()->thenReturn([
+            Info::TOTAL => 1,
+            Info::IDLE  => 2,
+            Info::BUSY  => 3,
+        ]);
+
+        $queue   = Phake::mock('WyriHaximus\React\ChildProcess\Pool\QueueInterface');
+        Phake::when($queue)->count()->thenReturn(4);
+
+        $poolInstance = null;
+
+        $process = Phake::mock('React\ChildProcess\Process');
+        $loop = Phake::mock('React\EventLoop\LoopInterface');
+        $poolPromise = Fixed::create($process, $loop, [
+            Options::MANAGER => $manager,
+            Options::QUEUE => $queue,
+        ]);
+        $this->assertInstanceOf('React\Promise\PromiseInterface', $poolPromise);
+        $promiseHasResolved = false;
+        $poolPromise->then(function ($pool) use (&$promiseHasResolved, &$poolInstance) {
+            $promiseHasResolved = true;
+            $poolInstance = $pool;
+        });
+        $this->assertTrue($promiseHasResolved);
+
+        $this->assertSame([
+            Info::BUSY  => 3,
+            Info::CALLS => 4,
+            Info::IDLE  => 2,
+            Info::SIZE  => 1,
+        ], $poolInstance->info());
     }
 }
