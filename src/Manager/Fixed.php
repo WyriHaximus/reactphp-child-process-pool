@@ -5,6 +5,7 @@ namespace WyriHaximus\React\ChildProcess\Pool\Manager;
 use Evenement\EventEmitterTrait;
 use React\EventLoop\LoopInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
+use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
 use WyriHaximus\React\ChildProcess\Pool\Worker;
@@ -75,9 +76,9 @@ class Fixed implements ManagerInterface
             }
         }
         return [
-            'total' => $count,
-            'busy' => $busy,
-            'idle' => $count - $busy,
+            Info::TOTAL => $count,
+            Info::BUSY => $busy,
+            Info::IDLE => $count - $busy,
         ];
     }
 }
