@@ -11,6 +11,7 @@ use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\ClassName;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\Process;
+use WyriHaximus\React\ChildProcess\Pool\LoopAwareTrait;
 use WyriHaximus\React\ChildProcess\Pool\Manager\Flexible as FlexibleManager;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
 use WyriHaximus\React\ChildProcess\Pool\Options;
@@ -24,6 +25,7 @@ use WyriHaximus\React\ChildProcess\Pool\WorkerInterface;
 class Flexible implements PoolInterface
 {
     use EventEmitterTrait;
+    use LoopAwareTrait;
 
     /**
      * @var ManagerInterface
@@ -67,6 +69,17 @@ class Flexible implements PoolInterface
     {
         $this->loop = $loop;
         $this->options = array_merge($this->options, $options);
+        $this->queue   = \WyriHaximus\React\ChildProcess\Pool\getQueue(
+            $this->options,
+            'WyriHaximus\React\ChildProcess\Pool\Queue\Memory',
+            $loop
+        );
+        $this->manager = \WyriHaximus\React\ChildProcess\Pool\getManager(
+            $this->options,
+            $processCollection,
+            'WyriHaximus\React\ChildProcess\Pool\Manager\Flexible',
+            $loop
+        );
         $this->queue = new Memory();
         $this->manager = new FlexibleManager($processCollection, $loop, $this->options);
         $this->manager->on('ready', function (WorkerInterface $worker) {
