@@ -8,6 +8,7 @@ use React\EventLoop\LoopInterface;
 use React\Promise\Deferred;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
+use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\ClassName;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\Process;
 use WyriHaximus\React\ChildProcess\Pool\Manager\Flexible as FlexibleManager;
@@ -108,10 +109,10 @@ class Flexible implements PoolInterface
     {
         $workers = $this->manager->info();
         return [
-            'size'          => $workers['total'],
-            'queued_calls'  => $this->queue->count(),
-            'idle_workers'  => $workers['idle'],
-            'busy_workers'  => $workers['busy'],
+            Info::BUSY  => $workers[Info::BUSY],
+            Info::CALLS => $this->queue->count(),
+            Info::IDLE  => $workers[Info::IDLE],
+            Info::SIZE  => $workers[Info::TOTAL],
         ];
     }
 }
