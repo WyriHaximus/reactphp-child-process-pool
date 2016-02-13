@@ -7,6 +7,7 @@ use React\EventLoop\LoopInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
 use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
+use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
 use WyriHaximus\React\ChildProcess\Pool\Worker;
 use WyriHaximus\React\ChildProcess\Pool\WorkerInterface;
@@ -26,7 +27,7 @@ class Fixed implements ManagerInterface
             $this->workerAvailable($worker);
         };
         $processCollection->rewind();
-        for ($i = 0; $i < $options['size']; $i++) {
+        for ($i = 0; $i < $options[Options::SIZE]; $i++) {
             $current = $processCollection->current();
             $promise = $current($loop, $options);
             $promise->then(function (Messenger $messenger) use ($workerDone) {
