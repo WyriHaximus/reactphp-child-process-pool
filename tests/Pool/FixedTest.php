@@ -59,6 +59,5 @@ class FixedTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('React\Promise\PromiseInterface', $poolInstance->rpc(Factory::rpc('foo', ['bar'])));
 
         Phake::verify($manager)->ping();
-
     }
 }
