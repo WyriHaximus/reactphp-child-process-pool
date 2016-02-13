@@ -2,7 +2,6 @@
 
 namespace WyriHaximus\React\ChildProcess\Pool;
 
-// @codeCoverageIgnoreStart
 class Info
 {
     const BUSY  = 'busy';
@@ -11,4 +10,3 @@ class Info
     const SIZE  = 'size';
     const TOTAL = 'total';
 }
-// @codeCoverageIgnoreEnd
