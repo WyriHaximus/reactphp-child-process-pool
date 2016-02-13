@@ -12,13 +12,11 @@ use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\ClassName;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\Process;
 use WyriHaximus\React\ChildProcess\Pool\LoopAwareTrait;
-use WyriHaximus\React\ChildProcess\Pool\Manager\Flexible as FlexibleManager;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
 use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\PoolInterface;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollection\Single;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
-use WyriHaximus\React\ChildProcess\Pool\Queue\Memory;
 use WyriHaximus\React\ChildProcess\Pool\QueueInterface;
 use WyriHaximus\React\ChildProcess\Pool\WorkerInterface;
 
@@ -80,8 +78,6 @@ class Flexible implements PoolInterface
             'WyriHaximus\React\ChildProcess\Pool\Manager\Flexible',
             $loop
         );
-        $this->queue = new Memory();
-        $this->manager = new FlexibleManager($processCollection, $loop, $this->options);
         $this->manager->on('ready', function (WorkerInterface $worker) {
             if ($this->queue->count() === 0) {
                 $worker->terminate();
