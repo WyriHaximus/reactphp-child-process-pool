@@ -1,6 +1,8 @@
 <?php
 
-//use Phake;
+namespace WyriHaximus\React\Tests\ChildProcess\Pool;
+
+use Phake;
 use React\EventLoop\Factory;
 use WyriHaximus\React\ChildProcess\Pool\Manager\Fixed;
 use WyriHaximus\React\ChildProcess\Pool\Manager\Flexible;
