@@ -129,7 +129,7 @@ class FixedTest extends \PHPUnit_Framework_TestCase
         });
         $this->assertTrue($promiseHasResolved);
 
-        $poolInstance->terminate();
+        $poolInstance->terminate(Factory::message(['foo' => 'bar']));
 
         Phake::verify($manager)->terminate();
     }
