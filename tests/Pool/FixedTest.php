@@ -133,4 +133,35 @@ class FixedTest extends \PHPUnit_Framework_TestCase
 
         Phake::verify($manager)->terminate();
     }
+
+    public function testManagerReady()
+    {
+        $function = null;
+
+        $message = Factory::rpc('beer', ['foo' => 'bar']);
+        $worker  = Phake::mock('WyriHaximus\React\ChildProcess\Pool\WorkerInterface');
+        $queue   = Phake::mock('WyriHaximus\React\ChildProcess\Pool\QueueInterface');
+        $manager = Phake::mock('WyriHaximus\React\ChildProcess\Pool\ManagerInterface');
+
+        Phake::when($queue)->count()->thenReturn(4);
+        Phake::when($queue)->dequeue()->thenReturn($message);
+        Phake::when($manager)->on($this->isType('string'), $this->isType('callable'))->thenReturnCallback(function ($event, $passedFunction) use (&$function) {
+            $function = $passedFunction;
+        });
+
+        $poolInstance = null;
+
+        $process = Phake::mock('React\ChildProcess\Process');
+        $loop = Phake::mock('React\EventLoop\LoopInterface');
+        Fixed::create($process, $loop, [
+            Options::MANAGER => $manager,
+            Options::QUEUE => $queue,
+        ])->then(function ($pool) use ($message) {
+            $pool->rpc($message);
+        });
+
+        $function($worker);
+
+        Phake::verify($worker)->rpc($message);
+    }
 }
