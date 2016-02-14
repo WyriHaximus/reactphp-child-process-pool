@@ -97,4 +97,40 @@ class FixedTest extends \PHPUnit_Framework_TestCase
             Info::SIZE  => 1,
         ], $poolInstance->info());
     }
+
+    public function testTerminate()
+    {
+        $manager = Phake::mock('WyriHaximus\React\ChildProcess\Pool\ManagerInterface');
+        Phake::when($manager)->info()->thenReturn([
+            Info::TOTAL => 1,
+            Info::IDLE  => 2,
+            Info::BUSY  => 3,
+        ]);
+
+        $queue   = Phake::mock('WyriHaximus\React\ChildProcess\Pool\QueueInterface');
+        Phake::when($queue)->count()->thenReturn(4);
+
+        $poolInstance = null;
+
+        $process = Phake::mock('React\ChildProcess\Process');
+        $loop = Phake::mock('React\EventLoop\LoopInterface');
+        Phake::when($loop)->addTimer($this->isType('integer'), $this->isType('callable'))->thenReturnCallback(function ($interval, $function) {
+            $function();
+        });
+        $poolPromise = Fixed::create($process, $loop, [
+            Options::MANAGER => $manager,
+            Options::QUEUE => $queue,
+        ]);
+        $this->assertInstanceOf('React\Promise\PromiseInterface', $poolPromise);
+        $promiseHasResolved = false;
+        $poolPromise->then(function ($pool) use (&$promiseHasResolved, &$poolInstance) {
+            $promiseHasResolved = true;
+            $poolInstance = $pool;
+        });
+        $this->assertTrue($promiseHasResolved);
+
+        $poolInstance->terminate();
+
+        Phake::verify($manager)->terminate();
+    }
 }
