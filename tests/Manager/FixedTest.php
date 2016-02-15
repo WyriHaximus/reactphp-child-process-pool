@@ -179,7 +179,7 @@ class FixedTest extends \PHPUnit_Framework_TestCase
         $this->assertSame([
             Info::TOTAL => 1,
             Info::BUSY => 1,
-            Info::IDLE => 10,
+            Info::IDLE => 0,
         ], $this->manager->info());
 
         $this->assertTrue($emittedTerminate);
