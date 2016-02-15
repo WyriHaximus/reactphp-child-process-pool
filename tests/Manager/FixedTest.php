@@ -8,7 +8,9 @@ use React\Promise\Deferred;
 use React\Promise\FulfilledPromise;
 use React\Promise\RejectedPromise;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory;
+use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\Manager\Fixed;
+use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
 use WyriHaximus\React\ChildProcess\Pool\WorkerInterface;
 
@@ -49,7 +51,7 @@ class FixedTest extends \PHPUnit_Framework_TestCase
     protected function createManager()
     {
         $this->manager = new Fixed($this->processCollection, $this->loop, [
-            'size' => 1,
+            Options::SIZE => 1,
         ]);
     }
 
@@ -68,9 +70,9 @@ class FixedTest extends \PHPUnit_Framework_TestCase
         $this->createManager();
 
         $this->assertSame([
-            'total' => 0,
-            'busy' => 0,
-            'idle' => 0,
+            Info::TOTAL => 0,
+            Info::BUSY => 0,
+            Info::IDLE => 0,
         ], $this->manager->info());
     }
 
@@ -118,25 +120,25 @@ class FixedTest extends \PHPUnit_Framework_TestCase
         $workerDeferred->resolve($messenger);
 
         $this->assertSame([
-            'total' => 1,
-            'busy' => 0,
-            'idle' => 1,
+            Info::TOTAL => 1,
+            Info::BUSY => 0,
+            Info::IDLE => 1,
         ], $this->manager->info());
 
         $worker->rpc($rpc);
 
         $this->assertSame([
-            'total' => 1,
-            'busy' => 1,
-            'idle' => 0,
+            Info::TOTAL => 1,
+            Info::BUSY => 1,
+            Info::IDLE => 0,
         ], $this->manager->info());
 
         $rpcDeferred->resolve();
 
         $this->assertSame([
-            'total' => 1,
-            'busy' => 0,
-            'idle' => 1,
+            Info::TOTAL => 1,
+            Info::BUSY => 0,
+            Info::IDLE => 1,
         ], $this->manager->info());
     }
 
@@ -161,9 +163,9 @@ class FixedTest extends \PHPUnit_Framework_TestCase
         $workerDeferred->resolve($messenger);
 
         $this->assertSame([
-            'total' => 1,
-            'busy' => 0,
-            'idle' => 1,
+            Info::TOTAL => 1,
+            Info::BUSY => 0,
+            Info::IDLE => 1,
         ], $this->manager->info());
 
         $emittedTerminate = false;
@@ -175,9 +177,9 @@ class FixedTest extends \PHPUnit_Framework_TestCase
         $this->manager->terminate();
 
         $this->assertSame([
-            'total' => 1,
-            'busy' => 1,
-            'idle' => 0,
+            Info::TOTAL => 1,
+            Info::BUSY => 1,
+            Info::IDLE => 10,
         ], $this->manager->info());
 
         $this->assertTrue($emittedTerminate);
