@@ -1,6 +1,7 @@
 <?php
 
 namespace WyriHaximus\React\ChildProcess\Pool;
+
 use React\EventLoop\LoopInterface;
 
 /**
