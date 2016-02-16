@@ -201,4 +201,37 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($emittedTerminate);
         Phake::verify($messenger)->softTerminate();
     }
+
+    public function testPingWorkerAvailable()
+    {
+        $rpc = Factory::rpc('foo', ['bar']);
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        Phake::when($messenger)->rpc($rpc)->thenReturn((new Deferred())->promise());
+        $loop = Phake::mock('React\EventLoop\LoopInterface');
+        $processCollection = Phake::mock('WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface');
+        Phake::when($processCollection)->next()->thenReturn(true);
+        Phake::when($processCollection)->current()->thenReturn(function () use ($messenger) {
+            return \React\Promise\resolve($messenger);
+        });
+        $manager = Phake::partialMock('WyriHaximus\React\ChildProcess\Pool\Manager\Flexible', $processCollection, $loop, [
+            Options::MAX_SIZE => 2,
+        ]);
+        Phake::when($manager)->spawn()->thenCallParent();
+        Phake::when($manager)->emit($this->isType('string'), $this->isType('array'))->thenCallParent();
+        Phake::when($manager)->once($this->isType('string'), $this->isType('callable'))->thenCallParent();
+
+        $manager->ping();
+
+        $manager->once('ready', function ($worker) use ($rpc) {
+            $worker->rpc($rpc);
+        });
+        $manager->ping();
+
+        $manager->once('ready', function ($worker) use ($rpc) {
+            $worker->rpc($rpc);
+        });
+        $manager->ping();
+
+        Phake::verify($manager, Phake::times(2))->spawn();
+    }
 }
