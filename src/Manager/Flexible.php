@@ -95,7 +95,6 @@ class Flexible implements ManagerInterface
 
         if (count($this->workers) + $this->startingProcesses < $this->options[Options::MAX_SIZE]) {
             $this->spawn();
-            return;
         }
     }
 
