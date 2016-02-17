@@ -74,7 +74,9 @@ class Flexible implements ManagerInterface
             $this->workerAvailable($worker);
             $this->startingProcesses--;
         });
-        if (!$this->processCollection->next()) {
+
+        $this->processCollection->next();
+        if (!$this->processCollection->valid()) {
             $this->processCollection->rewind();
         }
     }

@@ -17,28 +17,41 @@ class Fixed implements ManagerInterface
     use EventEmitterTrait;
 
     /**
+     * @var LoopInterface
+     */
+    protected $loop;
+
+    /**
      * @var WorkerInterface[]
      */
     protected $workers = [];
 
     public function __construct(ProcessCollectionInterface $processCollection, LoopInterface $loop, array $options = [])
     {
+        $this->loop = $loop;
+        $processCollection->rewind();
+        for ($i = 0; $i < $options[Options::SIZE]; $i++) {
+            $this->spawn($processCollection, $options);
+        }
+    }
+
+    protected function spawn($processCollection, $options)
+    {
         $workerDone = function (WorkerInterface $worker) {
             $this->workerAvailable($worker);
         };
-        $processCollection->rewind();
-        for ($i = 0; $i < $options[Options::SIZE]; $i++) {
-            $current = $processCollection->current();
-            $promise = $current($loop, $options);
-            $promise->then(function (Messenger $messenger) use ($workerDone) {
-                $worker = new Worker($messenger);
-                $this->workers[] = $worker;
-                $worker->on('done', $workerDone);
-                $this->workerAvailable($worker);
-            });
-            if (!$processCollection->next()) {
-                $processCollection->rewind();
-            }
+        $current = $processCollection->current();
+        $promise = $current($this->loop, $options);
+        $promise->then(function (Messenger $messenger) use ($workerDone) {
+            $worker = new Worker($messenger);
+            $this->workers[] = $worker;
+            $worker->on('done', $workerDone);
+            $this->workerAvailable($worker);
+        });
+
+        $processCollection->next();
+        if (!$processCollection->valid()) {
+            $processCollection->rewind();
         }
     }
 
