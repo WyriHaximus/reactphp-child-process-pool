@@ -35,7 +35,7 @@ class ArrayList implements ProcessCollectionInterface
 
     public function rewind()
     {
-        return $this->callables->rewind();
+        $this->callables->rewind();
     }
 
     public function valid()
