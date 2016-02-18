@@ -1,17 +1,20 @@
 <?php
 
-namespace WyriHaximus\React\ChildProcess\Pool;
+namespace WyriHaximus\React\ChildProcess\Pool\Pool;
 
-use Evenement\EventEmitter;
-use React\ChildProcess\Process;
+use Evenement\EventEmitterTrait;
 use React\EventLoop\LoopInterface;
 use React\Promise\FulfilledPromise;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
+use WyriHaximus\React\ChildProcess\Pool\PoolInterface;
+use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
 
-class DummyPool extends EventEmitter implements PoolInterface
+class DummyPool implements PoolInterface
 {
-    public function __construct(Process $process, LoopInterface $loop, array $options = [])
+    use EventEmitterTrait;
+
+    public function __construct(ProcessCollectionInterface $processCollection, LoopInterface $loop, array $options = [])
     {
 
     }
