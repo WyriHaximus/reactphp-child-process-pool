@@ -48,24 +48,31 @@ class Fixed implements PoolInterface
     /**
      * @var array
      */
-    protected $options = [
-        Options::SIZE => 25,
+    protected $options = [];
+
+    /**
+     * @var array
+     */
+    protected static $defaultOptions =[
+        Options::SIZE => 5,
     ];
 
     public static function create(ChildProcess $process, LoopInterface $loop, array $options = [])
     {
+        $options = array_merge(self::$defaultOptions, $options);
         return \React\Promise\resolve(new self(new Single(new Process($process)), $loop, $options));
     }
 
     public static function createFromClass($class, LoopInterface $loop, array $options = [])
     {
+        $options = array_merge(self::$defaultOptions, $options);
         return \React\Promise\resolve(new self(new Single(new ClassName($class)), $loop, $options));
     }
 
     public function __construct(ProcessCollectionInterface $processCollection, LoopInterface $loop, array $options = [])
     {
         $this->loop    = $loop;
-        $this->options = array_merge($this->options, $options);
+        $this->options = $options;
         $this->queue   = \WyriHaximus\React\ChildProcess\Pool\getQueue(
             $this->options,
             'WyriHaximus\React\ChildProcess\Pool\Queue\Memory',
