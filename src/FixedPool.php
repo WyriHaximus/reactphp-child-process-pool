@@ -12,7 +12,6 @@ use React\Stream\Util;
 use WyriHaximus\React\ChildProcess\Messenger\Factory;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Call;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
-use WyriHaximus\React\ChildProcess\Messenger\Messages\Payload;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
 
@@ -78,11 +77,19 @@ class FixedPool extends EventEmitter implements PoolInterface
         }
     }
 
-    protected function spawnProcess()
+    protected function spawn()
     {
         $processOptions = isset($this->options['processOptions']) ? $this->options['processOptions'] : [];
+        if (isset($this->options['processClassName'])) {
+            return Factory::parentFromClass($this->options['processClassName'], $this->loop, $processOptions);
+        }
         $process = clone $this->sourceProcess;
-        Factory::parent($process, $this->loop, $processOptions)->then(function (Messenger $messenger) {
+        return Factory::parent($process, $this->loop, $processOptions);
+    }
+
+    protected function spawnProcess()
+    {
+        $this->spawn()->then(function (Messenger $messenger) {
             Util::forwardEvents($messenger, $this, ['error']);
             $this->pool->attach($messenger);
             $this->readyPool->enqueue($messenger);
@@ -163,9 +170,11 @@ class FixedPool extends EventEmitter implements PoolInterface
         }
     }
 
-    public function terminate($message, $timeout = 5, $signal = null)
+    public function terminate(Message $message = null, $timeout = 5, $signal = null)
     {
-        $this->message($message);
+        if ($message !== null) {
+            $this->message($message);
+        }
 
         while ($this->readyPool->count() > 0) {
             $this->readyPool->dequeue();
@@ -175,7 +184,7 @@ class FixedPool extends EventEmitter implements PoolInterface
         while ($this->pool->count() > 0) {
             $messenger = $this->pool->current();
             $this->pool->detach($messenger);
-            $messenger->terminate($signal);
+            $messenger->softTerminate($signal);
         }
     }
 

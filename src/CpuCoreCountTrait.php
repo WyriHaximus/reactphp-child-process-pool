@@ -50,13 +50,22 @@ trait CpuCoreCountTrait
         return \React\Promise\resolve($this->availableAddresses);
     }
 
+    protected function spawnAtAddress($address)
+    {
+        $processOptions = isset($this->options['processOptions']) ? $this->options['processOptions'] : [];
+        if (isset($this->options['processClassName'])) {
+            $processOptions['cmdTemplate'] = $this->resolveCpuAddressCommand($address, '%s');
+            return Factory::parentFromClass($this->options['processClassName'], $this->loop, $processOptions);
+        }
+        $process = $this->rebuildProcess($address);
+        return Factory::parent($process, $this->loop, $processOptions);
+    }
+
     protected function spawnProcessAtAddress($address)
     {
         $this->startingProcesses++;
         unset($this->availableAddresses[$address]);
-        $processOptions = isset($this->options['processOptions']) ? $this->options['processOptions'] : [];
-        $process = $this->rebuildProcess($address);
-        Factory::parent($process, $this->loop, $processOptions)->then(function (Messenger $messenger) use ($address) {
+        $this->spawnAtAddress($address)->then(function (Messenger $messenger) use ($address) {
             $this->startingProcesses--;
             $this->pool->attach($messenger);
             $this->readyPool->enqueue($messenger);
@@ -105,13 +114,18 @@ trait CpuCoreCountTrait
         throw new \Exception('All cores in use!');
     }
 
+    protected function resolveCpuAddressCommand($address, $cmd)
+    {
+        return $this->options['strategies']['affinity']->execute(
+            $address,
+            $cmd
+        );
+    }
+
     protected function rebuildProcess($address)
     {
         return new Process(
-            $this->options['strategies']['affinity']->execute(
-                $address,
-                $this->getProcessPropertyValue('cmd')
-            ),
+            $this->resolveCpuAddressCommand($address, $this->getProcessPropertyValue('cmd')),
             $this->getProcessPropertyValue('cwd'),
             $this->getProcessPropertyValue('env'),
             []

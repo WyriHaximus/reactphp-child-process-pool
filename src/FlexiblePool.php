@@ -79,12 +79,19 @@ class FlexiblePool extends EventEmitter implements PoolInterface
         }
     }
 
+    protected function spawn()
+    {
+        $processOptions = isset($this->options['processOptions']) ? $this->options['processOptions'] : [];
+        if (isset($this->options['processClassName'])) {
+            return Factory::parentFromClass($this->options['processClassName'], $this->loop, $processOptions);
+        }
+        $process = clone $this->sourceProcess;
+        return Factory::parent($process, $this->loop, $processOptions);
+    }
     protected function spawnProcess()
     {
         $this->startingProcesses++;
-        $processOptions = isset($this->options['processOptions']) ? $this->options['processOptions'] : [];
-        $process = clone $this->sourceProcess;
-        Factory::parent($process, $this->loop, $processOptions)->then(function (Messenger $messenger) {
+        $this->spawn()->then(function (Messenger $messenger) {
             Util::forwardEvents($messenger, $this, ['error']);
             $this->startingProcesses--;
             $this->pool->attach($messenger);
@@ -100,7 +107,7 @@ class FlexiblePool extends EventEmitter implements PoolInterface
     {
         if ($this->callQueue->count() == 0 && $this->pool->count() > $this->options['min_size']) {
             $this->pool->detach($messenger);
-            $messenger->terminate();
+            $messenger->softTerminate();
             return;
         }
 
@@ -199,7 +206,7 @@ class FlexiblePool extends EventEmitter implements PoolInterface
         while ($this->pool->count() > 0) {
             $messenger = $this->pool->current();
             $this->pool->detach($messenger);
-            $messenger->terminate($signal);
+            $messenger->softTerminate($signal);
         }
     }
 

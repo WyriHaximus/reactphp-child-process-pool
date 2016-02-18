@@ -68,6 +68,7 @@ class CpuCoreCountFixedPool extends FixedPool implements PoolInterface
      */
     public function __construct(Process $process, LoopInterface $loop, array $options = [])
     {
+        $this->startingProcesses = 0;
         $this->sourceProcess = $process;
         $this->loop = $loop;
         $this->options = array_merge($this->options, $options);
