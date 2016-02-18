@@ -10,7 +10,7 @@ use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 use WyriHaximus\React\ChildProcess\Pool\PoolInterface;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
 
-class DummyPool implements PoolInterface
+class Dummy implements PoolInterface
 {
     use EventEmitterTrait;
 
@@ -28,7 +28,7 @@ class DummyPool implements PoolInterface
     {
     }
 
-    public function terminate($message, $timeout = 5, $signal = null)
+    public function terminate(Message $message = null, $timeout = 5, $signal = null)
     {
     }
 
