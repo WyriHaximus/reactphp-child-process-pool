@@ -19,7 +19,7 @@ class Dummy implements PoolInterface
 
     public static function create(ChildProcess $process, LoopInterface $loop, array $options = [])
     {
-        return new self(new Single(new Process($process)), $loop, $options);
+        return \React\Promise\resolve(new self(new Single(new Process($process)), $loop, $options));
     }
 
     public function __construct(ProcessCollectionInterface $processCollection, LoopInterface $loop, array $options = [])
