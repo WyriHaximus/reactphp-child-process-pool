@@ -4,16 +4,14 @@ require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
 use React\ChildProcess\Process;
 use React\EventLoop\Factory;
-use WyriHaximus\React\ChildProcess\Pool\CpuCoreCountFixedPool;
-use WyriHaximus\React\ChildProcess\Pool\CpuCoreCountFlexiblePool;
-use WyriHaximus\React\ChildProcess\Pool\FixedPool;
-use WyriHaximus\React\ChildProcess\Pool\FlexiblePool;
+use WyriHaximus\React\ChildProcess\Pool\Pool\CpuCoreCountFixed;
+use WyriHaximus\React\ChildProcess\Pool\Pool\CpuCoreCountFlexible;
 use WyriHaximus\React\ChildProcess\Pool\Pool\Fixed;
+use WyriHaximus\React\ChildProcess\Pool\Pool\Flexible;
 use WyriHaximus\React\ChildProcess\Pool\PoolInterface;
 
 const POOL_PROCESS_COUNT = 10;
 const I = 512;
-//const I = 2;
 
 echo 'Warning this example can be rather harsh on your hardware, stop now or continue with cation!!!!', PHP_EOL;
 //echo 'Starting a pool with ' . POOL_PROCESS_COUNT . ' child processes looping from 0 till ' . I . ' and calculating $i * $i * $i * $i in the child process.';
@@ -44,6 +42,7 @@ Fixed::create(new Process('php ' . dirname(dirname(__DIR__)) . '/examples/ping-p
         $j = $i;
         $pool->rpc(\WyriHaximus\React\ChildProcess\Messenger\Messages\Factory::rpc('ping', [
             'i' => $i,
+            's' => str_pad('', 512, '.'),
         ]))->then(function ($data) use ($j) {
             echo 'Answer for ' . $j . ' * ' . $j . ' * ' . $j . ' * ' . $j . ': ', $data['result'], PHP_EOL;
         }, function ($error) {
@@ -59,12 +58,13 @@ Fixed::create(new Process('php ' . dirname(dirname(__DIR__)) . '/examples/ping-p
         }
     });
 
-    $loop->addTimer(40, function () use ($pool, $timer, $loop) {
+    $loop->addTimer(10, function () use ($pool, $timer, $loop) {
         for ($i = 0; $i < I; $i++) {
             echo $i, PHP_EOL;
             $j = $i;
             $pool->rpc(\WyriHaximus\React\ChildProcess\Messenger\Messages\Factory::rpc('ping', [
                 'i' => $i,
+                's' => str_pad('', 512, '.'),
             ]))->then(function ($data) use ($j) {
                 echo 'Answer for ' . $j . ' * ' . $j . ' * ' . $j . ' * ' . $j . ': ', $data['result'], PHP_EOL;
             }, function ($error) {
