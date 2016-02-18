@@ -9,4 +9,5 @@ class Options
     const SIZE     = 'size';
     const MIN_SIZE = 'min_size';
     const MAX_SIZE = 'max_size';
+    const DETECTOR = 'detector';
 }
