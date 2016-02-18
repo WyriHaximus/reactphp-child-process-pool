@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5dcac5ef82802279e29699e0b1aac8d9",
-    "content-hash": "903d0a5b30e36476d2e2634cd71d896b",
+    "hash": "9da48ec1caea1077a6e7d7b14867d3f7",
+    "content-hash": "430f6de26a2c3c4145f16e28d134b778",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -397,7 +397,7 @@
         },
         {
             "name": "wyrihaximus/cpu-core-detector",
-            "version": "dev-master",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/php-cpu-core-detector.git",
@@ -1728,7 +1728,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "wyrihaximus/cpu-core-detector": 20
+        "wyrihaximus/cpu-core-detector": 15
     },
     "prefer-stable": false,
     "prefer-lowest": false,
