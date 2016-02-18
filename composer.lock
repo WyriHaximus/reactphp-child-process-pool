@@ -401,12 +401,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/php-cpu-core-detector.git",
-                "reference": "a32c88ffd2b7a492a788275c3c98a66aa3ba03e7"
+                "reference": "59e2edfe0087147b0a6c2556c15f7793a480ffc8"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/WyriHaximus/php-cpu-core-detector/zipball/59e2edfe0087147b0a6c2556c15f7793a480ffc8",
-                "reference": "a32c88ffd2b7a492a788275c3c98a66aa3ba03e7",
+                "reference": "59e2edfe0087147b0a6c2556c15f7793a480ffc8",
                 "shasum": ""
             },
             "require": {
@@ -438,7 +438,7 @@
                     "email": "ceesjank@gmail.com"
                 }
             ],
-            "time": "2016-01-29 20:41:15"
+            "time": "2016-01-29 22:03:03"
         },
         {
             "name": "wyrihaximus/react-child-process-messenger",
