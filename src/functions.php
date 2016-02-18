@@ -2,7 +2,11 @@
 
 namespace WyriHaximus\React\ChildProcess\Pool;
 
+use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
+use React\Promise\PromiseInterface;
+use WyriHaximus\CpuCoreDetector\Detector;
+use WyriHaximus\CpuCoreDetector\Resolver;
 
 /**
  * @param string $instanceOf
@@ -62,4 +66,38 @@ function getQueue(array $options, $default, $loop)
     }
 
     return new $queue($loop);
+}
+
+/**
+ * @param LoopInterface $loop
+ * @param $options
+ * @return PromiseInterface
+ */
+function detectCoreCount(LoopInterface $loop, $options)
+{
+    if (isset($options[Options::DETECTOR]) && is_callable($options[Options::DETECTOR])) {
+        return $options[Options::DETECTOR]($loop);
+    }
+
+    return Detector::detectAsync($loop);
+}
+
+function rebuildProcess($address, Process $childProcess)
+{
+    return new Process(
+        Resolver::resolve(
+            $address,
+            getProcessPropertyValue('cmd', $childProcess)
+        ),
+        getProcessPropertyValue('cwd', $childProcess),
+        getProcessPropertyValue('env', $childProcess),
+        []
+    );
+}
+
+function getProcessPropertyValue($property, $childProcess)
+{
+    $reflectionProperty = (new \ReflectionClass($childProcess))->getProperty($property);
+    $reflectionProperty->setAccessible(true);
+    return $reflectionProperty->getValue($childProcess);
 }
