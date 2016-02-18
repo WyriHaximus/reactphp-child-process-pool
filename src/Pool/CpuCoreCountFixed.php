@@ -4,14 +4,16 @@ namespace WyriHaximus\React\ChildProcess\Pool\Pool;
 
 use React\ChildProcess\Process as ChildProcess;
 use React\EventLoop\LoopInterface;
+use React\Promise\PromiseInterface;
 use WyriHaximus\CpuCoreDetector\Detector;
 use WyriHaximus\CpuCoreDetector\Resolver;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\ClassName;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\Process;
 use WyriHaximus\React\ChildProcess\Pool\Options;
+use WyriHaximus\React\ChildProcess\Pool\PoolFactoryInterface;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollection\ArrayList;
 
-class CpuCoreCountFixed
+class CpuCoreCountFixed implements PoolFactoryInterface
 {
     /**
      * @var array
@@ -25,6 +27,12 @@ class CpuCoreCountFixed
         Options::SIZE => 25,
     ];
 
+    /**
+     * @param ChildProcess $process
+     * @param LoopInterface $loop
+     * @param array $options
+     * @return PromiseInterface
+     */
     public static function create(ChildProcess $childProcess, LoopInterface $loop, array $options = [])
     {
         $options = array_merge(self::$defaultOptions, $options);
@@ -46,6 +54,12 @@ class CpuCoreCountFixed
         });
     }
 
+    /**
+     * @param string $class
+     * @param LoopInterface $loop
+     * @param array $options
+     * @return PromiseInterface
+     */
     public static function createFromClass($class, LoopInterface $loop, array $options = [])
     {
         $options = array_merge(self::$defaultOptions, $options);
