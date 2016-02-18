@@ -15,7 +15,6 @@ environment:
 ## Cache composer bits
 cache:
     - c:\tools\php -> appveyor.yml
-    - c:\projects\reactphp-child-process-pool\vendor -> composer.lock
     - '%LOCALAPPDATA%\Composer\files -> composer.lock'
 
 ## Set up environment varriables

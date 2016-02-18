@@ -13,7 +13,7 @@
 To install via [Composer](http://getcomposer.org/), use the command below, it will automatically detect the latest version and bind it with `~`.
 
 ```
-composer require reactphp-child-process-pool
+composer require wyrihaximus/react-child-process-pool:^1.0.0-alpha11
 ```
 
 ## Pools ##
@@ -26,7 +26,7 @@ composer require reactphp-child-process-pool
 
 ## Usage ##
 
-This package pools [`wyrihaximus/reactphp-child-process-messenger`](https://github.com/WyriHaximus/reactphp-child-process-messenger), please see that package for details how to use it.
+This package pools [`wyrihaximus/react-child-process-messenger`](https://github.com/WyriHaximus/reactphp-child-process-messenger), please see that package for details how to use it.
 
 ## License ##
 
