@@ -13,12 +13,12 @@
 To install via [Composer](http://getcomposer.org/), use the command below, it will automatically detect the latest version and bind it with `~`.
 
 ```
-composer require wyrihaximus/react-child-process-pool:^1.0.0-alpha11
+composer require wyrihaximus/react-child-process-pool:^1.0.0-beta1
 ```
 
 ## Pools ##
 
-* `DummyPool` - Meant for testing, doesn't do anything but complies to it's contract
+* `Dummy` - Meant for testing, doesn't do anything but complies to it's contract
 * `Fixed` - Spawns a given fixed amount of workers
 * `Flexible` - Spawns workers as a needed basis, given a minimum and maximum it will spawn within those values
 * `CpuCoreCountFixed` - Spawns the same amount of workers as you have CPU cores and affinitiates them all to a different code
@@ -30,7 +30,7 @@ This package pools [`wyrihaximus/react-child-process-messenger`](https://github.
 
 ## License ##
 
-Copyright 2015 [Cees-Jan Kiewiet](http://wyrihaximus.net/)
+Copyright 2016 [Cees-Jan Kiewiet](http://wyrihaximus.net/)
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
