@@ -4,6 +4,7 @@ namespace WyriHaximus\React\ChildProcess\Pool;
 
 use Evenement\EventEmitterTrait;
 use React\Promise\PromiseInterface;
+use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
 
@@ -40,6 +41,14 @@ class Worker implements WorkerInterface
             $this->busy = false;
             $this->emit('done', [$this]);
         });
+    }
+
+    /**
+     * @param Message $message
+     */
+    public function message(Message $message)
+    {
+        $this->messenger->message($message);
     }
 
     /**

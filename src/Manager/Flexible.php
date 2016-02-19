@@ -4,6 +4,7 @@ namespace WyriHaximus\React\ChildProcess\Pool\Manager;
 
 use Evenement\EventEmitterTrait;
 use React\EventLoop\LoopInterface;
+use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
 use WyriHaximus\React\ChildProcess\Pool\Options;
@@ -97,6 +98,13 @@ class Flexible implements ManagerInterface
 
         if (count($this->workers) + $this->startingProcesses < $this->options[Options::MAX_SIZE]) {
             $this->spawn();
+        }
+    }
+
+    public function message(Message $message)
+    {
+        foreach ($this->workers as $worker) {
+            $worker->message($message);
         }
     }
 

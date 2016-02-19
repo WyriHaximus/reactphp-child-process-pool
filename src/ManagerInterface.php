@@ -5,6 +5,7 @@ namespace WyriHaximus\React\ChildProcess\Pool;
 use Evenement\EventEmitterInterface;
 use React\EventLoop\LoopInterface;
 use React\Promise\PromiseInterface;
+use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 
 interface ManagerInterface extends EventEmitterInterface
 {
@@ -32,6 +33,8 @@ interface ManagerInterface extends EventEmitterInterface
      * @return void
      */
     public function ping();
+
+    public function message(Message $message);
 
     /**
      * Return an array with the following keys:

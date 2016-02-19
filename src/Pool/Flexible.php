@@ -134,7 +134,7 @@ class Flexible implements PoolInterface, PoolFactoryInterface
      */
     public function message(Message $message)
     {
-        // TODO: Implement message() method.
+        $this->manager->message($message);
     }
 
     /**
