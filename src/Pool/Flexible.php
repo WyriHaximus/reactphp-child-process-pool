@@ -84,6 +84,12 @@ class Flexible implements PoolInterface, PoolFactoryInterface
         return \React\Promise\resolve(new self(new Single(new ClassName($class)), $loop, $options));
     }
 
+    /**
+     * Flexible constructor.
+     * @param ProcessCollectionInterface $processCollection
+     * @param LoopInterface $loop
+     * @param array $options
+     */
     public function __construct(ProcessCollectionInterface $processCollection, LoopInterface $loop, array $options = [])
     {
         $this->loop = $loop;
@@ -110,6 +116,10 @@ class Flexible implements PoolInterface, PoolFactoryInterface
         });
     }
 
+    /**
+     * @param Rpc $message
+     * @return PromiseInterface
+     */
     public function rpc(Rpc $message)
     {
         $hash = spl_object_hash($message);
@@ -119,11 +129,20 @@ class Flexible implements PoolInterface, PoolFactoryInterface
         return $this->deferreds[$hash]->promise();
     }
 
+    /**
+     * @param Message $message
+     */
     public function message(Message $message)
     {
         // TODO: Implement message() method.
     }
 
+    /**
+     * @param Message|null $message
+     * @param int $timeout
+     * @param null $signal
+     * @return PromiseInterface
+     */
     public function terminate(Message $message = null, $timeout = 5, $signal = null)
     {
         if ($message !== null) {
@@ -135,6 +154,9 @@ class Flexible implements PoolInterface, PoolFactoryInterface
         });
     }
 
+    /**
+     * @return array
+     */
     public function info()
     {
         $workers = $this->manager->info();
