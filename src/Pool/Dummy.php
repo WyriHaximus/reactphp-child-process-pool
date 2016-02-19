@@ -42,24 +42,43 @@ class Dummy implements PoolInterface, PoolFactoryInterface
         return \React\Promise\resolve(new self(new Single(new ClassName($class)), $loop, $options));
     }
 
+    /**
+     * @param ProcessCollectionInterface $processCollection
+     * @param LoopInterface $loop
+     * @param array $options
+     */
     public function __construct(ProcessCollectionInterface $processCollection, LoopInterface $loop, array $options = [])
     {
-
     }
 
+    /**
+     * @param Rpc $message
+     * @return PromiseInterface
+     */
     public function rpc(Rpc $message)
     {
         return new FulfilledPromise();
     }
 
+    /**
+     * @param Message $message
+     */
     public function message(Message $message)
     {
     }
 
+    /**
+     * @param Message|null $message
+     * @param int $timeout
+     * @param null $signal
+     */
     public function terminate(Message $message = null, $timeout = 5, $signal = null)
     {
     }
 
+    /**
+     * @return array
+     */
     public function info()
     {
         return [];
