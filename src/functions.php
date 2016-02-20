@@ -82,6 +82,11 @@ function detectCoreCount(LoopInterface $loop, $options)
     return Detector::detectAsync($loop);
 }
 
+/**
+ * @param $address
+ * @param Process $childProcess
+ * @return Process
+ */
 function rebuildProcess($address, Process $childProcess)
 {
     return new Process(
@@ -95,6 +100,11 @@ function rebuildProcess($address, Process $childProcess)
     );
 }
 
+/**
+ * @param string $property
+ * @param object $childProcess
+ * @return mixed
+ */
 function getProcessPropertyValue($property, $childProcess)
 {
     $reflectionProperty = (new \ReflectionClass($childProcess))->getProperty($property);
