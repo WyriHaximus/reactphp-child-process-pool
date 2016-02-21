@@ -96,7 +96,7 @@ function rebuildProcess($address, Process $childProcess)
         ),
         getProcessPropertyValue('cwd', $childProcess),
         getProcessPropertyValue('env', $childProcess),
-        []
+        getProcessPropertyValue('options', $childProcess)
     );
 }
 
