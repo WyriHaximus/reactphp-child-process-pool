@@ -4,6 +4,7 @@ namespace WyriHaximus\React\Tests\ChildProcess\Pool;
 
 use Phake;
 use React\EventLoop\Factory;
+use React\EventLoop\LoopInterface;
 use WyriHaximus\React\ChildProcess\Pool\Manager\Fixed;
 use WyriHaximus\React\ChildProcess\Pool\Manager\Flexible;
 use WyriHaximus\React\ChildProcess\Pool\Options;
@@ -192,6 +193,42 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 $processCollection,
                 $default,
                 $loop
+            )
+        );
+    }
+
+    public function testDetectCoreCount()
+    {
+        $coreCountDetected = false;
+        $loop = Factory::create();
+
+        \WyriHaximus\React\ChildProcess\Pool\detectCoreCount(
+            $loop,
+            []
+        )->then(function ($count) use (&$coreCountDetected) {
+            $this->assertInternalType('integer', $count);
+            $coreCountDetected = true;
+        });
+
+        $loop->run();
+
+        $this->assertTrue($coreCountDetected);
+    }
+
+    public function testDetectCoreCountCustomDetector()
+    {
+        $loop = Factory::create();
+        $this->assertSame(
+            128,
+            \WyriHaximus\React\ChildProcess\Pool\detectCoreCount(
+                $loop,
+                [
+                    Options::DETECTOR => function (LoopInterface $passedLoop) use ($loop)
+                    {
+                        $this->assertSame($passedLoop, $loop);
+                        return 128;
+                    }
+                ]
             )
         );
     }
