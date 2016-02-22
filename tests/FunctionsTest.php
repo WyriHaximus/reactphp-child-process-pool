@@ -234,7 +234,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testRebuildProcessandGetProcessPropertyValue()
+    public function testRebuildProcessAndGetProcessPropertyValue()
     {
         $process = new Process(
             'a',
