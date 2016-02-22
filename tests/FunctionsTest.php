@@ -3,6 +3,7 @@
 namespace WyriHaximus\React\Tests\ChildProcess\Pool;
 
 use Phake;
+use React\ChildProcess\Process;
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
 use WyriHaximus\React\ChildProcess\Pool\Manager\Fixed;
@@ -230,6 +231,38 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                     }
                 ]
             )
+        );
+    }
+
+    public function testRebuildProcessandGetProcessPropertyValue()
+    {
+        $process = new Process(
+            'a',
+            'b',
+            [
+                'c'
+            ],
+            [
+                'd'
+            ]
+        );
+        $rebuildProcess = \WyriHaximus\React\ChildProcess\Pool\rebuildProcess(
+            13,
+            $process
+        );
+        $this->assertSame('taskset -c 13 a', \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('cmd', $rebuildProcess));
+        $this->assertSame('b', \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('cwd', $rebuildProcess));
+        $this->assertSame(
+            [
+                'c',
+            ],
+            \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('env', $rebuildProcess)
+        );
+        $this->assertSame(
+            [
+                'd',
+            ],
+            \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('options', $rebuildProcess)
         );
     }
 }
