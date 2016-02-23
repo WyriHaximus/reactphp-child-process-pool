@@ -23,7 +23,7 @@ class CpuCoreCountFixed implements PoolFactoryInterface
     /**
      * @var array
      */
-    protected static $defaultOptions =[
+    protected static $defaultOptions = [
         Options::SIZE => 25,
     ];
 
