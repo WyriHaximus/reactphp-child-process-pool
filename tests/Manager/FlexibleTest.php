@@ -1,6 +1,6 @@
 <?php
 
-namespace WyriHaximus\React\Tests\ChildProcess\Pool\ProcessCollection;
+namespace WyriHaximus\React\Tests\ChildProcess\Pool\Manager;
 
 use Phake;
 use React\EventLoop\LoopInterface;
