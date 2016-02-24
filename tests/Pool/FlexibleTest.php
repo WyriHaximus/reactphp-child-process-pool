@@ -26,17 +26,17 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($promiseHasResolved);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Given class doesn't implement ChildInterface
+     */
     public function testCreateFromClass()
     {
-        $promiseHasResolved = false;
         $loop = Phake::mock('React\EventLoop\LoopInterface');
         Flexible::createFromClass('stdClass', $loop, [
             Options::MIN_SIZE => 1,
             Options::MAX_SIZE => 1,
-        ])->then(function (PoolInterface $pool) use (&$promiseHasResolved) {
-            $promiseHasResolved = true;
-        });
-        $this->assertTrue($promiseHasResolved);
+        ]);
     }
 
     public function testRpc()

@@ -120,9 +120,9 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
         $workerDeferred->resolve($messenger);
 
         $this->assertSame([
-            Info::TOTAL => 0,
+            Info::TOTAL => 1,
             Info::BUSY => 0,
-            Info::IDLE => 0,
+            Info::IDLE => 1,
         ], $this->manager->info());
 
         $this->manager->ping();
@@ -171,9 +171,9 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
         $workerDeferred->resolve($messenger);
 
         $this->assertSame([
-            Info::TOTAL => 0,
+            Info::TOTAL => 1,
             Info::BUSY => 0,
-            Info::IDLE => 0,
+            Info::IDLE => 1,
         ], $this->manager->info());
 
         $this->manager->ping();

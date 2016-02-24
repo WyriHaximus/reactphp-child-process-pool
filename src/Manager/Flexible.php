@@ -37,6 +37,14 @@ class Flexible implements ManagerInterface
     protected $options;
 
     /**
+     * @var array
+     */
+    protected $defaultOptions = [
+        Options::MIN_SIZE => 0,
+        Options::MAX_SIZE => 4,
+    ];
+
+    /**
      * @var int
      */
     protected $startingProcesses = 0;
@@ -45,7 +53,11 @@ class Flexible implements ManagerInterface
     {
         $this->processCollection = $processCollection;
         $this->loop = $loop;
-        $this->options = $options;
+        $this->options = array_merge($this->defaultOptions, $options);
+
+        for ($i = 0; $i < $this->options[Options::MIN_SIZE]; $i++) {
+            $this->spawn();
+        }
     }
 
     protected function workerAvailable(WorkerInterface $worker)
@@ -91,7 +103,7 @@ class Flexible implements ManagerInterface
             }
         }
 
-        if (count($this->workers) + $this->startingProcesses == 0) {
+        if (count($this->workers) + $this->startingProcesses < $this->options[Options::MIN_SIZE]) {
             $this->spawn();
             return;
         }
