@@ -43,4 +43,14 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($worker->isBusy());
         Phake::verify($messenger)->rpc($rpc);
     }
+
+    public function testMessage()
+    {
+        $message = Factory::message(['t']);
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        $worker = new Worker($messenger);
+
+        $worker->message($message);
+        Phake::verify($messenger)->message($message);
+    }
 }
