@@ -185,4 +185,29 @@ class FixedTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($emittedTerminate);
         Phake::verify($messenger)->softTerminate();
     }
+
+    public function testMessage()
+    {
+        $message = Factory::message(['bar']);
+        $workerDeferred = new Deferred();
+        $worker = null;
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+
+        Phake::when($this->processCollection)->current()->thenReturnCallback(function () use ($workerDeferred) {
+            return function () use ($workerDeferred) {
+                return $workerDeferred->promise();
+            };
+        });
+
+        $this->createManager();
+
+        $this->manager->once('ready', function (WorkerInterface $workerInstance) use (&$worker) {
+            $worker = $workerInstance;
+        });
+
+        $workerDeferred->resolve($messenger);
+        $this->manager->message($message);
+
+        Phake::verify($messenger)->message($message);
+    }
 }
