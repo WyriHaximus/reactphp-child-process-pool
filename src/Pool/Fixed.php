@@ -25,7 +25,6 @@ use WyriHaximus\React\ChildProcess\Pool\WorkerInterface;
 class Fixed implements PoolInterface, PoolFactoryInterface
 {
     use EventEmitterTrait;
-    use LoopAwareTrait;
 
     /**
      * @var ManagerInterface
