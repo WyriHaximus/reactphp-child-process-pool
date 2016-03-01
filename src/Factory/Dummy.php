@@ -34,5 +34,4 @@ class Dummy implements PoolFactoryInterface
     {
         return \React\Promise\resolve(new DummyPool(new Single(new ClassName($class)), $loop, $options));
     }
-
 }
