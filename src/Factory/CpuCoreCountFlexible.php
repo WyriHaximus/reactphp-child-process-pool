@@ -1,6 +1,6 @@
 <?php
 
-namespace WyriHaximus\React\ChildProcess\Pool\Pool;
+namespace WyriHaximus\React\ChildProcess\Pool\Factory;
 
 use React\ChildProcess\Process as ChildProcess;
 use React\EventLoop\LoopInterface;
@@ -10,10 +10,11 @@ use WyriHaximus\CpuCoreDetector\Resolver;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\ClassName;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\Process;
 use WyriHaximus\React\ChildProcess\Pool\Options;
+use WyriHaximus\React\ChildProcess\Pool\Pool\Flexible;
 use WyriHaximus\React\ChildProcess\Pool\PoolFactoryInterface;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollection\ArrayList;
 
-class CpuCoreCountFixed implements PoolFactoryInterface
+class CpuCoreCountFlexible implements PoolFactoryInterface
 {
     /**
      * @var array
@@ -23,8 +24,9 @@ class CpuCoreCountFixed implements PoolFactoryInterface
     /**
      * @var array
      */
-    protected static $defaultOptions = [
-        Options::SIZE => 25,
+    protected static $defaultOptions =[
+        Options::MIN_SIZE => 0,
+        Options::MAX_SIZE => 1,
     ];
 
     /**
@@ -40,7 +42,7 @@ class CpuCoreCountFixed implements PoolFactoryInterface
             $loop,
             $options
         )->then(function ($coreCount) use ($childProcess, $loop, $options) {
-            $options[Options::SIZE] = $coreCount;
+            $options[Options::MAX_SIZE] = $coreCount;
             $array = [];
             for ($i = 0; $i < $coreCount; $i++) {
                 $array[] = new Process(
@@ -50,7 +52,7 @@ class CpuCoreCountFixed implements PoolFactoryInterface
                     )
                 );
             }
-            return \React\Promise\resolve(new Fixed(new ArrayList($array), $loop, $options));
+            return \React\Promise\resolve(new Flexible(new ArrayList($array), $loop, $options));
         });
     }
 
@@ -67,14 +69,14 @@ class CpuCoreCountFixed implements PoolFactoryInterface
             $loop,
             $options
         )->then(function ($coreCount) use ($class, $loop, $options) {
-            $options[Options::SIZE] = $coreCount;
+            $options[Options::MAX_SIZE] = $coreCount;
             $array = [];
             for ($i = 0; $i < $coreCount; $i++) {
                 $array[] = new ClassName($class, [
                     'cmdTemplate' => Resolver::resolve($i, '%s'),
                 ]);
             }
-            return \React\Promise\resolve(new Fixed(new ArrayList($array), $loop, $options));
+            return \React\Promise\resolve(new Flexible(new ArrayList($array), $loop, $options));
         });
     }
 }

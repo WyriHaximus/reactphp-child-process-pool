@@ -3,26 +3,19 @@
 namespace WyriHaximus\React\ChildProcess\Pool\Pool;
 
 use Evenement\EventEmitterTrait;
-use React\ChildProcess\Process as ChildProcess;
 use React\EventLoop\LoopInterface;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 use WyriHaximus\React\ChildProcess\Pool\Info;
-use WyriHaximus\React\ChildProcess\Pool\Launcher\ClassName;
-use WyriHaximus\React\ChildProcess\Pool\Launcher\Process;
-use WyriHaximus\React\ChildProcess\Pool\LoopAwareTrait;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
-use WyriHaximus\React\ChildProcess\Pool\Options;
-use WyriHaximus\React\ChildProcess\Pool\PoolFactoryInterface;
 use WyriHaximus\React\ChildProcess\Pool\PoolInterface;
-use WyriHaximus\React\ChildProcess\Pool\ProcessCollection\Single;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
 use WyriHaximus\React\ChildProcess\Pool\QueueInterface;
 use WyriHaximus\React\ChildProcess\Pool\WorkerInterface;
 
-class Fixed implements PoolInterface, PoolFactoryInterface
+class Fixed implements PoolInterface
 {
     use EventEmitterTrait;
 
@@ -50,37 +43,6 @@ class Fixed implements PoolInterface, PoolFactoryInterface
      * @var array
      */
     protected $options = [];
-
-    /**
-     * @var array
-     */
-    protected static $defaultOptions =[
-        Options::SIZE => 5,
-    ];
-
-    /**
-     * @param ChildProcess $process
-     * @param LoopInterface $loop
-     * @param array $options
-     * @return PromiseInterface
-     */
-    public static function create(ChildProcess $process, LoopInterface $loop, array $options = [])
-    {
-        $options = array_merge(self::$defaultOptions, $options);
-        return \React\Promise\resolve(new self(new Single(new Process($process)), $loop, $options));
-    }
-
-    /**
-     * @param string $class
-     * @param LoopInterface $loop
-     * @param array $options
-     * @return PromiseInterface
-     */
-    public static function createFromClass($class, LoopInterface $loop, array $options = [])
-    {
-        $options = array_merge(self::$defaultOptions, $options);
-        return \React\Promise\resolve(new self(new Single(new ClassName($class)), $loop, $options));
-    }
 
     /**
      * @param ProcessCollectionInterface $processCollection
