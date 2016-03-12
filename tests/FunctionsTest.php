@@ -6,12 +6,14 @@ use Phake;
 use React\ChildProcess\Process;
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
+use React\Promise\FulfilledPromise;
+use WyriHaximus\CpuCoreDetector\Resolver;
 use WyriHaximus\React\ChildProcess\Pool\Manager\Fixed;
 use WyriHaximus\React\ChildProcess\Pool\Manager\Flexible;
 use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\Queue\Memory;
 
-class FunctionsTest extends \PHPUnit_Framework_TestCase
+class FunctionsTest extends TestCase
 {
     public function provideGetClassNameFromOptionOrDefault()
     {
@@ -236,6 +238,11 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testRebuildProcessAndGetProcessPropertyValue()
     {
+        $promise = new FulfilledPromise('taskset -c 13 a');
+        $affinity = Phake::mock('WyriHaximus\CpuCoreDetector\Core\AffinityInterface');
+        Phake::when($affinity)->execute(13, 'a')->thenReturn($promise);
+        Resolver::setAffinity($affinity);
+
         $process = new Process(
             'a',
             'b',
@@ -246,23 +253,27 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 'd'
             ]
         );
-        $rebuildProcess = \WyriHaximus\React\ChildProcess\Pool\rebuildProcess(
+        $promiseResolved = false;
+        \WyriHaximus\React\ChildProcess\Pool\rebuildProcess(
             13,
             $process
-        );
-        $this->assertSame('taskset -c 13 a', \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('cmd', $rebuildProcess));
-        $this->assertSame('b', \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('cwd', $rebuildProcess));
-        $this->assertSame(
-            [
-                'c',
-            ],
-            \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('env', $rebuildProcess)
-        );
-        $this->assertSame(
-            [
-                'd',
-            ],
-            \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('options', $rebuildProcess)
-        );
+        )->then(function ($rebuildProcess) use (&$promiseResolved) {
+            $this->assertSame('taskset -c 13 a', \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('cmd', $rebuildProcess));
+            $this->assertSame('b', \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('cwd', $rebuildProcess));
+            $this->assertSame(
+                [
+                    'c',
+                ],
+                \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('env', $rebuildProcess)
+            );
+            $this->assertSame(
+                [
+                    'd',
+                ],
+                \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('options', $rebuildProcess)
+            );
+            $promiseResolved = true;
+        });
+        $this->assertTrue($promiseResolved);
     }
 }

@@ -12,7 +12,7 @@
     "wyrihaximus/ticking-promise": "^1.5",
     "wyrihaximus/react-child-process-messenger": "^2.7",
     "evenement/evenement": "^2.0",
-    "wyrihaximus/cpu-core-detector": "^1.0.0-alpha1"
+    "wyrihaximus/cpu-core-detector": "^1.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^4.0||^5.0",

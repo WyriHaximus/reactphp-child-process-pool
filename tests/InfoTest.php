@@ -4,7 +4,7 @@ namespace WyriHaximus\React\Tests\ChildProcess\Pool;
 
 use ReflectionClass;
 
-class InfoTest extends \PHPUnit_Framework_TestCase
+class InfoTest extends TestCase
 {
     public function testNoMethods()
     {

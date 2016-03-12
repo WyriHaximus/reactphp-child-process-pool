@@ -5,8 +5,9 @@ namespace WyriHaximus\React\Tests\ChildProcess\Pool\Launcher;
 use Phake;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\ClassName;
+use WyriHaximus\React\Tests\ChildProcess\Pool\TestCase;
 
-class ClassNameTest extends \PHPUnit_Framework_TestCase
+class ClassNameTest extends TestCase
 {
 
     /**

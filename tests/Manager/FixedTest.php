@@ -13,8 +13,9 @@ use WyriHaximus\React\ChildProcess\Pool\Manager\Fixed;
 use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
 use WyriHaximus\React\ChildProcess\Pool\WorkerInterface;
+use WyriHaximus\React\Tests\ChildProcess\Pool\TestCase;
 
-class FixedTest extends \PHPUnit_Framework_TestCase
+class FixedTest extends TestCase
 {
     /**
      * @var ProcessCollectionInterface

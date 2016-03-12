@@ -3,8 +3,9 @@
 namespace WyriHaximus\React\Tests\ChildProcess\Pool\ProcessCollection;
 
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollection\ArrayList;
+use WyriHaximus\React\Tests\ChildProcess\Pool\TestCase;
 
-class ArrayListTest extends \PHPUnit_Framework_TestCase
+class ArrayListTest extends TestCase
 {
     public function testArrayList()
     {

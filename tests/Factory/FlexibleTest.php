@@ -5,8 +5,9 @@ namespace WyriHaximus\React\Tests\ChildProcess\Pool\Factory;
 use Phake;
 use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\Factory\Flexible;
+use WyriHaximus\React\Tests\ChildProcess\Pool\TestCase;
 
-class FlexibleTest extends \PHPUnit_Framework_TestCase
+class FlexibleTest extends TestCase
 {
     public function testCreate()
     {

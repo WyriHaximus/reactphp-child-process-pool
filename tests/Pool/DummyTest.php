@@ -5,8 +5,9 @@ namespace WyriHaximus\React\Tests\ChildProcess\Pool\Pool;
 use Phake;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory;
 use WyriHaximus\React\ChildProcess\Pool\Factory\Dummy;
+use WyriHaximus\React\Tests\ChildProcess\Pool\TestCase;
 
-class DummyTest extends \PHPUnit_Framework_TestCase
+class DummyTest extends TestCase
 {
     public function testMethods()
     {

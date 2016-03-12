@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6cb2987c9197d4c360c1effd9dd638b0",
-    "content-hash": "0b9de7c237ef8654248b64ca72dab7c7",
+    "hash": "fdc39a88f89e9421711e13e80cafc439",
+    "content-hash": "095248ae97c716803da6d54e9c4eaeaf",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -397,16 +397,16 @@
         },
         {
             "name": "wyrihaximus/cpu-core-detector",
-            "version": "1.0.0-alpha1",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/php-cpu-core-detector.git",
-                "reference": "59e2edfe0087147b0a6c2556c15f7793a480ffc8"
+                "reference": "d76b9a2691698e888a457b39f2dea3c0e9c1cbdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/php-cpu-core-detector/zipball/59e2edfe0087147b0a6c2556c15f7793a480ffc8",
-                "reference": "59e2edfe0087147b0a6c2556c15f7793a480ffc8",
+                "url": "https://api.github.com/repos/WyriHaximus/php-cpu-core-detector/zipball/d76b9a2691698e888a457b39f2dea3c0e9c1cbdb",
+                "reference": "d76b9a2691698e888a457b39f2dea3c0e9c1cbdb",
                 "shasum": ""
             },
             "require": {
@@ -426,7 +426,10 @@
             "autoload": {
                 "psr-4": {
                     "WyriHaximus\\CpuCoreDetector\\": "src/"
-                }
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -438,7 +441,7 @@
                     "email": "ceesjank@gmail.com"
                 }
             ],
-            "time": "2016-01-29 22:03:03"
+            "time": "2016-03-12 10:14:31"
         },
         {
             "name": "wyrihaximus/react-child-process-messenger",
@@ -1727,9 +1730,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "wyrihaximus/cpu-core-detector": 15
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

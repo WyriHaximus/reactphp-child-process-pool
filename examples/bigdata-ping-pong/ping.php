@@ -5,17 +5,15 @@ require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 use React\ChildProcess\Process;
 use React\EventLoop\Factory;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory as MessagesFactory;
-use WyriHaximus\React\ChildProcess\Pool\FixedPool;
-use WyriHaximus\React\ChildProcess\Pool\FlexiblePool;
 
 const POOL_PROCESS_COUNT = 64;
 //const I = 100000000;
-const I = 50000;
+const I = 5000000;
 
 echo 'Warning this example can be rather harsh on your hardware, stop now or continue with cation!!!!', PHP_EOL;
 echo 'Starting a pool with ' . POOL_PROCESS_COUNT . ' child processes looping from 0 till ' . I . ' and calculating $i * $i * $i * $i in the child process.';
 echo PHP_EOL;
-/*echo 'Starting in:', PHP_EOL, '5', PHP_EOL;
+echo 'Starting in:', PHP_EOL, '5', PHP_EOL;
 sleep(1);
 echo '4', PHP_EOL;
 sleep(1);
@@ -24,13 +22,13 @@ sleep(1);
 echo '2', PHP_EOL;
 sleep(1);
 echo '1', PHP_EOL;
-sleep(1);*/
+sleep(1);
 
 $bigData = str_pad('', I, 'p');
 
 
-$poolClass = FixedPool::class;
-$poolClass = FlexiblePool::class;
+$poolClass = 'WyriHaximus\React\ChildProcess\Pool\FixedPool';
+$poolClass = 'WyriHaximus\React\ChildProcess\Pool\FlexiblePool';
 
 $loop = Factory::create();
 $pool = new $poolClass(new Process('exec php ' . dirname(dirname(__DIR__)) . '/examples/bigdata-ping-pong/pong.php'), $loop, [
@@ -48,6 +46,8 @@ $timer = $loop->addPeriodicTimer(0.1, function () use ($pool) {
     foreach ($pool->info() as $key => $value) {
         echo "\t", $key, ': ', $value, PHP_EOL;
     }
+    echo 'Memory usage: ', memory_get_usage(true) / 1024 / 1024, 'MB', PHP_EOL;
+    echo 'Peak memory usage: ', memory_get_peak_usage(true) / 1024 / 1024, 'MB', PHP_EOL;
 });
 
 $promises = [];

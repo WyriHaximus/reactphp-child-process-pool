@@ -43,16 +43,19 @@ class CpuCoreCountFlexible implements PoolFactoryInterface
             $options
         )->then(function ($coreCount) use ($childProcess, $loop, $options) {
             $options[Options::MAX_SIZE] = $coreCount;
-            $array = [];
+            $processes = [];
             for ($i = 0; $i < $coreCount; $i++) {
-                $array[] = new Process(
-                    \WyriHaximus\React\ChildProcess\Pool\rebuildProcess(
-                        $i,
-                        $childProcess
-                    )
-                );
+                $processes[] = \WyriHaximus\React\ChildProcess\Pool\rebuildProcess(
+                    $i,
+                    $childProcess
+                )->then(function (ChildProcess $process) {
+                    return \React\Promise\resolve(new Process($process));
+                });
             }
-            return \React\Promise\resolve(new Flexible(new ArrayList($array), $loop, $options));
+
+            return \React\Promise\all($processes)->then(function ($processes) use ($loop, $options) {
+                return  \React\Promise\resolve(new Flexible(new ArrayList($processes), $loop, $options));
+            });
         });
     }
 
@@ -70,13 +73,18 @@ class CpuCoreCountFlexible implements PoolFactoryInterface
             $options
         )->then(function ($coreCount) use ($class, $loop, $options) {
             $options[Options::MAX_SIZE] = $coreCount;
-            $array = [];
+            $processes = [];
             for ($i = 0; $i < $coreCount; $i++) {
-                $array[] = new ClassName($class, [
-                    'cmdTemplate' => Resolver::resolve($i, '%s'),
-                ]);
+                $processes[] = Resolver::resolve($i, '%s')->then(function ($command) use ($class) {
+                    return \React\Promise\resolve(new ClassName($class, [
+                        'cmdTemplate' => $command,
+                    ]));
+                });
             }
-            return \React\Promise\resolve(new Flexible(new ArrayList($array), $loop, $options));
+
+            return \React\Promise\all($processes)->then(function ($processes) use ($loop, $options) {
+                return  \React\Promise\resolve(new Flexible(new ArrayList($processes), $loop, $options));
+            });
         });
     }
 }

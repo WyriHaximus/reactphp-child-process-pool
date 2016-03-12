@@ -13,8 +13,7 @@ use WyriHaximus\React\ChildProcess\Pool\PoolInterface;
 
 $loop = EventLoopFactory::create();
 
-//Fixed::createFromClass('WyriHaximus\React\ChildProcess\Messenger\ReturnChild', $loop);
-Flexible::createFromClass('WyriHaximus\React\ChildProcess\Messenger\ReturnChild', $loop)
+CpuCoreCountFlexible::createFromClass('WyriHaximus\React\ChildProcess\Messenger\ReturnChild', $loop)
 ->then(function (PoolInterface $pool) {
     $i = 0;
     for ($i = 0; $i < 100; $i++) {

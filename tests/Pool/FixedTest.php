@@ -7,8 +7,9 @@ use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory;
 use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\Factory\Fixed;
+use WyriHaximus\React\Tests\ChildProcess\Pool\TestCase;
 
-class FixedTest extends \PHPUnit_Framework_TestCase
+class FixedTest extends TestCase
 {
     public function testRpc()
     {

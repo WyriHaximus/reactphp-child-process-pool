@@ -4,8 +4,9 @@ namespace WyriHaximus\React\Tests\ChildProcess\Pool\Launcher;
 
 use Phake;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\Process;
+use WyriHaximus\React\Tests\ChildProcess\Pool\TestCase;
 
-class ProcessTest extends \PHPUnit_Framework_TestCase
+class ProcessTest extends TestCase
 {
     public function testProcess()
     {

@@ -28,7 +28,7 @@ echo '1', PHP_EOL;
 sleep(1);*/
 
 $loop = Factory::create();
-Fixed::create(new Process('php ' . dirname(dirname(__DIR__)) . '/examples/ping-pong/pong.php'), $loop)->then(function (PoolInterface $pool) use ($loop) {
+CpuCoreCountFixed::create(new Process('php ' . dirname(dirname(__DIR__)) . '/examples/ping-pong/pong.php'), $loop)->then(function (PoolInterface $pool) use ($loop) {
     $pool->on('message', function ($message) {
         var_export($message);
     });

@@ -5,10 +5,12 @@ namespace WyriHaximus\React\Tests\ChildProcess\Pool\Factory;
 use Phake;
 use React\ChildProcess\Process;
 use React\Promise\FulfilledPromise;
+use WyriHaximus\CpuCoreDetector\Resolver;
 use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\Factory\CpuCoreCountFixed;
+use WyriHaximus\React\Tests\ChildProcess\Pool\TestCase;
 
-class CpuCoreCountFixedTest extends \PHPUnit_Framework_TestCase
+class CpuCoreCountFixedTest extends TestCase
 {
     protected function createProcess()
     {
@@ -30,6 +32,10 @@ class CpuCoreCountFixedTest extends \PHPUnit_Framework_TestCase
         $loop = Phake::mock('React\EventLoop\LoopInterface');
         $poolPromise = CpuCoreCountFixed::create($process, $loop, [
             Options::DETECTOR => function ($loop) {
+                $promise = new FulfilledPromise();
+                $affinity = Phake::mock('WyriHaximus\CpuCoreDetector\Core\AffinityInterface');
+                Phake::when($affinity)->execute($this->isType('integer'), $this->isType('string'))->thenReturn($promise);
+                Resolver::setAffinity($affinity);
                 return new FulfilledPromise(4);
             },
         ]);
@@ -49,6 +55,10 @@ class CpuCoreCountFixedTest extends \PHPUnit_Framework_TestCase
         $loop = Phake::mock('React\EventLoop\LoopInterface');
         $poolPromise = CpuCoreCountFixed::createFromClass('stdClass', $loop, [
             Options::DETECTOR => function ($loop) {
+                $promise = new FulfilledPromise();
+                $affinity = Phake::mock('WyriHaximus\CpuCoreDetector\Core\AffinityInterface');
+                Phake::when($affinity)->execute($this->isType('integer'), $this->isType('string'))->thenReturn($promise);
+                Resolver::setAffinity($affinity);
                 return new FulfilledPromise(4);
             },
         ]);

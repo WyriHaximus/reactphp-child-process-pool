@@ -3,8 +3,9 @@
 namespace WyriHaximus\React\Tests\ChildProcess\Pool\ProcessCollection;
 
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollection\Single;
+use WyriHaximus\React\Tests\ChildProcess\Pool\TestCase;
 
-class SingleTest extends \PHPUnit_Framework_TestCase
+class SingleTest extends TestCase
 {
     public function testSingle()
     {

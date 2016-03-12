@@ -8,7 +8,7 @@ use React\Promise\FulfilledPromise;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory;
 use WyriHaximus\React\ChildProcess\Pool\Worker;
 
-class WorkerTest extends \PHPUnit_Framework_TestCase
+class WorkerTest extends TestCase
 {
     public function testWorker()
     {

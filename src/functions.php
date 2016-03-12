@@ -89,15 +89,17 @@ function detectCoreCount(LoopInterface $loop, $options)
  */
 function rebuildProcess($address, Process $childProcess)
 {
-    return new Process(
-        Resolver::resolve(
-            $address,
-            getProcessPropertyValue('cmd', $childProcess)
-        ),
-        getProcessPropertyValue('cwd', $childProcess),
-        getProcessPropertyValue('env', $childProcess),
-        getProcessPropertyValue('options', $childProcess)
-    );
+    return Resolver::resolve(
+        $address,
+        getProcessPropertyValue('cmd', $childProcess)
+    )->then(function ($cmd) use ($childProcess) {
+        return \React\Promise\resolve(new Process(
+            $cmd,
+            getProcessPropertyValue('cwd', $childProcess),
+            getProcessPropertyValue('env', $childProcess),
+            getProcessPropertyValue('options', $childProcess)
+        ));
+    });
 }
 
 /**
