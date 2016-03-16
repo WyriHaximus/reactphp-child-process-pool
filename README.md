@@ -21,12 +21,37 @@ composer require wyrihaximus/react-child-process-pool
 * `Dummy` - Meant for testing, doesn't do anything but complies to it's contract
 * `Fixed` - Spawns a given fixed amount of workers
 * `Flexible` - Spawns workers as a needed basis, given a minimum and maximum it will spawn within those values
-* `CpuCoreCountFixed` - Spawns the same amount of workers as you have CPU cores and affinitiates them all to a different code
-* `CpuCoreCountFlexible` - Same as `Flexible` and `CpuCoreCountFixed` where the maximum amount of workers is the CPU core count
 
 ## Usage ##
 
-This package pools [`wyrihaximus/react-child-process-messenger`](https://github.com/WyriHaximus/reactphp-child-process-messenger), please see that package for details how to use it.
+This package pools [`wyrihaximus/react-child-process-messenger`](https://github.com/WyriHaximus/reactphp-child-process-messenger), for basic messaging please see that package for details how to use it.
+
+## Creating a pool ##
+
+This package ships with a set factories:
+
+* `Dummy` - Creates a `Dummy` pool
+* `Fixed` - Creates a `Fixed` pool
+* `Flexible` - Creates a `Flexible` pool
+* `CpuCoreCountFixed` - Creates a `Fixed` pool with size set to the number of CPU cores
+* `CpuCoreCountFlexible` - Creates a `Flexible` pool with max size set to the number of CPU cores
+
+The following example will creates a flexible pool with max size set to the number of CPU cores. Where the `create` method requires you to give it a `React\ChildProcess\Process`. The `createFromClass` lets you pass a classname of a class implementing [`WyriHaximus\React\ChildProcess\Messenger\ChildInterface`](https://github.com/WyriHaximus/reactphp-child-process-messenger/blob/master/src/ChildInterface.php) that will be used as the worker in the client. Take a look at [`WyriHaximus\React\ChildProcess\Messenger\ReturnChild`](https://github.com/WyriHaximus/reactphp-child-process-messenger/blob/master/src/ReturnChild.php) to see how that works.
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+use React\EventLoop\Factory as EventLoopFactory;
+use WyriHaximus\React\ChildProcess\Pool\Factory\CpuCoreCountFixed;
+
+$loop = EventLoopFactory::create();
+
+CpuCoreCountFlexible::createFromClass('WyriHaximus\React\ChildProcess\Messenger\ReturnChild', $loop)->then(function (PoolInterface $pool) {
+  // Do things with the pool here
+});
+```
 
 ## License ##
 
