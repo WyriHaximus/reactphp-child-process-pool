@@ -34,6 +34,12 @@ interface ManagerInterface extends EventEmitterInterface
      */
     public function ping();
 
+    /**
+     * Broadcast a message to all workers
+     *
+     * @param Message $message
+     * @return void
+     */
     public function message(Message $message);
 
     /**
