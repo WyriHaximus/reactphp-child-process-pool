@@ -66,6 +66,7 @@ class Flexible implements PoolInterface
             $loop
         );
         $this->manager->on('ready', function (WorkerInterface $worker) {
+            $this->emit('worker', [$worker]);
             if ($this->queue->count() === 0) {
                 $worker->terminate();
                 return;
