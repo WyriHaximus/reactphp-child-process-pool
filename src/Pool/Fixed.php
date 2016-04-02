@@ -69,9 +69,11 @@ class Fixed implements PoolInterface
             if ($this->queue->count() === 0) {
                 return;
             }
-            $message = $this->queue->dequeue();
-            $hash = spl_object_hash($message);
-            $this->deferreds[$hash]->resolve($worker->rpc($message));
+
+            \React\Promise\resolve($this->queue->dequeue())->then(function (Rpc $message) use ($worker) {
+                $hash = spl_object_hash($message);
+                $this->deferreds[$hash]->resolve($worker->rpc($message));
+            });
         });
     }
 
