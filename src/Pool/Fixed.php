@@ -73,6 +73,7 @@ class Fixed implements PoolInterface
             \React\Promise\resolve($this->queue->dequeue())->then(function (Rpc $message) use ($worker) {
                 $hash = spl_object_hash($message);
                 $this->deferreds[$hash]->resolve($worker->rpc($message));
+                unset($this->deferreds[$hash]);
             });
         });
     }

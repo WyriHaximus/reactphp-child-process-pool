@@ -67,6 +67,7 @@ class Flexible implements PoolInterface
         );
         $this->manager->on('ready', function (WorkerInterface $worker) {
             if ($this->queue->count() === 0) {
+                show_memory('Terminated worker: ' . time());
                 $worker->terminate();
                 return;
             }
@@ -76,6 +77,7 @@ class Flexible implements PoolInterface
             \React\Promise\resolve($this->queue->dequeue())->then(function (Rpc $message) use ($worker) {
                 $hash = spl_object_hash($message);
                 $this->deferreds[$hash]->resolve($worker->rpc($message));
+                unset($this->deferreds[$hash]);
             });
         });
     }
