@@ -1,6 +1,6 @@
 all: cs dunit unit
 travis: cs unit-travis
-travis-after-script: travis-coverage benchmark
+travis-after-script: travis-coverage
 contrib: cs dunit unit
 
 init:
