@@ -72,6 +72,7 @@ class Fixed implements PoolInterface
             $message = $this->queue->dequeue();
             $hash = spl_object_hash($message);
             $this->deferreds[$hash]->resolve($worker->rpc($message));
+            unset($this->deferreds[$hash]);
         });
     }
 
