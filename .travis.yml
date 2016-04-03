@@ -51,12 +51,4 @@ before_script:
 script: make travis
 
 ## Gather coverage and set it to coverage servers
-after_script: make travis-coverage
-
-notifications:
-  webhooks:
-    urls:
-      - http://wyrihaximus.net/wyri_projects/wyri_projects/webhook/travisci.json
-    on_success: always
-    on_failure: always
-    on_start: true
+after_script: make travis-after-script
