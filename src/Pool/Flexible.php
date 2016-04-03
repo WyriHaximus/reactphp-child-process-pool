@@ -67,7 +67,6 @@ class Flexible implements PoolInterface
         );
         $this->manager->on('ready', function (WorkerInterface $worker) {
             if ($this->queue->count() === 0) {
-                show_memory('Terminated worker: ' . time());
                 $worker->terminate();
                 return;
             }
