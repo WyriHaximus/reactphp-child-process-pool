@@ -4,12 +4,14 @@ namespace WyriHaximus\React\ChildProcess\Pool\Pool;
 
 use Evenement\EventEmitterTrait;
 use React\EventLoop\LoopInterface;
+use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
+use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\PoolInterface;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
 use WyriHaximus\React\ChildProcess\Pool\QueueInterface;
@@ -67,7 +69,7 @@ class Flexible implements PoolInterface
         );
         $this->manager->on('ready', function (WorkerInterface $worker) {
             if ($this->queue->count() === 0) {
-                $worker->terminate();
+                $this->ttl($worker);
                 return;
             }
 
@@ -78,6 +80,32 @@ class Flexible implements PoolInterface
                 $this->deferreds[$hash]->resolve($worker->rpc($message));
                 unset($this->deferreds[$hash]);
             });
+        });
+    }
+
+    /**
+     * @param WorkerInterface $worker
+     */
+    protected function ttl(WorkerInterface $worker)
+    {
+        $stop = time() + (int)$this->options[Options::TTL];
+        $this->loop->addPeriodicTimer(0.1, function (TimerInterface $timer) use ($worker, $stop) {
+            if ($worker->isBusy()) {
+                $timer->cancel();
+                return;
+            }
+
+            if ($this->queue->count() > 0) {
+                $timer->cancel();
+                $this->manager->ping();
+                return;
+            }
+
+            if ($stop <= time()) {
+                $timer->cancel();
+                $worker->terminate();
+                return;
+            }
         });
     }
 

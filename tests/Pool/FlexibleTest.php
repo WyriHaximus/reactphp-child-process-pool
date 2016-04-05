@@ -148,6 +148,7 @@ class FlexibleTest extends TestCase
         $queue   = Phake::mock('WyriHaximus\React\ChildProcess\Pool\QueueInterface');
         $manager = Phake::mock('WyriHaximus\React\ChildProcess\Pool\ManagerInterface');
 
+        Phake::when($worker)->isBusy()->thenReturn(false);
         Phake::when($queue)->count()->thenReturn(0);
         Phake::when($queue)->dequeue()->thenReturn($message);
         Phake::when($manager)->on($this->isType('string'), $this->isType('callable'))->thenReturnCallback(function ($event, $function) use ($worker) {
@@ -158,13 +159,85 @@ class FlexibleTest extends TestCase
 
         $process = Phake::mock('React\ChildProcess\Process');
         $loop = Phake::mock('React\EventLoop\LoopInterface');
+        Phake::when($loop)->addPeriodicTimer($this->isType('float'), $this->isType('callable'))->thenReturnCallback(function ($interval, $function) {
+            $function(Phake::mock('React\EventLoop\Timer\TimerInterface'));
+        });
         Flexible::create($process, $loop, [
             Options::MANAGER => $manager,
             Options::QUEUE => $queue,
+            Options::TTL => 0,
         ])->then(function ($pool) use ($message) {
             $pool->rpc($message);
         });
 
         Phake::verify($worker)->terminate();
+    }
+
+    public function testManagerReadyQueueEmptyTtl()
+    {
+        $message = Factory::rpc('beer', ['foo' => 'bar']);
+        $worker  = Phake::mock('WyriHaximus\React\ChildProcess\Pool\WorkerInterface');
+        $queue   = Phake::mock('WyriHaximus\React\ChildProcess\Pool\QueueInterface');
+        $manager = Phake::mock('WyriHaximus\React\ChildProcess\Pool\ManagerInterface');
+
+        Phake::when($worker)->isBusy()->thenReturn(false);
+        $i = 0;
+        Phake::when($queue)->count()->thenReturnCallback(function () use (&$i) {
+            return $i++;
+        });
+        Phake::when($queue)->dequeue()->thenReturn($message);
+        Phake::when($manager)->on($this->isType('string'), $this->isType('callable'))->thenReturnCallback(function ($event, $function) use ($worker) {
+            $function($worker);
+        });
+
+        $poolInstance = null;
+
+        $process = Phake::mock('React\ChildProcess\Process');
+        $loop = Phake::mock('React\EventLoop\LoopInterface');
+        Phake::when($loop)->addPeriodicTimer($this->isType('float'), $this->isType('callable'))->thenReturnCallback(function ($interval, $function) {
+            $function(Phake::mock('React\EventLoop\Timer\TimerInterface'));
+        });
+        Flexible::create($process, $loop, [
+            Options::MANAGER => $manager,
+            Options::QUEUE => $queue,
+            Options::TTL => 0,
+        ])->then(function ($pool) use ($message) {
+            $pool->rpc($message);
+        });
+
+        Phake::verify($manager, Phake::times(2))->ping();
+    }
+
+    public function testManagerReadyQueueEmptyIsBusy()
+    {
+        $message = Factory::rpc('beer', ['foo' => 'bar']);
+        $worker  = Phake::mock('WyriHaximus\React\ChildProcess\Pool\WorkerInterface');
+        $queue   = Phake::mock('WyriHaximus\React\ChildProcess\Pool\QueueInterface');
+        $manager = Phake::mock('WyriHaximus\React\ChildProcess\Pool\ManagerInterface');
+        $timer   = Phake::mock('React\EventLoop\Timer\TimerInterface');
+
+        Phake::when($worker)->isBusy()->thenReturn(true);
+        Phake::when($queue)->count()->thenReturn(0);
+        Phake::when($queue)->dequeue()->thenReturn($message);
+        Phake::when($manager)->on($this->isType('string'), $this->isType('callable'))->thenReturnCallback(function ($event, $function) use ($worker) {
+            $function($worker);
+        });
+
+        $poolInstance = null;
+
+        $process = Phake::mock('React\ChildProcess\Process');
+        $loop = Phake::mock('React\EventLoop\LoopInterface');
+        Phake::when($loop)->addPeriodicTimer($this->isType('float'), $this->isType('callable'))->thenReturnCallback(function ($interval, $function) use ($timer) {
+            $function($timer);
+        });
+        Flexible::create($process, $loop, [
+            Options::MANAGER => $manager,
+            Options::QUEUE => $queue,
+            Options::TTL => 0,
+        ])->then(function ($pool) use ($message) {
+            $pool->rpc($message);
+        });
+
+        Phake::verify($timer)->cancel();
     }
 }
