@@ -85,10 +85,11 @@ class Fixed implements PoolInterface
     public function rpc(Rpc $message)
     {
         $hash = spl_object_hash($message);
-        $this->deferreds[$hash] = new Deferred();
+        $deferred = new Deferred();
+        $this->deferreds[$hash] = $deferred;
         $this->queue->enqueue($message);
         $this->manager->ping();
-        return $this->deferreds[$hash]->promise();
+        return $deferred->promise();
     }
 
     /**
