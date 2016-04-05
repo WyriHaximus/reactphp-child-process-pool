@@ -200,7 +200,7 @@ class FlexibleTest extends TestCase
         Flexible::create($process, $loop, [
             Options::MANAGER => $manager,
             Options::QUEUE => $queue,
-            Options::TTL => 0,
+            Options::TTL => 1,
         ])->then(function ($pool) use ($message) {
             $pool->rpc($message);
         });
