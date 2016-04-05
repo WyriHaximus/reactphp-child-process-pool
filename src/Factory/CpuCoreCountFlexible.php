@@ -27,6 +27,7 @@ class CpuCoreCountFlexible implements PoolFactoryInterface
     protected static $defaultOptions =[
         Options::MIN_SIZE => 0,
         Options::MAX_SIZE => 1,
+        Options::TTL      => 1,
     ];
 
     /**
