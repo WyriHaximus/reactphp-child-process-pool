@@ -20,7 +20,7 @@ class Flexible implements PoolFactoryInterface
     protected static $defaultOptions =[
         Options::MIN_SIZE => 0,
         Options::MAX_SIZE => 5,
-        Options::TTL      => 1,
+        Options::TTL      => 0,
     ];
 
     /**
