@@ -2,6 +2,9 @@
 
 namespace WyriHaximus\React\Tests\ChildProcess\Pool\Queue;
 
+use Clue\React\Block;
+use React\EventLoop\Factory as LoopFactory;
+use React\Promise;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory;
 use WyriHaximus\React\ChildProcess\Pool\QueueInterface;
 
@@ -40,11 +43,16 @@ trait QueueTestTrait
         $this->assertSame(2, $queue->count());
         $queue->enqueue($rpc2);
         $this->assertSame(3, $queue->count());
-        $this->assertSame($rpc0, $queue->dequeue());
+        $this->assertSame(json_encode($rpc0), json_encode($this->dequeue($queue->dequeue())));
         $this->assertSame(2, $queue->count());
-        $this->assertSame($rpc1, $queue->dequeue());
+        $this->assertSame(json_encode($rpc1), json_encode($this->dequeue($queue->dequeue())));
         $this->assertSame(1, $queue->count());
-        $this->assertSame($rpc2, $queue->dequeue());
+        $this->assertSame(json_encode($rpc2), json_encode($this->dequeue($queue->dequeue())));
         $this->assertSame(0, $queue->count());
+    }
+
+    protected function dequeue($item)
+    {
+        return Block\await(Promise\resolve($item), LoopFactory::create(), 5);
     }
 }
