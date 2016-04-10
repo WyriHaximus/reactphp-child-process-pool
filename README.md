@@ -4,7 +4,7 @@
 [![Windows Build status](https://ci.appveyor.com/api/projects/status/b3l3s44sla00nygw?svg=true)](https://ci.appveyor.com/project/WyriHaximus/reactphp-child-process-pool)
 [![Latest Stable Version](https://poser.pugx.org/WyriHaximus/react-child-process-pool/v/stable.png)](https://packagist.org/packages/WyriHaximus/react-child-process-pool)
 [![Total Downloads](https://poser.pugx.org/wyrihaximus/react-child-process-pool/downloads.png)](https://packagist.org/packages/wyrihaximus/react-child-process-pool)
-[![Code Coverage](https://scrutinizer-ci.com/g/WyriHaximus/react-child-process-pool/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/WyriHaximus/react-child-process-pool/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/WyriHaximus/reactphp-child-process-pool/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/WyriHaximus/react-child-process-pool/?branch=master)
 [![License](https://poser.pugx.org/wyrihaximus/react-child-process-pool/license.png)](https://packagist.org/packages/wyrihaximus/react-child-process-pool)
 [![PHP 7 ready](http://php7ready.timesplinter.ch/WyriHaximus/reactphp-child-process-pool/badge.svg)](https://travis-ci.org/WyriHaximus/reactphp-child-process-pool)
 
