@@ -146,4 +146,9 @@ class Flexible implements ManagerInterface
             'idle' => $count - $busy,
         ];
     }
+
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+    }
 }

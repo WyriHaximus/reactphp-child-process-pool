@@ -130,4 +130,16 @@ class Fixed implements PoolInterface
             Info::SIZE  => $workers[Info::TOTAL],
         ];
     }
+
+    /**
+     * Override option
+     *
+     * @param $key
+     * @param $value
+     */
+    public function setOption($key, $value)
+    {
+        $this->options[$key] = $value;
+        $this->manager->setOptions($this->options);
+    }
 }

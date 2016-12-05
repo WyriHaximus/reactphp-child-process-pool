@@ -103,4 +103,9 @@ class Fixed implements ManagerInterface
             Info::IDLE => $count - $busy,
         ];
     }
+
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+    }
 }
