@@ -3,10 +3,13 @@
 namespace WyriHaximus\React\Tests\ChildProcess\Pool\Pool;
 
 use Phake;
+use React\EventLoop\Factory as LoopFactory;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory;
 use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\Factory\Flexible;
+use WyriHaximus\React\ChildProcess\Pool\Pool\Flexible as FlexiblePool;
+use WyriHaximus\React\ChildProcess\Pool\ProcessCollection\Single;
 use WyriHaximus\React\Tests\ChildProcess\Pool\TestCase;
 
 class FlexibleTest extends TestCase
@@ -239,5 +242,33 @@ class FlexibleTest extends TestCase
         });
 
         Phake::verify($timer)->cancel();
+    }
+
+    public function testSetOption()
+    {
+        $manager = Phake::mock('WyriHaximus\React\ChildProcess\Pool\Manager\Fixed');
+        $options = [
+            Options::SIZE => 1337,
+            Options::MANAGER => $manager,
+        ];
+        $loop = LoopFactory::create();
+        $processCollection = new Single(function () {
+            return Phake::mock('React\ChildProcess\Process');
+        });
+        $pool = new FlexiblePool($processCollection, $loop, $options);
+        $pool->setOption('key', 'value');
+        $pool->setOption(Options::SIZE, 128);
+        Phake::inOrder(
+            Phake::verify($manager)->setOptions([
+                'key' => 'value',
+                Options::SIZE => 1337,
+                Options::MANAGER => $manager,
+            ]),
+            Phake::verify($manager)->setOptions([
+                'key' => 'value',
+                Options::SIZE => 128,
+                Options::MANAGER => $manager,
+            ])
+        );
     }
 }
