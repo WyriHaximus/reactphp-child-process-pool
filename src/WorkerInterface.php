@@ -32,6 +32,11 @@ interface WorkerInterface extends EventEmitterInterface
     public function isBusy();
 
     /**
+     * @return bool
+     */
+    public function isTerminating();
+
+    /**
      * @return PromiseInterface
      */
     public function terminate();

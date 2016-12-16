@@ -53,4 +53,16 @@ class WorkerTest extends TestCase
         $worker->message($message);
         Phake::verify($messenger)->message($message);
     }
+
+    public function testTerminate()
+    {
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        $worker = new Worker($messenger);
+
+        $this->assertFalse($worker->isBusy());
+        $this->assertFalse($worker->isTerminating());
+        $worker->terminate();
+        $this->assertTrue($worker->isBusy());
+        $this->assertTrue($worker->isTerminating());
+    }
 }

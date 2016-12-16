@@ -23,6 +23,11 @@ class Worker implements WorkerInterface
     protected $busy = false;
 
     /**
+     * @var bool
+     */
+    protected $terminating = false;
+
+    /**
      * @param Messenger $messenger
      */
     public function __construct(Messenger $messenger)
@@ -59,11 +64,20 @@ class Worker implements WorkerInterface
         return $this->busy;
     }
 
+    /**
+     * @return bool
+     */
+    public function isTerminating()
+    {
+        return $this->terminating;
+    }
+
     /*
      * @return PromiseInterface
      */
     public function terminate()
     {
+        $this->terminating = true;
         $this->busy = true;
         $this->emit('terminating', [$this]);
         return $this->messenger->softTerminate();
