@@ -80,6 +80,10 @@ class Worker implements WorkerInterface
         $this->terminating = true;
         $this->busy = true;
         $this->emit('terminating', [$this]);
-        return $this->messenger->softTerminate();
+        $promise = $this->messenger->softTerminate();
+        $promise->always(function () {
+            $this->emit('terminated', [$this]);
+        });
+        return $promise;
     }
 }

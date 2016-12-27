@@ -6,6 +6,7 @@ use Evenement\EventEmitterTrait;
 use React\EventLoop\LoopInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
+use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
 use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
@@ -47,7 +48,12 @@ class Flexible implements ManagerInterface
     /**
      * @var int
      */
-    protected $startingProcesses = 0;
+    protected $workerCount = 0;
+
+    /**
+     * @var int
+     */
+    protected $terminatingCount = 0;
 
     public function __construct(ProcessCollectionInterface $processCollection, LoopInterface $loop, array $options = [])
     {
@@ -67,25 +73,26 @@ class Flexible implements ManagerInterface
 
     protected function spawn()
     {
-        $this->startingProcesses++;
+        $this->workerCount++;
         $current = $this->processCollection->current();
         $promise = $current($this->loop, $this->options);
         $promise->then(function (Messenger $messenger) {
             $worker = new Worker($messenger);
-            $this->workers[] = $worker;
+            $this->workers[spl_object_hash($worker)] = $worker;
             $worker->on('done', function (WorkerInterface $worker) {
                 $this->workerAvailable($worker);
             });
             $worker->on('terminating', function (WorkerInterface $worker) {
-                foreach ($this->workers as $key => $value) {
-                    if ($worker === $value) {
-                        unset($this->workers[$key]);
-                        break;
-                    }
-                }
+                unset($this->workers[spl_object_hash($worker)]);
+                $this->workerCount--;
+                $this->terminatingCount++;
+            });
+            $worker->on('terminated', function (WorkerInterface $worker) {
+                $this->terminatingCount--;
             });
             $this->workerAvailable($worker);
-            $this->startingProcesses--;
+        }, function () {
+            $this->workerCount--;
         });
 
         $this->processCollection->next();
@@ -103,12 +110,12 @@ class Flexible implements ManagerInterface
             }
         }
 
-        if (count($this->workers) + $this->startingProcesses < $this->options[Options::MIN_SIZE]) {
+        if ($this->workerCount < $this->options[Options::MIN_SIZE]) {
             $this->spawn();
             return;
         }
 
-        if (count($this->workers) + $this->startingProcesses < $this->options[Options::MAX_SIZE]) {
+        if ($this->workerCount < $this->options[Options::MAX_SIZE]) {
             $this->spawn();
         }
     }
@@ -134,16 +141,21 @@ class Flexible implements ManagerInterface
     public function info()
     {
         $count = count($this->workers);
+
         $busy = 0;
         foreach ($this->workers as $worker) {
             if ($worker->isBusy()) {
                 $busy++;
             }
         }
+
         return [
-            'total' => $count,
-            'busy' => $busy,
-            'idle' => $count - $busy,
+            Info::TOTAL       => $this->workerCount + $this->terminatingCount,
+            Info::STARTING    => $this->workerCount - $count,
+            Info::RUNNING     => $count + $this->terminatingCount,
+            Info::TERMINATING => $this->terminatingCount,
+            Info::BUSY        => $busy,
+            Info::IDLE        => $count - $busy,
         ];
     }
 

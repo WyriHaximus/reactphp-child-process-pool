@@ -72,6 +72,9 @@ class FixedTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 0,
+            Info::STARTING => 0,
+            Info::RUNNING => 0,
+            Info::TERMINATING => 0,
             Info::BUSY => 0,
             Info::IDLE => 0,
         ], $this->manager->info());
@@ -122,6 +125,9 @@ class FixedTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 1,
+            Info::STARTING => 0,
+            Info::RUNNING => 1,
+            Info::TERMINATING => 0,
             Info::BUSY => 0,
             Info::IDLE => 1,
         ], $this->manager->info());
@@ -130,6 +136,9 @@ class FixedTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 1,
+            Info::STARTING => 0,
+            Info::RUNNING => 1,
+            Info::TERMINATING => 0,
             Info::BUSY => 1,
             Info::IDLE => 0,
         ], $this->manager->info());
@@ -138,6 +147,9 @@ class FixedTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 1,
+            Info::STARTING => 0,
+            Info::RUNNING => 1,
+            Info::TERMINATING => 0,
             Info::BUSY => 0,
             Info::IDLE => 1,
         ], $this->manager->info());
@@ -145,9 +157,11 @@ class FixedTest extends TestCase
 
     public function testTerminate()
     {
+        $terminateDeferred = new Deferred();
         $workerDeferred = new Deferred();
         $worker = null;
         $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        Phake::when($messenger)->softTerminate()->thenReturn($terminateDeferred->promise());
 
         Phake::when($this->processCollection)->current()->thenReturnCallback(function () use ($workerDeferred) {
             return function () use ($workerDeferred) {
@@ -165,11 +179,15 @@ class FixedTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 1,
+            Info::STARTING => 0,
+            Info::RUNNING => 1,
+            Info::TERMINATING => 0,
             Info::BUSY => 0,
             Info::IDLE => 1,
         ], $this->manager->info());
 
         $emittedTerminate = false;
+
         $worker->on('terminating', function ($worker) use (&$emittedTerminate) {
             $this->assertInstanceOf('WyriHaximus\React\ChildProcess\Pool\WorkerInterface', $worker);
             $emittedTerminate = true;
@@ -179,7 +197,21 @@ class FixedTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 1,
-            Info::BUSY => 1,
+            Info::STARTING => 0,
+            Info::RUNNING => 1,
+            Info::TERMINATING => 1,
+            Info::BUSY => 0,
+            Info::IDLE => 0,
+        ], $this->manager->info());
+
+        $terminateDeferred->resolve();
+
+        $this->assertSame([
+            Info::TOTAL => 0,
+            Info::STARTING => 0,
+            Info::RUNNING => 0,
+            Info::TERMINATING => 0,
+            Info::BUSY => 0,
             Info::IDLE => 0,
         ], $this->manager->info());
 
@@ -210,5 +242,17 @@ class FixedTest extends TestCase
         $this->manager->message($message);
 
         Phake::verify($messenger)->message($message);
+    }
+
+    public function testSetOptions()
+    {
+        Phake::when($this->processCollection)->current()->thenReturn(function () {
+            return \React\Promise\resolve(
+                Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger')
+            );
+        });
+        $this->manager = new Fixed($this->processCollection, $this->loop, [
+            Options::SIZE => 1,
+        ]);
     }
 }

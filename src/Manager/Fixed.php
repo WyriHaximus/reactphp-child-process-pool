@@ -23,31 +23,75 @@ class Fixed implements ManagerInterface
     protected $loop;
 
     /**
+     * @var ProcessCollectionInterface
+     */
+    protected $processesCollection;
+
+    /**
      * @var WorkerInterface[]
      */
     protected $workers = [];
 
+    /**
+     * @var array
+     */
+    protected $options;
+
+    /**
+     * @var int
+     */
+    protected $workerCount = 0;
+
+    /**
+     * @var int
+     */
+    protected $terminatingCount = 0;
+
     public function __construct(ProcessCollectionInterface $processCollection, LoopInterface $loop, array $options = [])
     {
+        $this->options = $options;
         $this->loop = $loop;
+        $this->processesCollection = $processCollection;
         $processCollection->rewind();
-        for ($i = 0; $i < $options[Options::SIZE]; $i++) {
-            $this->spawn($processCollection, $options);
+        $this->spawnWorkers($this->options[Options::SIZE]);
+    }
+
+    protected function spawnWorkers($count)
+    {
+        for ($i = 0; $i < $count; $i++) {
+            $this->spawn($this->processesCollection, $this->options);
         }
     }
 
     protected function spawn($processCollection, $options)
     {
+        $this->workerCount++;
         $workerDone = function (WorkerInterface $worker) {
+            if ($this->workerCount > $this->options[Options::SIZE]) {
+                $worker->terminate();
+                $this->workerCount--;
+                return;
+            }
+
             $this->workerAvailable($worker);
         };
         $current = $processCollection->current();
         $promise = $current($this->loop, $options);
         $promise->then(function (Messenger $messenger) use ($workerDone) {
             $worker = new Worker($messenger);
-            $this->workers[] = $worker;
+            $this->workers[spl_object_hash($worker)] = $worker;
             $worker->on('done', $workerDone);
+            $worker->on('terminating', function (WorkerInterface $worker) {
+                unset($this->workers[spl_object_hash($worker)]);
+                $this->workerCount--;
+                $this->terminatingCount++;
+            });
+            $worker->on('terminated', function (WorkerInterface $worker) {
+                $this->terminatingCount--;
+            });
             $this->workerAvailable($worker);
+        }, function () {
+            $this->workerCount--;
         });
 
         $processCollection->next();
@@ -63,6 +107,10 @@ class Fixed implements ManagerInterface
 
     public function ping()
     {
+        if ($this->workerCount < $this->options[Options::SIZE]) {
+            $this->spawnWorkers($this->options[Options::SIZE] - $this->workerCount);
+        }
+
         foreach ($this->workers as $worker) {
             if (!$worker->isBusy()) {
                 $this->workerAvailable($worker);
@@ -91,21 +139,27 @@ class Fixed implements ManagerInterface
     public function info()
     {
         $count = count($this->workers);
+
         $busy = 0;
         foreach ($this->workers as $worker) {
             if ($worker->isBusy()) {
                 $busy++;
             }
         }
+
         return [
-            Info::TOTAL => $count,
-            Info::BUSY => $busy,
-            Info::IDLE => $count - $busy,
+            Info::TOTAL       => $this->workerCount + $this->terminatingCount,
+            Info::STARTING    => $this->workerCount - $count,
+            Info::RUNNING     => $count + $this->terminatingCount,
+            Info::TERMINATING => $this->terminatingCount,
+            Info::BUSY        => $busy,
+            Info::IDLE        => $count - $busy,
         ];
     }
 
     public function setOptions(array $options)
     {
         $this->options = $options;
+        $this->ping();
     }
 }

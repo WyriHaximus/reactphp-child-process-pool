@@ -72,6 +72,9 @@ class FlexibleTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 0,
+            Info::STARTING => 0,
+            Info::RUNNING => 0,
+            Info::TERMINATING => 0,
             Info::BUSY => 0,
             Info::IDLE => 0,
         ], $this->manager->info());
@@ -122,6 +125,9 @@ class FlexibleTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 1,
+            Info::STARTING => 0,
+            Info::RUNNING => 1,
+            Info::TERMINATING => 0,
             Info::BUSY => 0,
             Info::IDLE => 1,
         ], $this->manager->info());
@@ -130,6 +136,9 @@ class FlexibleTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 1,
+            Info::STARTING => 0,
+            Info::RUNNING => 1,
+            Info::TERMINATING => 0,
             Info::BUSY => 0,
             Info::IDLE => 1,
         ], $this->manager->info());
@@ -138,6 +147,9 @@ class FlexibleTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 1,
+            Info::STARTING => 0,
+            Info::RUNNING => 1,
+            Info::TERMINATING => 0,
             Info::BUSY => 1,
             Info::IDLE => 0,
         ], $this->manager->info());
@@ -146,6 +158,9 @@ class FlexibleTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 1,
+            Info::STARTING => 0,
+            Info::RUNNING => 1,
+            Info::TERMINATING => 0,
             Info::BUSY => 0,
             Info::IDLE => 1,
         ], $this->manager->info());
@@ -153,9 +168,11 @@ class FlexibleTest extends TestCase
 
     public function testTerminate()
     {
+        $terminateDeferred = new Deferred();
         $workerDeferred = new Deferred();
         $worker = null;
         $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        Phake::when($messenger)->softTerminate()->thenReturn($terminateDeferred->promise());
 
         Phake::when($this->processCollection)->current()->thenReturnCallback(function () use ($workerDeferred) {
             return function () use ($workerDeferred) {
@@ -173,6 +190,9 @@ class FlexibleTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 1,
+            Info::STARTING => 0,
+            Info::RUNNING => 1,
+            Info::TERMINATING => 0,
             Info::BUSY => 0,
             Info::IDLE => 1,
         ], $this->manager->info());
@@ -181,6 +201,9 @@ class FlexibleTest extends TestCase
 
         $this->assertSame([
             Info::TOTAL => 1,
+            Info::STARTING => 0,
+            Info::RUNNING => 1,
+            Info::TERMINATING => 0,
             Info::BUSY => 0,
             Info::IDLE => 1,
         ], $this->manager->info());
@@ -194,7 +217,21 @@ class FlexibleTest extends TestCase
         $this->manager->terminate();
 
         $this->assertSame([
+            Info::TOTAL => 1,
+            Info::STARTING => 0,
+            Info::RUNNING => 1,
+            Info::TERMINATING => 1,
+            Info::BUSY => 0,
+            Info::IDLE => 0,
+        ], $this->manager->info());
+
+        $terminateDeferred->resolve();
+
+        $this->assertSame([
             Info::TOTAL => 0,
+            Info::STARTING => 0,
+            Info::RUNNING => 0,
+            Info::TERMINATING => 0,
             Info::BUSY => 0,
             Info::IDLE => 0,
         ], $this->manager->info());
@@ -207,6 +244,7 @@ class FlexibleTest extends TestCase
     {
         $rpc = Factory::rpc('foo', ['bar']);
         $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        Phake::when($messenger)->softTerminate()->thenReturn(new FulfilledPromise());
         Phake::when($messenger)->rpc($rpc)->thenReturn((new Deferred())->promise());
         $loop = Phake::mock('React\EventLoop\LoopInterface');
         $processCollection = Phake::mock('WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface');
