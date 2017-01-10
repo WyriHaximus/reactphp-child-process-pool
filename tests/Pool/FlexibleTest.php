@@ -70,10 +70,10 @@ class FlexibleTest extends TestCase
         $this->assertTrue($promiseHasResolved);
 
         $this->assertSame([
+            Info::TOTAL => 1,
+            Info::IDLE  => 2,
             Info::BUSY  => 3,
             Info::CALLS => 4,
-            Info::IDLE  => 2,
-            Info::SIZE  => 1,
         ], $poolInstance->info());
     }
 
