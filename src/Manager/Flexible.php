@@ -55,6 +55,11 @@ class Flexible implements ManagerInterface
      */
     protected $terminatingCount = 0;
 
+    /**
+     * @var int
+     */
+    protected $startingCount = 0;
+
     public function __construct(ProcessCollectionInterface $processCollection, LoopInterface $loop, array $options = [])
     {
         $this->processCollection = $processCollection;
@@ -73,10 +78,12 @@ class Flexible implements ManagerInterface
 
     protected function spawn()
     {
-        $this->workerCount++;
+        $this->startingCount++;
         $current = $this->processCollection->current();
         $promise = $current($this->loop, $this->options);
         $promise->then(function (Messenger $messenger) {
+            $this->startingCount--;
+            $this->workerCount++;
             $worker = new Worker($messenger);
             $this->workers[spl_object_hash($worker)] = $worker;
             $worker->on('done', function (WorkerInterface $worker) {
@@ -92,7 +99,7 @@ class Flexible implements ManagerInterface
             });
             $this->workerAvailable($worker);
         }, function () {
-            $this->workerCount--;
+            $this->startingCount--;
         });
 
         $this->processCollection->next();
@@ -140,8 +147,6 @@ class Flexible implements ManagerInterface
 
     public function info()
     {
-        $count = count($this->workers);
-
         $busy = 0;
         foreach ($this->workers as $worker) {
             if ($worker->isBusy()) {
@@ -151,11 +156,11 @@ class Flexible implements ManagerInterface
 
         return [
             Info::TOTAL       => $this->workerCount + $this->terminatingCount,
-            Info::STARTING    => $this->workerCount - $count,
-            Info::RUNNING     => $count + $this->terminatingCount,
+            Info::STARTING    => $this->startingCount,
+            Info::RUNNING     => $this->workerCount,
             Info::TERMINATING => $this->terminatingCount,
             Info::BUSY        => $busy,
-            Info::IDLE        => $count - $busy,
+            Info::IDLE        => $this->workerCount - $busy,
         ];
     }
 

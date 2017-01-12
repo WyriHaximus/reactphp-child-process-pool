@@ -219,7 +219,7 @@ class FlexibleTest extends TestCase
         $this->assertSame([
             Info::TOTAL => 1,
             Info::STARTING => 0,
-            Info::RUNNING => 1,
+            Info::RUNNING => 0,
             Info::TERMINATING => 1,
             Info::BUSY => 0,
             Info::IDLE => 0,
