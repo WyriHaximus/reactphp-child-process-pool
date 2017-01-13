@@ -117,12 +117,12 @@ class Flexible implements ManagerInterface
             }
         }
 
-        if ($this->workerCount < $this->options[Options::MIN_SIZE]) {
+        if ($this->workerCount + $this->startingCount < $this->options[Options::MIN_SIZE]) {
             $this->spawn();
             return;
         }
 
-        if ($this->workerCount < $this->options[Options::MAX_SIZE]) {
+        if ($this->workerCount + $this->startingCount < $this->options[Options::MAX_SIZE]) {
             $this->spawn();
         }
     }
