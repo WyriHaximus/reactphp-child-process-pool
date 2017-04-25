@@ -18,6 +18,8 @@ php:
 
 ## Build matrix for lowest and highest possible targets
 matrix:
+  allow_failures:
+  - php: nightly
   include:
     - php: 5.4
       env: dependencies=lowest

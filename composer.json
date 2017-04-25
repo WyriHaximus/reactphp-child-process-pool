@@ -15,7 +15,7 @@
     "wyrihaximus/cpu-core-detector": "^1.0.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.8||^5.0",
+    "phpunit/phpunit": "^4.8.35||^5.0",
     "phake/phake": "^2.2.1",
     "vectorface/dunit": "~2.0",
     "squizlabs/php_codesniffer": "^1.5.6",
