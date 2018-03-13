@@ -1,7 +1,7 @@
 <?php
 
 const MB = 1048576;
-const I = 100000;
+const I = 25000;
 
 function show_memory($message = '')
 {
