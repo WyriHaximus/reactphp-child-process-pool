@@ -31,17 +31,28 @@ show_memory('Begin');
 
 $loop = EventLoopFactory::create();
 
-Flexible::createFromClass('WyriHaximus\React\ChildProcess\Messenger\ReturnChild', $loop)->then(function (PoolInterface $messenger) use ($loop) {
+Flexible::createFromClass('WyriHaximus\React\ChildProcess\Messenger\ReturnChild', $loop)->done(function (PoolInterface $messenger) use ($loop) {
     $messenger->on('error', function ($e) {
         echo 'Error: ', var_export($e, true), PHP_EOL;
     });
 
-    for ($i = 0; $i <= I; $i++) {
+    $i = 0;
+    $loop->addPeriodicTimer(0.0001, function (Timer $timer) use (&$i, $messenger) {
+        if ($i >= I) {
+            $timer->cancel();
+            $messenger->terminate();
+
+            show_memory('Completed messaging');
+            return;
+        }
+
         $messenger->rpc(MessagesFactory::rpc('return', [
             'i' => $i,
             'time' => time(),
         ]));
-    }
+
+        $i++;
+    });
 });
 
 $loop->run();

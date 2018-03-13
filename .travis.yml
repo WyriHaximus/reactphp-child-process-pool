@@ -65,7 +65,9 @@ before_script:
   - composer show -i
 
 ## Run the actual test
-script: make travis
+script:
+  - make travis
+  - php benchmark/memory.php
 
 ## Gather coverage and set it to coverage servers
 after_script: make travis-after-script
