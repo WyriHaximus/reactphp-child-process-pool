@@ -47,9 +47,9 @@ matrix:
       env: dependencies=highest
     - php: 7.0
       env: dependencies=highest
-    - php: 7.2
-      env: dependencies=highest
     - php: 7.1
+      env: dependencies=highest
+    - php: 7.2
       env: dependencies=highest
     - php: hhvm
       env: dependencies=highest
