@@ -238,6 +238,6 @@ class FlexibleTest extends TestCase
             $pool->rpc($message);
         });
 
-        Phake::verify($timer)->cancel();
+        Phake::verify($loop)->cancelTimer($timer);
     }
 }
