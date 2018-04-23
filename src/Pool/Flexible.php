@@ -89,20 +89,20 @@ class Flexible implements PoolInterface
     protected function ttl(WorkerInterface $worker)
     {
         $stop = time() + (int)$this->options[Options::TTL];
-        $this->loop->addPeriodicTimer(0.1, function (TimerInterface $timer) use ($worker, $stop) {
+        $this->loop->addPeriodicTimer(0.1, function ($timer) use ($worker, $stop) {
             if ($worker->isBusy()) {
-                $timer->cancel();
+                $this->loop->cancelTimer($timer);
                 return;
             }
 
             if ($this->queue->count() > 0) {
-                $timer->cancel();
+                $this->loop->cancelTimer($timer);
                 $this->manager->ping();
                 return;
             }
 
             if ($stop <= time()) {
-                $timer->cancel();
+                $this->loop->cancelTimer($timer);
                 $worker->terminate();
                 return;
             }
