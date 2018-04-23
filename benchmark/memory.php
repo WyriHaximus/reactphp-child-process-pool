@@ -19,12 +19,8 @@ show_memory('Bare init');
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 use React\EventLoop\Factory as EventLoopFactory;
-use React\EventLoop\Timer\Timer;
-use WyriHaximus\React\ChildProcess\Messenger\Factory as MessengerFactory;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory as MessagesFactory;
-use WyriHaximus\React\ChildProcess\Messenger\Messenger;
 use WyriHaximus\React\ChildProcess\Pool\Factory\Flexible;
-use WyriHaximus\React\ChildProcess\Pool\PoolInfoInterface;
 use WyriHaximus\React\ChildProcess\Pool\PoolInterface;
 
 show_memory('Begin');
