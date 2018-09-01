@@ -51,7 +51,7 @@ $options = [
     Options::SIZE => 5,
 ];
 Fixed::createFromClass(ReturnChild::class, $loop, $options)->then(function (PoolInterface $pool) {
-    // You now have a pull with 15 always running child processes 
+    // You now have a pull with 5 always running child processes 
 });
 ```
 
