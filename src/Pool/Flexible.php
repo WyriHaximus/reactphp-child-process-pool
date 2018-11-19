@@ -153,12 +153,20 @@ class Flexible implements PoolInterface
      */
     public function info()
     {
-        $workers = $this->manager->info();
-        return [
-            Info::BUSY  => $workers[Info::BUSY],
-            Info::CALLS => $this->queue->count(),
-            Info::IDLE  => $workers[Info::IDLE],
-            Info::SIZE  => $workers[Info::TOTAL],
-        ];
+        $info = $this->manager->info();
+        $info[Info::CALLS] = $this->queue->count();
+        return $info;
+    }
+
+    /**
+     * Override option
+     *
+     * @param $key
+     * @param $value
+     */
+    public function setOption($key, $value)
+    {
+        $this->options[$key] = $value;
+        $this->manager->setOptions($this->options);
     }
 }

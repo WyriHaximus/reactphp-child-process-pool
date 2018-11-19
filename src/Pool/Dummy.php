@@ -56,4 +56,8 @@ class Dummy implements PoolInterface
     {
         return [];
     }
+
+    public function setOption($key, $value)
+    {
+    }
 }

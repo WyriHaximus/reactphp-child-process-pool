@@ -99,6 +99,10 @@ CpuCoreCountFlexible::createFromClass(ReturnChild::class, $loop)->then(function 
 });
 ```
 
+## Updating options during run time
+
+A new feature in `1.5` is the `setOptions` method on pools. Which allows you to update a pools settings. This feature allows you to scale the amount of workers up and down when needed.
+
 ## License ##
 
 Copyright 2017 [Cees-Jan Kiewiet](http://wyrihaximus.net/)

@@ -43,4 +43,12 @@ interface PoolInterface extends PoolInfoInterface, EventEmitterInterface
      * @return mixed
      */
     public function terminate(Message $message, $timeout = 5, $signal = null);
+
+    /**
+     * Override option
+     *
+     * @param $key
+     * @param $value
+     */
+    public function setOption($key, $value);
 }

@@ -51,4 +51,12 @@ interface ManagerInterface extends EventEmitterInterface
      * @return array
      */
     public function info();
+
+    /**
+     * Overwrite the current options
+     *
+     * @param array $options
+     * @return void
+     */
+    public function setOptions(array $options);
 }

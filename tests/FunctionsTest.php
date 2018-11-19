@@ -125,17 +125,19 @@ class FunctionsTest extends TestCase
 
     public function providerGetManager()
     {
+        $processCollection = Phake::mock('WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface');
+
         $r = [];
 
         $r[] = [
             [
                 Options::SIZE => 0,
             ],
-            Phake::mock('WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface'),
+            $processCollection,
             'WyriHaximus\React\ChildProcess\Pool\Manager\Fixed',
             Factory::create(),
             new Fixed(
-                Phake::mock('WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface'),
+                $processCollection,
                 Factory::create(),
                 [
                     Options::SIZE => 0,
@@ -149,13 +151,12 @@ class FunctionsTest extends TestCase
                 Options::MANAGER => $mock,
                 Options::SIZE => 0,
             ],
-            Phake::mock('WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface'),
+            $processCollection,
             'WyriHaximus\React\ChildProcess\Pool\Queue\Memory',
             Factory::create(),
             $mock,
         ];
 
-        $processCollection = Phake::mock('WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface');
         $r[] = [
             [
                 Options::MANAGER => new Flexible(
@@ -168,7 +169,7 @@ class FunctionsTest extends TestCase
                 ),
                 Options::SIZE => 0,
             ],
-            Phake::mock('WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface'),
+            $processCollection,
             'WyriHaximus\React\ChildProcess\Pool\Queue\Memory',
             Factory::create(),
             new Flexible(

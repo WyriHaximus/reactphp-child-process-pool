@@ -13,6 +13,7 @@ class WorkerTest extends TestCase
     public function testWorker()
     {
         $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        Phake::when($messenger)->softTerminate()->thenReturn(new FulfilledPromise());
         $worker = new Worker($messenger);
 
         $this->assertFalse($worker->isBusy());
@@ -52,5 +53,18 @@ class WorkerTest extends TestCase
 
         $worker->message($message);
         Phake::verify($messenger)->message($message);
+    }
+
+    public function testTerminate()
+    {
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        Phake::when($messenger)->softTerminate()->thenReturn(new FulfilledPromise());
+        $worker = new Worker($messenger);
+
+        $this->assertFalse($worker->isBusy());
+        $this->assertFalse($worker->isTerminating());
+        $worker->terminate();
+        $this->assertTrue($worker->isBusy());
+        $this->assertTrue($worker->isTerminating());
     }
 }
