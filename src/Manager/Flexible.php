@@ -70,7 +70,7 @@ class Flexible implements ManagerInterface
         $this->startingProcesses++;
         $current = $this->processCollection->current();
         $promise = $current($this->loop, $this->options);
-        $promise->then(function (Messenger $messenger) {
+        $promise->done(function (Messenger $messenger) {
             $worker = new Worker($messenger);
             $this->workers[] = $worker;
             $worker->on('done', function (WorkerInterface $worker) {
@@ -86,6 +86,8 @@ class Flexible implements ManagerInterface
             });
             $this->workerAvailable($worker);
             $this->startingProcesses--;
+        }, function () {
+            $this->ping();
         });
 
         $this->processCollection->next();
