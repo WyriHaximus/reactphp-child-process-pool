@@ -972,20 +972,21 @@
         },
         {
             "name": "wyrihaximus/ticking-promise",
-            "version": "1.6.1",
+            "version": "1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/TickingPromise.git",
-                "reference": "8d26b1458e32c367ba6fb8ad5042046279acdb12"
+                "reference": "4bb99024402bb7526de8880f3dab0c1f0858def5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/TickingPromise/zipball/8d26b1458e32c367ba6fb8ad5042046279acdb12",
-                "reference": "8d26b1458e32c367ba6fb8ad5042046279acdb12",
+                "url": "https://api.github.com/repos/WyriHaximus/TickingPromise/zipball/4bb99024402bb7526de8880f3dab0c1f0858def5",
+                "reference": "4bb99024402bb7526de8880f3dab0c1f0858def5",
                 "shasum": ""
             },
             "require": {
-                "react/event-loop": "^0.4",
+                "php": "^7.0 || ^5.4",
+                "react/event-loop": "^1.0 || ^0.5 || ^0.4",
                 "react/promise": "~2.1"
             },
             "require-dev": {
@@ -1014,7 +1015,7 @@
                 }
             ],
             "description": "Wrapping ticks into a promise",
-            "time": "2016-03-05T20:23:05+00:00"
+            "time": "2018-04-05T12:36:50+00:00"
         }
     ],
     "packages-dev": [
