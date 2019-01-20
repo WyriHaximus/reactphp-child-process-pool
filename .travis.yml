@@ -1,73 +1,133 @@
 language: php
-sudo: false
 
 ## Cache composer bits
 cache:
   directories:
-    - $HOME/.composer/cache
+    - $HOME/.composer/cache/files
 
-## PHP versions we test against
-php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - 7.1
-  - 7.2
-  - nightly
-  - hhvm
+# OS X required packages
+addons:
+  homebrew:
+    packages:
+      - php
+      - composer
 
 ## Build matrix for lowest and highest possible targets
 matrix:
-  allow_failures:
-  - php: nightly
-  - php: hhvm
   include:
     - php: 5.4
-      env: dependencies=lowest
     - php: 5.5
-      env: dependencies=lowest
     - php: 5.6
-      env: dependencies=lowest
     - php: 7.0
-      env: dependencies=lowest
+      env:
+        - qaExtended=true
     - php: 7.1
-      env: dependencies=lowest
     - php: 7.2
-      env: dependencies=lowest
-    - php: hhvm
-      env: dependencies=lowest
+    - php: 7.3
     - php: nightly
-      env: dependencies=lowest
+      env:
+        - dropPlatform=false
     - php: 5.4
-      env: dependencies=highest
+      env:
+        - dependencies=lowest
     - php: 5.5
-      env: dependencies=highest
+      env:
+        - dependencies=lowest
     - php: 5.6
-      env: dependencies=highest
+      env:
+        - dependencies=lowest
     - php: 7.0
-      env: dependencies=highest
+      env:
+        - dependencies=lowest
     - php: 7.1
-      env: dependencies=highest
+      env:
+        - dependencies=lowest
     - php: 7.2
-      env: dependencies=highest
-    - php: hhvm
-      env: dependencies=highest
+      env:
+        - dependencies=lowest
+    - php: 7.3
+      env:
+        - dependencies=lowest
     - php: nightly
-      env: dependencies=highest
+      env:
+        - dependencies=lowest
+        - dropPlatform=false
+    - php: 5.4
+      env:
+        - dependencies=highest
+    - php: 5.5
+      env:
+        - dependencies=highest
+    - php: 5.6
+      env:
+        - dependencies=highest
+    - php: 7.0
+      env:
+        - dependencies=highest
+    - php: 7.1
+      env:
+        - dependencies=highest
+    - php: 7.2
+      env:
+        - dependencies=highest
+    - php: 7.3
+      env:
+        - dependencies=highest
+    - php: nightly
+      env:
+        - dependencies=highest
+        - dropPlatform=false
+    - name: "Windows (latest) (lowest)"
+      os: windows
+      language: shell # no built-in php support
+      env:
+        - dependencies=lowest
+      before_install:
+        - choco install php
+        - choco install composer
+        - export PATH="$(powershell -Command '("Process", "Machine" | % { [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", "" } | Select -Unique | % { cygpath $_ }) -Join ":"')"
+    - name: "Windows (latest) (current)"
+      os: windows
+      language: shell # no built-in php support
+      before_install:
+        - choco install php
+        - choco install composer
+        - export PATH="$(powershell -Command '("Process", "Machine" | % { [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", "" } | Select -Unique | % { cygpath $_ }) -Join ":"')"
+    - name: "Windows (latest) (highest)"
+      os: windows
+      language: shell # no built-in php support
+      env:
+        - dependencies=highest
+      before_install:
+        - choco install php
+        - choco install composer
+        - export PATH="$(powershell -Command '("Process", "Machine" | % { [Environment]::GetEnvironmentVariable("PATH", $_) -Split ";" -Replace "\\$", "" } | Select -Unique | % { cygpath $_ }) -Join ":"')"
+    - os: osx
+      osx_image: xcode10.1
+      language: generic
+    - os: osx
+      osx_image: xcode10.1
+      language: generic
+      env:
+        - dependencies=highest
 
-## Update composer and run the appropriate composer command
-before_script:
-  - composer self-update
-  - if [ -z "$dependencies" ]; then composer install; fi;
-  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n; fi;
-  - if [ "$dependencies" = "highest" ]; then composer update -n; fi;
-  - composer show -i
+## Install or update dependencies
+install:
+  - if [[ "${TRAVIS_OS_NAME}" != "osx"  ]]; then composer validate; fi;
+  - if [[ -z "$dropPlatform" || "${TRAVIS_OS_NAME}" != "osx" ]]; then composer config --unset platform.php; fi;
+  - if [[ -z "$qaExtended" || "${TRAVIS_OS_NAME}" != "osx" ]]; then phpenv config-rm xdebug.ini || :; fi;
+  - php -v
+  - if [ -z "$dependencies" ]; then composer install --prefer-dist; fi;
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-dist -n; fi;
+  - if [ "$dependencies" = "highest" ]; then composer update --prefer-dist -n; fi;
+  - composer show
 
 ## Run the actual test
 script:
-  - make travis
+  - if [ -z "$qaExtended" || "${TRAVIS_OS_NAME}" != "windows"  ]; then make travis; fi;
+  - if [ "${TRAVIS_OS_NAME}" = "windows"  ]; then vendor/bin/phpunit; fi;
+  - if [ "$qaExtended" = "true" ]; then make travis; fi;
   - php benchmark/memory.php
 
 ## Gather coverage and set it to coverage servers
-after_script: make travis-after-script
+after_script: if [ "$qaExtended" = "true" ]; then make travis-after-script; fi;
