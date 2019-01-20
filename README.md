@@ -1,4 +1,4 @@
-# react-child-process-pool
+# Pool wyrihaximus/react-child-process-messenger processes
 
 [![Linux Build Status](https://travis-ci.org/WyriHaximus/reactphp-child-process-pool.png)](https://travis-ci.org/WyriHaximus/reactphp-child-process-pool)
 [![Latest Stable Version](https://poser.pugx.org/WyriHaximus/react-child-process-pool/v/stable.png)](https://packagist.org/packages/WyriHaximus/react-child-process-pool)

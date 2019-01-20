@@ -1,5 +1,6 @@
 {
   "name": "wyrihaximus/react-child-process-pool",
+  "description": "Pool wyrihaximus/react-child-process-messenger processes",
   "license": "MIT",
   "authors": [
     {
