@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "php": "^7.2",
+    "php": "^7.0 || ^5.4",
     "evenement/evenement": "^3.0 || ^2.0",
     "wyrihaximus/cpu-core-detector": "^1.0.0",
     "wyrihaximus/file-descriptors": "^1.0 || ^0.1",
@@ -41,7 +41,7 @@
   "config": {
     "sort-packages": true,
     "platform": {
-      "php": "7.2"
+      "php": "5.4"
     }
   }
 }

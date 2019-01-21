@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "09571832d1d82ed8445c7d22ce048747",
+    "content-hash": "36cdd0f6faf90d1d35639b1909b3b1a0",
     "packages": [
         {
             "name": "cakephp/utility",
@@ -833,26 +833,24 @@
         },
         {
             "name": "wyrihaximus/file-descriptors",
-            "version": "1.0.0",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/php-file-descriptors.git",
-                "reference": "6b3073409b94912354cc9b6bde600797940c4edf"
+                "reference": "0a1b5e95fb0bcefd18a012f0faa1243e9af4ef7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/php-file-descriptors/zipball/6b3073409b94912354cc9b6bde600797940c4edf",
-                "reference": "6b3073409b94912354cc9b6bde600797940c4edf",
+                "url": "https://api.github.com/repos/WyriHaximus/php-file-descriptors/zipball/0a1b5e95fb0bcefd18a012f0faa1243e9af4ef7c",
+                "reference": "0a1b5e95fb0bcefd18a012f0faa1243e9af4ef7c",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2",
+                "php": "^7.0 || ^5.4",
                 "tivie/php-os-detector": "^1.1"
             },
             "require-dev": {
-                "api-clients/cs-fixer-config": "^1.1",
-                "api-clients/test-utilities": "^5.4",
-                "wyrihaximus/iterator-or-array-to-array": "^1.0"
+                "phpunit/phpunit": "^4.8"
             },
             "type": "library",
             "autoload": {
@@ -871,7 +869,7 @@
                 }
             ],
             "description": "List open file descriptors for the current process cross platform",
-            "time": "2019-01-15T16:08:10+00:00"
+            "time": "2019-01-15T07:20:48+00:00"
         },
         {
             "name": "wyrihaximus/json-throwable",
@@ -2263,10 +2261,10 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.2"
+        "php": "^7.0 || ^5.4"
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "7.2"
+        "php": "5.4"
     }
 }
