@@ -202,20 +202,15 @@ class FunctionsTest extends TestCase
 
     public function testDetectCoreCount()
     {
-        $coreCountDetected = false;
         $loop = Factory::create();
 
-        \WyriHaximus\React\ChildProcess\Pool\detectCoreCount(
+        $promise = \WyriHaximus\React\ChildProcess\Pool\detectCoreCount(
             $loop,
             []
-        )->then(function ($count) use (&$coreCountDetected) {
-            $this->assertInternalType('integer', $count);
-            $coreCountDetected = true;
-        });
+        );
+        $count = \Clue\React\Block\await($promise, $loop, 10);
 
-        $loop->run();
-
-        $this->assertTrue($coreCountDetected);
+        $this->assertInternalType('integer', $count);
     }
 
     public function testDetectCoreCountCustomDetector()
