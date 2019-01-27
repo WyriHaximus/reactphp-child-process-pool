@@ -11,7 +11,7 @@
   "require": {
     "php": "^7.0 || ^5.4",
     "evenement/evenement": "^3.0 || ^2.0",
-    "wyrihaximus/cpu-core-detector": "^1.0.0",
+    "wyrihaximus/cpu-core-detector": "^1.0.2",
     "wyrihaximus/file-descriptors": "^1.0 || ^0.1",
     "wyrihaximus/react-child-process-messenger": "^2.9",
     "wyrihaximus/ticking-promise": "^1.5"
