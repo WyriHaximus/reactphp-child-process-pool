@@ -237,7 +237,6 @@ class FunctionsTest extends TestCase
         $affinity = Phake::mock('WyriHaximus\CpuCoreDetector\Core\AffinityInterface');
         Phake::when($affinity)->execute(13, 'a')->thenReturn($promise);
         Resolver::setAffinity($affinity);
-
         $process = new Process(
             'a',
             'b',
@@ -248,11 +247,20 @@ class FunctionsTest extends TestCase
                 'd'
             ]
         );
+
+        $optionName = 'fds';
+        try {
+            \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('options', $process);
+            $optionName = 'options';
+        } catch (\ReflectionException $re) {
+            //
+        }
+
         $promiseResolved = false;
         \WyriHaximus\React\ChildProcess\Pool\rebuildProcess(
             13,
             $process
-        )->then(function ($rebuildProcess) use (&$promiseResolved) {
+        )->then(function ($rebuildProcess) use (&$promiseResolved, $optionName) {
             $this->assertSame('taskset -c 13 a', \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('cmd', $rebuildProcess));
             $this->assertSame('b', \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('cwd', $rebuildProcess));
             $this->assertSame(
@@ -265,7 +273,7 @@ class FunctionsTest extends TestCase
                 [
                     'd',
                 ],
-                \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue('options', $rebuildProcess)
+                \WyriHaximus\React\ChildProcess\Pool\getProcessPropertyValue($optionName, $rebuildProcess)
             );
             $promiseResolved = true;
         });
