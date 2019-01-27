@@ -9,18 +9,19 @@
     }
   ],
   "require": {
-    "php": "^5.4||^7.0",
+    "php": "^7.0 || ^5.4",
     "evenement/evenement": "^3.0 || ^2.0",
-    "wyrihaximus/cpu-core-detector": "^1.0.0",
-    "wyrihaximus/react-child-process-messenger": "^2.7.1",
+    "wyrihaximus/cpu-core-detector": "^1.0.2",
+    "wyrihaximus/file-descriptors": "^1.0 || ^0.1",
+    "wyrihaximus/react-child-process-messenger": "^2.9",
     "wyrihaximus/ticking-promise": "^1.5"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.8.35||^5.0",
+    "clue/block-react": "^1.3",
     "phake/phake": "^2.2.1",
-    "vectorface/dunit": "~2.0",
+    "phpunit/phpunit": "^4.8.35||^5.0",
     "squizlabs/php_codesniffer": "^3.3.2",
-    "clue/block-react": "^1.1"
+    "vectorface/dunit": "~2.0"
   },
   "suggest" : {
     "wyrihaximus/react-child-process-pool-redis-queue": "Redis RPC queue"

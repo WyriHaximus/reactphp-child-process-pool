@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2e6cd70bc3d85f1392fbb2b5122e2c6",
+    "content-hash": "47c4da3d444db32467cf82afc57874d3",
     "packages": [
         {
             "name": "cakephp/utility",
@@ -2138,7 +2138,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -2261,7 +2261,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^5.4||^7.0"
+        "php": "^7.0 || ^5.4"
     },
     "platform-dev": [],
     "platform-overrides": {

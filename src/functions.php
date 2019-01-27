@@ -93,11 +93,17 @@ function rebuildProcess($address, Process $childProcess)
         $address,
         getProcessPropertyValue('cmd', $childProcess)
     )->then(function ($cmd) use ($childProcess) {
+        $finalOption = [];
+        try {
+            $finalOption = getProcessPropertyValue('options', $childProcess);
+        } catch (\ReflectionException $re) {
+            $finalOption = getProcessPropertyValue('fds', $childProcess);
+        }
         return \React\Promise\resolve(new Process(
             $cmd,
             getProcessPropertyValue('cwd', $childProcess),
             getProcessPropertyValue('env', $childProcess),
-            getProcessPropertyValue('options', $childProcess)
+            $finalOption
         ));
     });
 }
