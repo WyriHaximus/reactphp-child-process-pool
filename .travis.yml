@@ -124,9 +124,9 @@ install:
 
 ## Run the actual test
 script:
-  - if [[ -z "$qaExtended" || "${TRAVIS_OS_NAME}" != "windows" ]]; then make travis; fi;
+  - if [[ -z "$qaExtended" && "${TRAVIS_OS_NAME}" != "windows" ]]; then make travis; fi;
   - if [ "${TRAVIS_OS_NAME}" = "windows"  ]; then vendor/bin/phpunit; fi;
-  - if [ "$qaExtended" = "true" ]; then make travis; fi;
+  - if [ "$qaExtended" = "true" && "${TRAVIS_OS_NAME}" != "windows" ]; then make travis; fi;
   - php benchmark/memory.php
 
 ## Gather coverage and set it to coverage servers
