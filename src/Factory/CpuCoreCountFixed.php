@@ -91,10 +91,15 @@ class CpuCoreCountFixed implements PoolFactoryInterface
             $processes = [];
             for ($i = 0; $i < $coreCount; $i++) {
                 $processes[] = Resolver::resolve($i, '%s')->then(function ($command) use ($class, $options) {
-                    return \React\Promise\resolve(new ClassName($class, [
+                    $classNameOptions = [
                         'cmdTemplate' => $command,
-                        Options::FD_LISTER => $options[Options::FD_LISTER],
-                    ]));
+                    ];
+
+                    if (isset($options[Options::FD_LISTER])) {
+                        $classNameOptions[Options::FD_LISTER] = $options[Options::FD_LISTER];
+                    }
+
+                    return \React\Promise\resolve(new ClassName($class, $classNameOptions));
                 });
             }
 
