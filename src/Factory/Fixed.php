@@ -6,6 +6,7 @@ use React\ChildProcess\Process as ChildProcess;
 use React\EventLoop\LoopInterface;
 use React\Promise\PromiseInterface;
 use WyriHaximus\FileDescriptors\Factory;
+use WyriHaximus\FileDescriptors\NoCompatibleListerException;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\ClassName;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\Process;
 use WyriHaximus\React\ChildProcess\Pool\Options;
@@ -31,8 +32,12 @@ class Fixed implements PoolFactoryInterface
     public static function create(ChildProcess $process, LoopInterface $loop, array $options = [])
     {
         $options = array_merge(self::$defaultOptions, $options);
-        if (!isset($options[Options::FD_LISTER])) {
-            $options[Options::FD_LISTER] = Factory::create();
+        try {
+            if (!isset($options[Options::FD_LISTER])) {
+                $options[Options::FD_LISTER] = Factory::create();
+            }
+        } catch (NoCompatibleListerException $exception) {
+            // Do nothing, platform unsupported
         }
         return \React\Promise\resolve(new FixedPool(new Single(new Process($process)), $loop, $options));
     }
@@ -46,8 +51,12 @@ class Fixed implements PoolFactoryInterface
     public static function createFromClass($class, LoopInterface $loop, array $options = [])
     {
         $options = array_merge(self::$defaultOptions, $options);
-        if (!isset($options[Options::FD_LISTER])) {
-            $options[Options::FD_LISTER] = Factory::create();
+        try {
+            if (!isset($options[Options::FD_LISTER])) {
+                $options[Options::FD_LISTER] = Factory::create();
+            }
+        } catch (NoCompatibleListerException $exception) {
+            // Do nothing, platform unsupported
         }
         return \React\Promise\resolve(new FixedPool(new Single(new ClassName($class)), $loop, $options));
     }
