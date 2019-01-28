@@ -8,6 +8,7 @@ use React\Promise\PromiseInterface;
 use WyriHaximus\CpuCoreDetector\Detector;
 use WyriHaximus\CpuCoreDetector\Resolver;
 use WyriHaximus\FileDescriptors\Factory;
+use WyriHaximus\FileDescriptors\NoCompatibleListerException;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\ClassName;
 use WyriHaximus\React\ChildProcess\Pool\Launcher\Process;
 use WyriHaximus\React\ChildProcess\Pool\Options;
@@ -38,8 +39,12 @@ class CpuCoreCountFixed implements PoolFactoryInterface
     public static function create(ChildProcess $childProcess, LoopInterface $loop, array $options = [])
     {
         $options = array_merge(self::$defaultOptions, $options);
-        if (!isset($options[Options::FD_LISTER])) {
-            $options[Options::FD_LISTER] = Factory::create();
+        try {
+            if (!isset($options[Options::FD_LISTER])) {
+                $options[Options::FD_LISTER] = Factory::create();
+            }
+        } catch (NoCompatibleListerException $exception) {
+            // Do nothing, platform unsupported
         }
         return \WyriHaximus\React\ChildProcess\Pool\detectCoreCount(
             $loop,
@@ -71,8 +76,12 @@ class CpuCoreCountFixed implements PoolFactoryInterface
     public static function createFromClass($class, LoopInterface $loop, array $options = [])
     {
         $options = array_merge(self::$defaultOptions, $options);
-        if (!isset($options[Options::FD_LISTER])) {
-            $options[Options::FD_LISTER] = Factory::create();
+        try {
+            if (!isset($options[Options::FD_LISTER])) {
+                $options[Options::FD_LISTER] = Factory::create();
+            }
+        } catch (NoCompatibleListerException $exception) {
+            // Do nothing, platform unsupported
         }
         return \WyriHaximus\React\ChildProcess\Pool\detectCoreCount(
             $loop,
@@ -82,10 +91,15 @@ class CpuCoreCountFixed implements PoolFactoryInterface
             $processes = [];
             for ($i = 0; $i < $coreCount; $i++) {
                 $processes[] = Resolver::resolve($i, '%s')->then(function ($command) use ($class, $options) {
-                    return \React\Promise\resolve(new ClassName($class, [
+                    $classNameOptions = [
                         'cmdTemplate' => $command,
-                        Options::FD_LISTER => $options[Options::FD_LISTER],
-                    ]));
+                    ];
+
+                    if (isset($options[Options::FD_LISTER])) {
+                        $classNameOptions[Options::FD_LISTER] = $options[Options::FD_LISTER];
+                    }
+
+                    return \React\Promise\resolve(new ClassName($class, $classNameOptions));
                 });
             }
 

@@ -7,6 +7,7 @@ function show_memory($message = '')
 {
     echo '------------------------------------------', PHP_EOL;
     echo $message, PHP_EOL;
+    echo date(DATE_RFC822), PHP_EOL;
     echo '------------------------------------------', PHP_EOL;
     echo 'Current memory usage: ',      memory_get_usage()          / MB, 'MB', PHP_EOL;
     echo 'Peak memory usage: ',         memory_get_peak_usage()     / MB, 'MB', PHP_EOL;
