@@ -69,7 +69,7 @@ class Flexible implements ManagerInterface
     {
         $this->startingProcesses++;
         $current = $this->processCollection->current();
-        $promise = $current($this->loop, $this->options);
+        $promise = $this->spawnAndGetMessenger($current);
         $promise->done(function (Messenger $messenger) {
             $worker = new Worker($messenger);
             $this->workers[] = $worker;
@@ -94,6 +94,17 @@ class Flexible implements ManagerInterface
         if (!$this->processCollection->valid()) {
             $this->processCollection->rewind();
         }
+    }
+
+    protected function spawnAndGetMessenger(callable $current)
+    {
+        return $current($this->loop, $this->options)->then(function ($timeoutOrMessenger) use ($current) {
+            if ($timeoutOrMessenger instanceof Messenger) {
+                return \React\Promise\resolve($timeoutOrMessenger);
+            }
+
+            return $this->spawnAndGetMessenger($current);
+        });
     }
 
     public function ping()
