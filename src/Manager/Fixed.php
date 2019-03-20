@@ -42,7 +42,7 @@ class Fixed implements ManagerInterface
             $this->workerAvailable($worker);
         };
         $current = $processCollection->current();
-        $promise = $current($this->loop, $options);
+        $promise = $this->spawnAndGetMessenger($current, $options);
         $promise->then(function (Messenger $messenger) use ($workerDone) {
             $worker = new Worker($messenger);
             $this->workers[] = $worker;
@@ -54,6 +54,17 @@ class Fixed implements ManagerInterface
         if (!$processCollection->valid()) {
             $processCollection->rewind();
         }
+    }
+
+    protected function spawnAndGetMessenger(callable $current, $options)
+    {
+        return $current($this->loop, $options)->then(function ($timeoutOrMessenger) use ($current, $options) {
+            if ($timeoutOrMessenger instanceof Messenger) {
+                return \React\Promise\resolve($timeoutOrMessenger);
+            }
+
+            return $this->spawnAndGetMessenger($current, $options);
+        });
     }
 
     protected function workerAvailable(WorkerInterface $worker)

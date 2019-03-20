@@ -7,6 +7,7 @@ use React\EventLoop\LoopInterface;
 use React\Promise\Deferred;
 use React\Promise\FulfilledPromise;
 use React\Promise\RejectedPromise;
+use React\Promise\Timer\TimeoutException;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory;
 use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\Manager\Flexible;
@@ -262,6 +263,35 @@ class FlexibleTest extends TestCase
         });
 
         $workerDeferred->resolve($messenger);
+        $this->manager->message($message);
+
+        Phake::verify($messenger)->message($message);
+    }
+
+    public function testErrorFromSpawning()
+    {
+        $message = Factory::message(['bar']);
+        $workerDeferredA = new Deferred();
+        $workerDeferredB = new Deferred();
+        /** @var Deferred[] $workerDeferreds */
+        $workerDeferreds = [$workerDeferredA, $workerDeferredB];
+        $worker = null;
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+
+        Phake::when($this->processCollection)->current()->thenReturnCallback(function () use (&$workerDeferreds) {
+            return function () use (&$workerDeferreds) {
+                return array_shift($workerDeferreds)->promise();
+            };
+        });
+
+        $this->createManager();
+
+        $this->manager->once('ready', function (WorkerInterface $workerInstance) use (&$worker) {
+            $worker = $workerInstance;
+        });
+
+        $workerDeferredA->resolve(new TimeoutException(0.13));
+        $workerDeferredB->resolve($messenger);
         $this->manager->message($message);
 
         Phake::verify($messenger)->message($message);
