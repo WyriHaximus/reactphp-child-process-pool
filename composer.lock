@@ -920,16 +920,16 @@
         },
         {
             "name": "wyrihaximus/react-child-process-messenger",
-            "version": "2.9.1",
+            "version": "2.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/reactphp-child-process-messenger.git",
-                "reference": "49756955ba884077a7e51c93cf0e6df3515830ec"
+                "reference": "69005749c72282d9c18ca19c425e79f8e454d69e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/reactphp-child-process-messenger/zipball/49756955ba884077a7e51c93cf0e6df3515830ec",
-                "reference": "49756955ba884077a7e51c93cf0e6df3515830ec",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-child-process-messenger/zipball/69005749c72282d9c18ca19c425e79f8e454d69e",
+                "reference": "69005749c72282d9c18ca19c425e79f8e454d69e",
                 "shasum": ""
             },
             "require": {
@@ -973,7 +973,7 @@
                 }
             ],
             "description": "Messenger decorator for react/child-process",
-            "time": "2019-03-11T10:33:37+00:00"
+            "time": "2019-03-20T21:51:25+00:00"
         },
         {
             "name": "wyrihaximus/react-child-process-promise",
