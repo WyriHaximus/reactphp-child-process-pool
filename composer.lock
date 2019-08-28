@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79174fcee531e5b1ec9280b5421686bb",
+    "content-hash": "f47141f6b624d6ad90fc6505e10bb30d",
     "packages": [
         {
             "name": "cakephp/utility",
@@ -920,16 +920,16 @@
         },
         {
             "name": "wyrihaximus/react-child-process-messenger",
-            "version": "2.9.1",
+            "version": "2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/reactphp-child-process-messenger.git",
-                "reference": "49756955ba884077a7e51c93cf0e6df3515830ec"
+                "reference": "813bd47c69935edc1a054438f47622b629430e13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/reactphp-child-process-messenger/zipball/49756955ba884077a7e51c93cf0e6df3515830ec",
-                "reference": "49756955ba884077a7e51c93cf0e6df3515830ec",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-child-process-messenger/zipball/813bd47c69935edc1a054438f47622b629430e13",
+                "reference": "813bd47c69935edc1a054438f47622b629430e13",
                 "shasum": ""
             },
             "require": {
@@ -973,7 +973,7 @@
                 }
             ],
             "description": "Messenger decorator for react/child-process",
-            "time": "2019-03-11T10:33:37+00:00"
+            "time": "2019-08-28T15:10:40+00:00"
         },
         {
             "name": "wyrihaximus/react-child-process-promise",

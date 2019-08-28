@@ -84,6 +84,12 @@ class Flexible implements ManagerInterface
                     }
                 }
             });
+            $worker->on('message', function ($message) {
+                $this->emit('message', [$message]);
+            });
+            $worker->on('error', function ($error) {
+                $this->emit('error', [$error]);
+            });
             $this->workerAvailable($worker);
             $this->startingProcesses--;
         }, function () {

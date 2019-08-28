@@ -76,6 +76,12 @@ class Fixed implements PoolInterface
                 unset($this->deferreds[$hash]);
             });
         });
+        $this->manager->on('message', function ($message) {
+            $this->emit('message', [$message]);
+        });
+        $this->manager->on('error', function ($error) {
+            $this->emit('error', [$error]);
+        });
     }
 
     /**

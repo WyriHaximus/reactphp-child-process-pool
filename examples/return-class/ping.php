@@ -4,6 +4,7 @@ require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
 use React\EventLoop\Factory as EventLoopFactory;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory as MessagesFactory;
+use WyriHaximus\React\ChildProcess\Messenger\Messages\Factory;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Payload;
 use WyriHaximus\React\ChildProcess\Pool\Factory\CpuCoreCountFixed;
 use WyriHaximus\React\ChildProcess\Pool\Factory\CpuCoreCountFlexible;
@@ -15,11 +16,11 @@ $loop = EventLoopFactory::create();
 
 CpuCoreCountFlexible::createFromClass('WyriHaximus\React\ChildProcess\Messenger\ReturnChild', $loop)
 ->then(function (PoolInterface $pool) {
-    $i = 0;
+    $promises = [];
     for ($i = 0; $i < 100; $i++) {
         //echo $i, PHP_EOL;
 
-        $pool->rpc(MessagesFactory::rpc('return', [
+        $promises[] = $pool->rpc(MessagesFactory::rpc('return', [
             'i' => $i,
             'time' => time(),
             'string' => str_pad('0', 1024 * 1024 * 5)
@@ -30,7 +31,15 @@ CpuCoreCountFlexible::createFromClass('WyriHaximus\React\ChildProcess\Messenger\
             if ($payload['i'] == 99) {
                 $pool->terminate();
             }
+            var_export($pool->info());
         });
     }
-});
+
+    return \React\Promise\all($promises)->then(function () use ($pool) {
+        var_export($pool->info());
+        return $pool;
+    });
+})->then(function (PoolInterface $pool) {
+    return $pool->terminate(Factory::message(['bye!']));
+})->done();
 $loop->run();
