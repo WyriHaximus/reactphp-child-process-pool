@@ -47,6 +47,12 @@ class Fixed implements ManagerInterface
             $worker = new Worker($messenger);
             $this->workers[] = $worker;
             $worker->on('done', $workerDone);
+            $worker->on('message', function ($message) {
+                $this->emit('message', [$message]);
+            });
+            $worker->on('error', function ($error) {
+                $this->emit('error', [$error]);
+            });
             $this->workerAvailable($worker);
         });
 

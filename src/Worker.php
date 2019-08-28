@@ -5,6 +5,7 @@ namespace WyriHaximus\React\ChildProcess\Pool;
 use Evenement\EventEmitterTrait;
 use React\Promise\PromiseInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
+use WyriHaximus\React\ChildProcess\Messenger\Messages\Payload;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
 
@@ -28,6 +29,12 @@ class Worker implements WorkerInterface
     public function __construct(Messenger $messenger)
     {
         $this->messenger = $messenger;
+        $this->messenger->on('message', function ($message) {
+            $this->emit('message', [$message]);
+        });
+        $this->messenger->on('error', function ($error) {
+            $this->emit('error', [$error]);
+        });
     }
 
     /**
