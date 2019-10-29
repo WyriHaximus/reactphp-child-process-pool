@@ -89,7 +89,7 @@ class Flexible implements ManagerInterface
                 $this->emit('message', [$message]);
             });
             $worker->on('error', function ($error) use ($worker) {
-                if($error instanceof ProcessUnexpectedEndException){
+                if ($error instanceof ProcessUnexpectedEndException) {
                     $worker->terminate();
                     $this->ping();
                 }
@@ -121,7 +121,7 @@ class Flexible implements ManagerInterface
     public function ping()
     {
         if (count($this->workers) + $this->startingProcesses < $this->options[Options::MIN_SIZE]) {
-            for($i = count($this->workers) + $this->startingProcesses; $i <= $this->options[Options::MIN_SIZE]; $++){
+            for ($i = count($this->workers) + $this->startingProcesses; $i <= $this->options[Options::MIN_SIZE]; $++) {
                 $this->spawn();
             }
             return;
