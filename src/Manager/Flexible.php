@@ -121,7 +121,7 @@ class Flexible implements ManagerInterface
     public function ping()
     {
         if (count($this->workers) + $this->startingProcesses < $this->options[Options::MIN_SIZE]) {
-            for ($i = count($this->workers) + $this->startingProcesses; $i <= $this->options[Options::MIN_SIZE]; $++) {
+            for ($i = count($this->workers) + $this->startingProcesses; $i <= $this->options[Options::MIN_SIZE]; $i++) {
                 $this->spawn();
             }
             return;
