@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "php": "^7.0 || ^5.4",
+    "php": "^8.0 || ^7.0 || ^5.4",
     "evenement/evenement": "^3.0 || ^2.0",
     "react/event-loop": "^1.1",
     "wyrihaximus/cpu-core-detector": "^1.0.2",
