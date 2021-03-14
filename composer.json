@@ -36,13 +36,12 @@
   "autoload-dev": {
     "psr-4": {
       "WyriHaximus\\React\\Tests\\ChildProcess\\Pool\\": "tests/"
-    },
-    "files": ["tests/bootstrap.php"]
+    }
   },
   "config": {
     "sort-packages": true,
     "platform": {
-      "php": "5.4"
+      "php": "5.4.33"
     }
   }
 }
