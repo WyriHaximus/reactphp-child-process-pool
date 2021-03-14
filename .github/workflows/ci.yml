@@ -20,7 +20,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        composer: [install, "update", "update --prefer-lowest"]
         php: ${{ fromJson(needs.supported-versions-matrix.outputs.version) }}
     steps:
       - name: Checkout
@@ -45,9 +44,10 @@ jobs:
       - name: Install Composer dependencies
         run: |
           composer config --unset platform.php
-          composer update --lock
-          composer ${{ matrix.composer }} --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
+          rm composer.lock
+          composer install --no-progress --no-interaction --optimize-autoloader --ansi
       - name: Test
         run: |
           ./vendor/bin/phpunit --coverage-text
+          php examples/return-class/ping.php
           php benchmark/memory.php
