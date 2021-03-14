@@ -6,6 +6,7 @@ use Evenement\EventEmitterTrait;
 use React\EventLoop\LoopInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
+use WyriHaximus\React\ChildProcess\Messenger\MessengerInterface;
 use WyriHaximus\React\ChildProcess\Pool\Info;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
 use WyriHaximus\React\ChildProcess\Pool\Options;
@@ -43,7 +44,7 @@ class Fixed implements ManagerInterface
         };
         $current = $processCollection->current();
         $promise = $this->spawnAndGetMessenger($current, $options);
-        $promise->then(function (Messenger $messenger) use ($workerDone) {
+        $promise->then(function (MessengerInterface $messenger) use ($workerDone) {
             $worker = new Worker($messenger);
             $this->workers[] = $worker;
             $worker->on('done', $workerDone);
