@@ -1,0 +1,87 @@
+name: Set Milestone
+on:
+  pull_request:
+    types:
+      - assigned
+      - opened
+      - synchronize
+      - reopened
+      - edited
+      - ready_for_review
+      - review_requested
+jobs:
+  set-milestone:
+    name: Set Milestone
+    if: github.event.pull_request.milestone == null
+    runs-on: ubuntu-latest
+    outputs:
+      check: ${{ steps.generate-checks-strategy.outputs.check }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: 'Get next versions'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+      - name: 'Decide which version fits this PR'
+        id: decidedversion
+        run: |
+          if [ "$(jq '.sender.id' -r ${GITHUB_EVENT_PATH})" = "49699333" ]; then
+            printf "::set-output name=version::%s" "${PATCH}"
+            exit 0
+          fi
+
+          composer install --no-progress --ansi --no-interaction --prefer-dist -o -q
+
+          if ! (./vendor/bin/roave-backward-compatibility-check); then
+            printf "::set-output name=version::%s" "${MAJOR}"
+            exit 0
+          fi
+
+          printf "::set-output name=version::%s" "${MINOR}"
+        env:
+          MAJOR: ${{ steps.semvers.outputs.major }}
+          MINOR: ${{ steps.semvers.outputs.minor }}
+          PATCH: ${{ steps.semvers.outputs.patch }}
+      - name: 'Get Milestones'
+        uses: "WyriHaximus/github-action-get-milestones@master"
+        id: milestones
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - run: printf "::set-output name=number::%s" $(printenv MILESTONES | jq --arg MILESTONE $(printenv MILESTONE) '.[]  | select(.title == $MILESTONE) | .number')
+        id: querymilestone
+        env:
+          MILESTONES: ${{ steps.milestones.outputs.milestones }}
+          MILESTONE: ${{ steps.decidedversion.outputs.version }}
+      - name: 'Create Milestone'
+        if: steps.querymilestone.outputs.number == ''
+        id: createmilestone
+        uses: "WyriHaximus/github-action-create-milestone@0.1.0"
+        with:
+          title: ${{ steps.decidedversion.outputs.version }}
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: 'Select found or created Milestone'
+        id: selectmilestone
+        run: |
+          if [ $(echo ${QUERY_NUMBER} | wc -c) -eq 1 ] ; then
+            printf "::set-output name=number::%s" "${CREATED_NUMBER}"
+            exit 0
+          fi
+
+          printf "::set-output name=number::%s" "${QUERY_NUMBER}"
+        env:
+          CREATED_NUMBER: ${{ steps.createmilestone.outputs.number }}
+          QUERY_NUMBER: ${{ steps.querymilestone.outputs.number }}
+      - name: 'Set Milestone'
+        uses: "WyriHaximus/github-action-set-milestone@master"
+        with:
+          issue_number: ${{ github.event.pull_request.number }}
+          milestone_number: ${{ steps.selectmilestone.outputs.number }}
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
