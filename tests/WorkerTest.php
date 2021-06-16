@@ -12,7 +12,7 @@ class WorkerTest extends TestCase
 {
     public function testWorker()
     {
-        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\MessengerInterface');
         $worker = new Worker($messenger);
 
         $this->assertFalse($worker->isBusy());
@@ -32,7 +32,7 @@ class WorkerTest extends TestCase
     {
         $deferred = new Deferred();
         $rpc = Factory::rpc('t', []);
-        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\MessengerInterface');
         Phake::when($messenger)->rpc($rpc)->thenReturn($deferred->promise());
         $worker = new Worker($messenger);
 
@@ -47,7 +47,7 @@ class WorkerTest extends TestCase
     public function testMessage()
     {
         $message = Factory::message(['t']);
-        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\MessengerInterface');
         $worker = new Worker($messenger);
 
         $worker->message($message);

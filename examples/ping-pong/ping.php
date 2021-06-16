@@ -4,10 +4,7 @@ require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
 use React\ChildProcess\Process;
 use React\EventLoop\Factory;
-use WyriHaximus\React\ChildProcess\Pool\Factory\CpuCoreCountFixed;
 use WyriHaximus\React\ChildProcess\Pool\Factory\CpuCoreCountFlexible;
-use WyriHaximus\React\ChildProcess\Pool\Factory\Fixed;
-use WyriHaximus\React\ChildProcess\Pool\Factory\Flexible;
 use WyriHaximus\React\ChildProcess\Pool\PoolInterface;
 
 const POOL_PROCESS_COUNT = 10;
@@ -28,7 +25,7 @@ echo '1', PHP_EOL;
 sleep(1);*/
 
 $loop = Factory::create();
-CpuCoreCountFixed::create(new Process('php ' . dirname(dirname(__DIR__)) . '/examples/ping-pong/pong.php'), $loop)->then(function (PoolInterface $pool) use ($loop) {
+CpuCoreCountFlexible::create(new Process('php ' . dirname(dirname(__DIR__)) . '/examples/ping-pong/pong.php'), $loop)->then(function (PoolInterface $pool) use ($loop) {
     $pool->on('message', function ($message) {
         var_export($message);
     });
@@ -80,7 +77,7 @@ CpuCoreCountFixed::create(new Process('php ' . dirname(dirname(__DIR__)) . '/exa
             $pool->terminate(\WyriHaximus\React\ChildProcess\Messenger\Messages\Factory::message([
                 'woeufh209h838392',
             ]));
-            $timer->cancel();
+            $loop->cancelTimer($timer);
             echo 'Done!!!', PHP_EOL;
         });
     });

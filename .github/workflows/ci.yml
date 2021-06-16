@@ -20,7 +20,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        composer: [install, "update", "update --prefer-lowest"]
         php: ${{ fromJson(needs.supported-versions-matrix.outputs.version) }}
     steps:
       - name: Checkout
@@ -33,23 +32,20 @@ jobs:
       - name: Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Get composer action hash
-        id: composer-action-hash
-        run: printf "::set-output name=hash::%s" $(echo -n "${{ matrix.composer }}" | sha512sum)
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-${{ steps.composer-action-hash.outputs.hash }}
+          key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.*') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.*') }}
       - name: Install Composer dependencies
         run: |
           composer config --unset platform.php
-          composer update --lock
-          composer ${{ matrix.composer }} --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
+          rm composer.lock
+          composer install --no-progress --no-interaction --optimize-autoloader --ansi
       - name: Test
         run: |
-          ./vendor/bin/phpunit --coverage-text
+          ./vendor/bin/phpunit --coverage-text --debug
   benchmark:
     name: Run Benchmark on PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
@@ -58,7 +54,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        composer: [install, "update", "update --prefer-lowest"]
         php: ${{ fromJson(needs.supported-versions-matrix.outputs.version) }}
     steps:
       - name: Checkout
@@ -71,20 +66,17 @@ jobs:
       - name: Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Get composer action hash
-        id: composer-action-hash
-        run: printf "::set-output name=hash::%s" $(echo -n "${{ matrix.composer }}" | sha512sum)
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-${{ steps.composer-action-hash.outputs.hash }}
+          key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.*') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.*') }}
       - name: Install Composer dependencies
         run: |
           composer config --unset platform.php
-          composer update --lock
-          composer ${{ matrix.composer }} --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
+          rm composer.lock
+          composer install --no-progress --no-interaction --optimize-autoloader --ansi
       - name: Benchmark
         run: |
           php benchmark/memory.php
@@ -96,7 +88,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        composer: [install, "update", "update --prefer-lowest"]
         php: ${{ fromJson(needs.supported-versions-matrix.outputs.version) }}
     steps:
       - name: Checkout
@@ -109,20 +100,17 @@ jobs:
       - name: Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Get composer action hash
-        id: composer-action-hash
-        run: printf "::set-output name=hash::%s" $(echo -n "${{ matrix.composer }}" | sha512sum)
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-${{ steps.composer-action-hash.outputs.hash }}
+          key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.*') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.*') }}
       - name: Install Composer dependencies
         run: |
           composer config --unset platform.php
-          composer update --lock
-          composer ${{ matrix.composer }} --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
+          rm composer.lock
+          composer install --no-progress --no-interaction --optimize-autoloader --ansi
       - name: Example
         run: |
           php examples/return-class-messaging/ping.php
