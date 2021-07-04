@@ -14,7 +14,7 @@
     "react/event-loop": "^1.1",
     "wyrihaximus/cpu-core-detector": "^2 || ^1.0.2",
     "wyrihaximus/file-descriptors": "^2 || ^1.0 || ^0.1",
-    "wyrihaximus/react-child-process-messenger": "^3 || ^2.10.1",
+    "wyrihaximus/react-child-process-messenger": "^4 || ^3 || ^2.10.1",
     "wyrihaximus/ticking-promise": "^2 || ^1.5"
   },
   "require-dev": {
