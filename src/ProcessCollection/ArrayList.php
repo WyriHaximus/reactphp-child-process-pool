@@ -18,26 +18,31 @@ class ArrayList implements ProcessCollectionInterface
         $this->callables = new ArrayIterator($callables);
     }
 
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->callables->current();
     }
 
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->callables->key();
     }
 
+    #[\ReturnTypeWillChange]
     public function next()
     {
         $this->callables->next();
     }
 
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->callables->rewind();
     }
 
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->callables->valid();
