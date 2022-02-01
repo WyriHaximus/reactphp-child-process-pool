@@ -3,7 +3,6 @@
 namespace WyriHaximus\React\ChildProcess\Pool;
 
 use Evenement\EventEmitterInterface;
-use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use React\Promise\PromiseInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;

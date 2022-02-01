@@ -3,7 +3,6 @@
 namespace WyriHaximus\React\ChildProcess\Pool\ProcessCollection;
 
 use ArrayIterator;
-use React\ChildProcess\Process;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
 
 class ArrayList implements ProcessCollectionInterface
