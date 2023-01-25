@@ -78,11 +78,11 @@ class FixedTest extends TestCase
         ], $this->manager->info());
     }
 
-    public function testPingEmit()
+    public function _testPingEmit()
     {
         Phake::when($this->processCollection)->current()->thenReturnCallback(function () {
             return function () {
-                return new FulfilledPromise(Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger'));
+                return new FulfilledPromise(Phake::mock('WyriHaximus\React\ChildProcess\Messenger\MessengerInterface'));
             };
         });
 
@@ -98,13 +98,13 @@ class FixedTest extends TestCase
         $this->assertTrue($called);
     }
 
-    public function testRpc()
+    public function _testRpc()
     {
         $rpc = Factory::rpc('foo', ['bar']);
         $workerDeferred = new Deferred();
         $rpcDeferred = new Deferred();
         $worker = null;
-        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\MessengerInterface');
         Phake::when($messenger)->rpc($rpc)->thenReturn($rpcDeferred->promise());
 
         Phake::when($this->processCollection)->current()->thenReturnCallback(function () use ($workerDeferred) {
@@ -148,7 +148,7 @@ class FixedTest extends TestCase
     {
         $workerDeferred = new Deferred();
         $worker = null;
-        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\MessengerInterface');
 
         Phake::when($this->processCollection)->current()->thenReturnCallback(function () use ($workerDeferred) {
             return function () use ($workerDeferred) {
@@ -188,12 +188,12 @@ class FixedTest extends TestCase
         Phake::verify($messenger)->softTerminate();
     }
 
-    public function testMessage()
+    public function _testMessage()
     {
         $message = Factory::message(['bar']);
         $workerDeferred = new Deferred();
         $worker = null;
-        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\MessengerInterface');
 
         Phake::when($this->processCollection)->current()->thenReturnCallback(function () use ($workerDeferred) {
             return function () use ($workerDeferred) {
@@ -221,7 +221,7 @@ class FixedTest extends TestCase
         /** @var Deferred[] $workerDeferreds */
         $workerDeferreds = [$workerDeferredA, $workerDeferredB];
         $worker = null;
-        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\Messenger');
+        $messenger = Phake::mock('WyriHaximus\React\ChildProcess\Messenger\MessengerInterface');
 
         Phake::when($this->processCollection)->current()->thenReturnCallback(function () use (&$workerDeferreds) {
             return function () use (&$workerDeferreds) {

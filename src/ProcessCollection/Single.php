@@ -13,26 +13,31 @@ class Single implements ProcessCollectionInterface
         $this->callable = $callable;
     }
 
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->callable;
     }
 
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return 0;
     }
 
+    #[\ReturnTypeWillChange]
     public function next()
     {
         return false;
     }
 
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         // Do nothing
     }
 
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return true;

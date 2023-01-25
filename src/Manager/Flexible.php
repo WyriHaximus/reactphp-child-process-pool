@@ -7,6 +7,7 @@ use React\EventLoop\LoopInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
 use WyriHaximus\React\ChildProcess\Messenger\ProcessUnexpectedEndException;
+use WyriHaximus\React\ChildProcess\Messenger\MessengerInterface;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
 use WyriHaximus\React\ChildProcess\Pool\Options;
 use WyriHaximus\React\ChildProcess\Pool\ProcessCollectionInterface;
@@ -71,7 +72,7 @@ class Flexible implements ManagerInterface
         $this->startingProcesses++;
         $current = $this->processCollection->current();
         $promise = $this->spawnAndGetMessenger($current);
-        $promise->done(function (Messenger $messenger) {
+        $promise->done(function (MessengerInterface $messenger) {
             $worker = new Worker($messenger);
             $this->workers[] = $worker;
             $worker->on('done', function (WorkerInterface $worker) {

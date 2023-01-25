@@ -41,5 +41,7 @@ CpuCoreCountFlexible::createFromClass('WyriHaximus\React\ChildProcess\Messenger\
     });
 })->then(function (PoolInterface $pool) {
     return $pool->terminate(Factory::message(['bye!']));
+})->then(function () use ($loop) {
+    $loop->stop();
 })->done();
 $loop->run();

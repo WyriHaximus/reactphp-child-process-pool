@@ -5,7 +5,6 @@ namespace WyriHaximus\React\ChildProcess\Pool\Factory;
 use React\ChildProcess\Process as ChildProcess;
 use React\EventLoop\LoopInterface;
 use React\Promise\PromiseInterface;
-use WyriHaximus\CpuCoreDetector\Detector;
 use WyriHaximus\CpuCoreDetector\Resolver;
 use WyriHaximus\FileDescriptors\Factory;
 use WyriHaximus\FileDescriptors\NoCompatibleListerException;
