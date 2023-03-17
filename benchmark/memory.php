@@ -37,6 +37,7 @@ Flexible::createFromClass('WyriHaximus\React\ChildProcess\Messenger\ReturnChild'
     $timer = $loop->addPeriodicTimer(0.0001, function () use (&$i, $messenger, &$timer, $loop) {
         if ($i >= I) {
             $loop->cancelTimer($timer);
+            $timer = null;
             $messenger->terminate();
 
             show_memory('Completed messaging');
@@ -61,6 +62,6 @@ $loop = null;
 
 show_memory('Removed loop');
 
-gc_collect_cycles();
+$cycles = gc_collect_cycles();
 
-show_memory('gc_collect_cycles');
+show_memory('gc_collect_cycles: ' . $cycles);
