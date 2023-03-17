@@ -72,6 +72,7 @@ class Worker implements WorkerInterface
     {
         $this->busy = true;
         $this->emit('terminating', [$this]);
+        $this->messenger->removeAllListeners();
         return $this->messenger->softTerminate();
     }
 }
