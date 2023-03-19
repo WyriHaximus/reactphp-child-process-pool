@@ -2,7 +2,6 @@
 
 namespace WyriHaximus\React\ChildProcess\Pool\Queue;
 
-use React\Promise\FulfilledPromise;
 use React\Promise\PromiseInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
 use WyriHaximus\React\ChildProcess\Pool\QueueInterface;
@@ -67,7 +66,7 @@ class Overflow implements QueueInterface
     protected function requeue()
     {
         if ($this->queue->count() === 0) {
-            return new FulfilledPromise();
+            return \React\Promise\resolve();
         }
 
         return \React\Promise\resolve($this->queue->dequeue())->then(function (Rpc $rpc) {

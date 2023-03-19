@@ -4,7 +4,6 @@ namespace WyriHaximus\React\ChildProcess\Pool\Pool;
 
 use Evenement\EventEmitterTrait;
 use React\EventLoop\LoopInterface;
-use React\Promise\FulfilledPromise;
 use React\Promise\PromiseInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Rpc;
@@ -30,7 +29,7 @@ class Dummy implements PoolInterface
      */
     public function rpc(Rpc $message)
     {
-        return new FulfilledPromise();
+        return \React\Promise\resolve();
     }
 
     /**
