@@ -119,6 +119,7 @@ class Fixed implements PoolInterface
         }
 
         return \WyriHaximus\React\timedPromise($this->loop, $timeout)->then(function () {
+            $this->manager->removeAllListeners();
             return $this->manager->terminate();
         });
     }
