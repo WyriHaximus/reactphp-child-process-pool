@@ -6,6 +6,7 @@ use Evenement\EventEmitterTrait;
 use React\EventLoop\LoopInterface;
 use WyriHaximus\React\ChildProcess\Messenger\Messages\Message;
 use WyriHaximus\React\ChildProcess\Messenger\Messenger;
+use WyriHaximus\React\ChildProcess\Messenger\ProcessUnexpectedEndException;
 use WyriHaximus\React\ChildProcess\Messenger\MessengerInterface;
 use WyriHaximus\React\ChildProcess\Pool\ManagerInterface;
 use WyriHaximus\React\ChildProcess\Pool\Options;
@@ -88,7 +89,11 @@ class Flexible implements ManagerInterface
             $worker->on('message', function ($message) {
                 $this->emit('message', [$message]);
             });
-            $worker->on('error', function ($error) {
+            $worker->on('error', function ($error) use ($worker) {
+                if ($error instanceof ProcessUnexpectedEndException) {
+                    $worker->terminate();
+                    $this->ping();
+                }
                 $this->emit('error', [$error]);
             });
             $this->workerAvailable($worker);
@@ -116,16 +121,18 @@ class Flexible implements ManagerInterface
 
     public function ping()
     {
+        if (count($this->workers) + $this->startingProcesses < $this->options[Options::MIN_SIZE]) {
+            for ($i = count($this->workers) + $this->startingProcesses; $i <= $this->options[Options::MIN_SIZE]; $i++) {
+                $this->spawn();
+            }
+            return;
+        }
+        
         foreach ($this->workers as $worker) {
             if (!$worker->isBusy()) {
                 $this->workerAvailable($worker);
                 return;
             }
-        }
-
-        if (count($this->workers) + $this->startingProcesses < $this->options[Options::MIN_SIZE]) {
-            $this->spawn();
-            return;
         }
 
         if (count($this->workers) + $this->startingProcesses < $this->options[Options::MAX_SIZE]) {
